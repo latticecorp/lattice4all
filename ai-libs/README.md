@@ -11,7 +11,7 @@ Requires Go 1.26 or newer. Generated bindings are committed; consumers do not
 need protoc.
 
 ```sh
-go get github.com/latticecorp/lattice4all/ai-libs@v0.1.0-dev.1
+go get github.com/latticecorp/lattice4all/ai-libs@v0.1.0-dev.2
 ```
 
 ```go
@@ -51,8 +51,8 @@ for that existing router functionality.
 3. Remove the corresponding local `.proto` and `.pb.go` files and local generation
    rules. Run `go mod tidy` and the consumer's tests.
 
-Protobuf package names, field numbers, JSON names, RPC names and RPC signatures
-are preserved. Only Go package ownership changes. Do not import old and new
+CatalogService is unchanged. The development streaming API has breaking changes
+in dev.2; all stream clients and servers must upgrade together. See below. Do not import old and new
 generated packages into the same binary: they register the same protobuf names.
 
 For local development across the three sibling checkouts, create an uncommitted
@@ -81,6 +81,27 @@ wire compatible; never reuse removed field numbers or names.
 ## Development releases
 
 The Go module is in a subdirectory, so tags must include `ai-libs/`:
-`ai-libs/v0.1.0-dev.1`. The version used by `go get` excludes that prefix.
+`ai-libs/v0.1.0-dev.2`. The version used by `go get` excludes that prefix.
 Development releases are GitHub prereleases. Increment the dev suffix for each
 release; never move an existing tag. See [release notes](CHANGELOG.md).
+
+## Dataplane subscription (dev.2)
+
+The shared `lattice.control.v1.ControlPlaneService` RPC is now
+`SubscribeDataplaneConfiguration(stream DataplaneMessage) returns (stream ControlPlaneMessage)`.
+The first message contains `Subscribe` with required `service_id` (logical
+catalog service), `service_instance_id` (running instance), `schema_version: 1`,
+and one `last_dataplane_version`. Servers must authorize both identity fields
+against the authenticated caller; the development server only validates them.
+
+`RouterMessage` and `RouterConfiguration` are now `DataplaneMessage` and
+`DataplaneConfiguration`; the response field is `dataplane_configuration` and
+update feedback uses target `"dataplane"` (or `"xds"`). Old RPCs/types are removed.
+
+xDS and dataplane configuration for a generation share one immutable version.
+The resume checkpoint is sent only when both configurations are stored with
+that version; otherwise it is empty and the server must replay both complete
+configurations. Stage dataplane configuration before publishing xDS. Delivery
+acceptance remains separate from Envoy ACK/NACK and readiness. A matching
+checkpoint must still receive content replays or another supported lease renewal
+before freshness expires; the development server replays both payloads every 20s.

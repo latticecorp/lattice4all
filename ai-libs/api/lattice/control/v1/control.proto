@@ -4,19 +4,24 @@ option go_package = "github.com/latticecorp/lattice4all/ai-libs/api/lattice/cont
 
 import "google/protobuf/any.proto";
 
-// Router configuration delivery protocol, distinct from Envoy ADS.
+// Dataplane configuration delivery protocol, distinct from Envoy ADS.
 // The development server implements this; lattice-cp currently serves CatalogService.
 service ControlPlaneService {
-  rpc SubscribeRouterConfiguration(stream RouterMessage) returns (stream ControlPlaneMessage);
+  rpc SubscribeDataplaneConfiguration(stream DataplaneMessage) returns (stream ControlPlaneMessage);
 }
 
 message Subscribe {
-  string router_id = 1;
-  string last_xds_version = 2;
-  string last_router_version = 3;
+  // Logical catalog service and its concrete running dataplane instance.
+  // Both are required; the server must authorize them against the connection identity.
+  string service_id = 1;
+  string service_instance_id = 2;
+  // Last generation with BOTH xDS and dataplane configuration stored successfully.
+  // Empty on first connection or when their versions differ; requests a full replay.
+  // This is a delivery checkpoint, not confirmation of Envoy ACK/readiness.
+  string last_dataplane_version = 3;
   uint32 schema_version = 4;
 }
-message RouterMessage {
+message DataplaneMessage {
   oneof payload {
     Subscribe subscribe = 1;
     UpdateStatus update_status = 2;
@@ -25,11 +30,13 @@ message RouterMessage {
 }
 message ControlPlaneMessage {
   // Unique within a stream; echoed in UpdateStatus. Versions are opaque and
-  // immutable. Resending an identical version refreshes its freshness lease.
+  // immutable. Both payload types for one generation must use the same version.
+  // On an empty resume checkpoint, send both complete payloads. Stage dataplane
+  // configuration before xDS. Resending identical content renews freshness.
   string nonce = 1;
   oneof payload {
     XdsConfiguration xds_configuration = 2;
-    RouterConfiguration router_configuration = 3;
+    DataplaneConfiguration dataplane_configuration = 3;
   }
 }
 message ResourceSet {
@@ -37,12 +44,13 @@ message ResourceSet {
   repeated google.protobuf.Any resources = 2;
 }
 message XdsConfiguration {
+  // Shares the generation version with DataplaneConfiguration.
   string version = 1;
   // Complete state-of-the-world CDS, EDS, LDS and RDS bundle. Missing sets
   // mean empty sets, not patches. SDS and mesh-owned secrets are unsupported.
   repeated ResourceSet resource_sets = 2;
 }
-message RouterConfiguration {
+message DataplaneConfiguration {
   // Must match trusted x-iir-route-generation gRPC initial metadata in RDS.
   string version = 1;
   repeated Model models = 2;
@@ -59,7 +67,7 @@ message Model {
 message UpdateStatus {
   string nonce = 1;
   string version = 2;
-  string target = 3; // "xds" or "router"
+  string target = 3; // "xds" or "dataplane"
   bool accepted = 4; // Validated and stored in memory; NOT an Envoy ACK.
   string error = 5; // Bounded diagnostic; never raw configuration or prompts.
 }

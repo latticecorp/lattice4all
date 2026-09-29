@@ -23,13 +23,18 @@ const (
 )
 
 type Subscribe struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	RouterId          string                 `protobuf:"bytes,1,opt,name=router_id,json=routerId,proto3" json:"router_id,omitempty"`
-	LastXdsVersion    string                 `protobuf:"bytes,2,opt,name=last_xds_version,json=lastXdsVersion,proto3" json:"last_xds_version,omitempty"`
-	LastRouterVersion string                 `protobuf:"bytes,3,opt,name=last_router_version,json=lastRouterVersion,proto3" json:"last_router_version,omitempty"`
-	SchemaVersion     uint32                 `protobuf:"varint,4,opt,name=schema_version,json=schemaVersion,proto3" json:"schema_version,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Logical catalog service and its concrete running dataplane instance.
+	// Both are required; the server must authorize them against the connection identity.
+	ServiceId         string `protobuf:"bytes,1,opt,name=service_id,json=serviceId,proto3" json:"service_id,omitempty"`
+	ServiceInstanceId string `protobuf:"bytes,2,opt,name=service_instance_id,json=serviceInstanceId,proto3" json:"service_instance_id,omitempty"`
+	// Last generation with BOTH xDS and dataplane configuration stored successfully.
+	// Empty on first connection or when their versions differ; requests a full replay.
+	// This is a delivery checkpoint, not confirmation of Envoy ACK/readiness.
+	LastDataplaneVersion string `protobuf:"bytes,3,opt,name=last_dataplane_version,json=lastDataplaneVersion,proto3" json:"last_dataplane_version,omitempty"`
+	SchemaVersion        uint32 `protobuf:"varint,4,opt,name=schema_version,json=schemaVersion,proto3" json:"schema_version,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *Subscribe) Reset() {
@@ -62,23 +67,23 @@ func (*Subscribe) Descriptor() ([]byte, []int) {
 	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Subscribe) GetRouterId() string {
+func (x *Subscribe) GetServiceId() string {
 	if x != nil {
-		return x.RouterId
+		return x.ServiceId
 	}
 	return ""
 }
 
-func (x *Subscribe) GetLastXdsVersion() string {
+func (x *Subscribe) GetServiceInstanceId() string {
 	if x != nil {
-		return x.LastXdsVersion
+		return x.ServiceInstanceId
 	}
 	return ""
 }
 
-func (x *Subscribe) GetLastRouterVersion() string {
+func (x *Subscribe) GetLastDataplaneVersion() string {
 	if x != nil {
-		return x.LastRouterVersion
+		return x.LastDataplaneVersion
 	}
 	return ""
 }
@@ -90,32 +95,32 @@ func (x *Subscribe) GetSchemaVersion() uint32 {
 	return 0
 }
 
-type RouterMessage struct {
+type DataplaneMessage struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Payload:
 	//
-	//	*RouterMessage_Subscribe
-	//	*RouterMessage_UpdateStatus
-	//	*RouterMessage_EnvoyStatus
-	Payload       isRouterMessage_Payload `protobuf_oneof:"payload"`
+	//	*DataplaneMessage_Subscribe
+	//	*DataplaneMessage_UpdateStatus
+	//	*DataplaneMessage_EnvoyStatus
+	Payload       isDataplaneMessage_Payload `protobuf_oneof:"payload"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RouterMessage) Reset() {
-	*x = RouterMessage{}
+func (x *DataplaneMessage) Reset() {
+	*x = DataplaneMessage{}
 	mi := &file_api_lattice_control_v1_control_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RouterMessage) String() string {
+func (x *DataplaneMessage) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RouterMessage) ProtoMessage() {}
+func (*DataplaneMessage) ProtoMessage() {}
 
-func (x *RouterMessage) ProtoReflect() protoreflect.Message {
+func (x *DataplaneMessage) ProtoReflect() protoreflect.Message {
 	mi := &file_api_lattice_control_v1_control_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -127,76 +132,78 @@ func (x *RouterMessage) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RouterMessage.ProtoReflect.Descriptor instead.
-func (*RouterMessage) Descriptor() ([]byte, []int) {
+// Deprecated: Use DataplaneMessage.ProtoReflect.Descriptor instead.
+func (*DataplaneMessage) Descriptor() ([]byte, []int) {
 	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *RouterMessage) GetPayload() isRouterMessage_Payload {
+func (x *DataplaneMessage) GetPayload() isDataplaneMessage_Payload {
 	if x != nil {
 		return x.Payload
 	}
 	return nil
 }
 
-func (x *RouterMessage) GetSubscribe() *Subscribe {
+func (x *DataplaneMessage) GetSubscribe() *Subscribe {
 	if x != nil {
-		if x, ok := x.Payload.(*RouterMessage_Subscribe); ok {
+		if x, ok := x.Payload.(*DataplaneMessage_Subscribe); ok {
 			return x.Subscribe
 		}
 	}
 	return nil
 }
 
-func (x *RouterMessage) GetUpdateStatus() *UpdateStatus {
+func (x *DataplaneMessage) GetUpdateStatus() *UpdateStatus {
 	if x != nil {
-		if x, ok := x.Payload.(*RouterMessage_UpdateStatus); ok {
+		if x, ok := x.Payload.(*DataplaneMessage_UpdateStatus); ok {
 			return x.UpdateStatus
 		}
 	}
 	return nil
 }
 
-func (x *RouterMessage) GetEnvoyStatus() *EnvoyStatus {
+func (x *DataplaneMessage) GetEnvoyStatus() *EnvoyStatus {
 	if x != nil {
-		if x, ok := x.Payload.(*RouterMessage_EnvoyStatus); ok {
+		if x, ok := x.Payload.(*DataplaneMessage_EnvoyStatus); ok {
 			return x.EnvoyStatus
 		}
 	}
 	return nil
 }
 
-type isRouterMessage_Payload interface {
-	isRouterMessage_Payload()
+type isDataplaneMessage_Payload interface {
+	isDataplaneMessage_Payload()
 }
 
-type RouterMessage_Subscribe struct {
+type DataplaneMessage_Subscribe struct {
 	Subscribe *Subscribe `protobuf:"bytes,1,opt,name=subscribe,proto3,oneof"`
 }
 
-type RouterMessage_UpdateStatus struct {
+type DataplaneMessage_UpdateStatus struct {
 	UpdateStatus *UpdateStatus `protobuf:"bytes,2,opt,name=update_status,json=updateStatus,proto3,oneof"`
 }
 
-type RouterMessage_EnvoyStatus struct {
+type DataplaneMessage_EnvoyStatus struct {
 	EnvoyStatus *EnvoyStatus `protobuf:"bytes,3,opt,name=envoy_status,json=envoyStatus,proto3,oneof"`
 }
 
-func (*RouterMessage_Subscribe) isRouterMessage_Payload() {}
+func (*DataplaneMessage_Subscribe) isDataplaneMessage_Payload() {}
 
-func (*RouterMessage_UpdateStatus) isRouterMessage_Payload() {}
+func (*DataplaneMessage_UpdateStatus) isDataplaneMessage_Payload() {}
 
-func (*RouterMessage_EnvoyStatus) isRouterMessage_Payload() {}
+func (*DataplaneMessage_EnvoyStatus) isDataplaneMessage_Payload() {}
 
 type ControlPlaneMessage struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Unique within a stream; echoed in UpdateStatus. Versions are opaque and
-	// immutable. Resending an identical version refreshes its freshness lease.
+	// immutable. Both payload types for one generation must use the same version.
+	// On an empty resume checkpoint, send both complete payloads. Stage dataplane
+	// configuration before xDS. Resending identical content renews freshness.
 	Nonce string `protobuf:"bytes,1,opt,name=nonce,proto3" json:"nonce,omitempty"`
 	// Types that are valid to be assigned to Payload:
 	//
 	//	*ControlPlaneMessage_XdsConfiguration
-	//	*ControlPlaneMessage_RouterConfiguration
+	//	*ControlPlaneMessage_DataplaneConfiguration
 	Payload       isControlPlaneMessage_Payload `protobuf_oneof:"payload"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -255,10 +262,10 @@ func (x *ControlPlaneMessage) GetXdsConfiguration() *XdsConfiguration {
 	return nil
 }
 
-func (x *ControlPlaneMessage) GetRouterConfiguration() *RouterConfiguration {
+func (x *ControlPlaneMessage) GetDataplaneConfiguration() *DataplaneConfiguration {
 	if x != nil {
-		if x, ok := x.Payload.(*ControlPlaneMessage_RouterConfiguration); ok {
-			return x.RouterConfiguration
+		if x, ok := x.Payload.(*ControlPlaneMessage_DataplaneConfiguration); ok {
+			return x.DataplaneConfiguration
 		}
 	}
 	return nil
@@ -272,13 +279,13 @@ type ControlPlaneMessage_XdsConfiguration struct {
 	XdsConfiguration *XdsConfiguration `protobuf:"bytes,2,opt,name=xds_configuration,json=xdsConfiguration,proto3,oneof"`
 }
 
-type ControlPlaneMessage_RouterConfiguration struct {
-	RouterConfiguration *RouterConfiguration `protobuf:"bytes,3,opt,name=router_configuration,json=routerConfiguration,proto3,oneof"`
+type ControlPlaneMessage_DataplaneConfiguration struct {
+	DataplaneConfiguration *DataplaneConfiguration `protobuf:"bytes,3,opt,name=dataplane_configuration,json=dataplaneConfiguration,proto3,oneof"`
 }
 
 func (*ControlPlaneMessage_XdsConfiguration) isControlPlaneMessage_Payload() {}
 
-func (*ControlPlaneMessage_RouterConfiguration) isControlPlaneMessage_Payload() {}
+func (*ControlPlaneMessage_DataplaneConfiguration) isControlPlaneMessage_Payload() {}
 
 type ResourceSet struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -333,8 +340,9 @@ func (x *ResourceSet) GetResources() []*anypb.Any {
 }
 
 type XdsConfiguration struct {
-	state   protoimpl.MessageState `protogen:"open.v1"`
-	Version string                 `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Shares the generation version with DataplaneConfiguration.
+	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	// Complete state-of-the-world CDS, EDS, LDS and RDS bundle. Missing sets
 	// mean empty sets, not patches. SDS and mesh-owned secrets are unsupported.
 	ResourceSets  []*ResourceSet `protobuf:"bytes,2,rep,name=resource_sets,json=resourceSets,proto3" json:"resource_sets,omitempty"`
@@ -386,7 +394,7 @@ func (x *XdsConfiguration) GetResourceSets() []*ResourceSet {
 	return nil
 }
 
-type RouterConfiguration struct {
+type DataplaneConfiguration struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Must match trusted x-iir-route-generation gRPC initial metadata in RDS.
 	Version       string   `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
@@ -395,20 +403,20 @@ type RouterConfiguration struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RouterConfiguration) Reset() {
-	*x = RouterConfiguration{}
+func (x *DataplaneConfiguration) Reset() {
+	*x = DataplaneConfiguration{}
 	mi := &file_api_lattice_control_v1_control_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RouterConfiguration) String() string {
+func (x *DataplaneConfiguration) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RouterConfiguration) ProtoMessage() {}
+func (*DataplaneConfiguration) ProtoMessage() {}
 
-func (x *RouterConfiguration) ProtoReflect() protoreflect.Message {
+func (x *DataplaneConfiguration) ProtoReflect() protoreflect.Message {
 	mi := &file_api_lattice_control_v1_control_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -420,19 +428,19 @@ func (x *RouterConfiguration) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RouterConfiguration.ProtoReflect.Descriptor instead.
-func (*RouterConfiguration) Descriptor() ([]byte, []int) {
+// Deprecated: Use DataplaneConfiguration.ProtoReflect.Descriptor instead.
+func (*DataplaneConfiguration) Descriptor() ([]byte, []int) {
 	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *RouterConfiguration) GetVersion() string {
+func (x *DataplaneConfiguration) GetVersion() string {
 	if x != nil {
 		return x.Version
 	}
 	return ""
 }
 
-func (x *RouterConfiguration) GetModels() []*Model {
+func (x *DataplaneConfiguration) GetModels() []*Model {
 	if x != nil {
 		return x.Models
 	}
@@ -528,7 +536,7 @@ type UpdateStatus struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Nonce         string                 `protobuf:"bytes,1,opt,name=nonce,proto3" json:"nonce,omitempty"`
 	Version       string                 `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
-	Target        string                 `protobuf:"bytes,3,opt,name=target,proto3" json:"target,omitempty"`      // "xds" or "router"
+	Target        string                 `protobuf:"bytes,3,opt,name=target,proto3" json:"target,omitempty"`      // "xds" or "dataplane"
 	Accepted      bool                   `protobuf:"varint,4,opt,name=accepted,proto3" json:"accepted,omitempty"` // Validated and stored in memory; NOT an Envoy ACK.
 	Error         string                 `protobuf:"bytes,5,opt,name=error,proto3" json:"error,omitempty"`        // Bounded diagnostic; never raw configuration or prompts.
 	unknownFields protoimpl.UnknownFields
@@ -680,29 +688,30 @@ var File_api_lattice_control_v1_control_proto protoreflect.FileDescriptor
 
 const file_api_lattice_control_v1_control_proto_rawDesc = "" +
 	"\n" +
-	"$api/lattice/control/v1/control.proto\x12\x12lattice.control.v1\x1a\x19google/protobuf/any.proto\"\xa9\x01\n" +
-	"\tSubscribe\x12\x1b\n" +
-	"\trouter_id\x18\x01 \x01(\tR\brouterId\x12(\n" +
-	"\x10last_xds_version\x18\x02 \x01(\tR\x0elastXdsVersion\x12.\n" +
-	"\x13last_router_version\x18\x03 \x01(\tR\x11lastRouterVersion\x12%\n" +
-	"\x0eschema_version\x18\x04 \x01(\rR\rschemaVersion\"\xe8\x01\n" +
-	"\rRouterMessage\x12=\n" +
+	"$api/lattice/control/v1/control.proto\x12\x12lattice.control.v1\x1a\x19google/protobuf/any.proto\"\xb7\x01\n" +
+	"\tSubscribe\x12\x1d\n" +
+	"\n" +
+	"service_id\x18\x01 \x01(\tR\tserviceId\x12.\n" +
+	"\x13service_instance_id\x18\x02 \x01(\tR\x11serviceInstanceId\x124\n" +
+	"\x16last_dataplane_version\x18\x03 \x01(\tR\x14lastDataplaneVersion\x12%\n" +
+	"\x0eschema_version\x18\x04 \x01(\rR\rschemaVersion\"\xeb\x01\n" +
+	"\x10DataplaneMessage\x12=\n" +
 	"\tsubscribe\x18\x01 \x01(\v2\x1d.lattice.control.v1.SubscribeH\x00R\tsubscribe\x12G\n" +
 	"\rupdate_status\x18\x02 \x01(\v2 .lattice.control.v1.UpdateStatusH\x00R\fupdateStatus\x12D\n" +
 	"\fenvoy_status\x18\x03 \x01(\v2\x1f.lattice.control.v1.EnvoyStatusH\x00R\venvoyStatusB\t\n" +
-	"\apayload\"\xe9\x01\n" +
+	"\apayload\"\xf2\x01\n" +
 	"\x13ControlPlaneMessage\x12\x14\n" +
 	"\x05nonce\x18\x01 \x01(\tR\x05nonce\x12S\n" +
-	"\x11xds_configuration\x18\x02 \x01(\v2$.lattice.control.v1.XdsConfigurationH\x00R\x10xdsConfiguration\x12\\\n" +
-	"\x14router_configuration\x18\x03 \x01(\v2'.lattice.control.v1.RouterConfigurationH\x00R\x13routerConfigurationB\t\n" +
+	"\x11xds_configuration\x18\x02 \x01(\v2$.lattice.control.v1.XdsConfigurationH\x00R\x10xdsConfiguration\x12e\n" +
+	"\x17dataplane_configuration\x18\x03 \x01(\v2*.lattice.control.v1.DataplaneConfigurationH\x00R\x16dataplaneConfigurationB\t\n" +
 	"\apayload\"\\\n" +
 	"\vResourceSet\x12\x19\n" +
 	"\btype_url\x18\x01 \x01(\tR\atypeUrl\x122\n" +
 	"\tresources\x18\x02 \x03(\v2\x14.google.protobuf.AnyR\tresources\"r\n" +
 	"\x10XdsConfiguration\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12D\n" +
-	"\rresource_sets\x18\x02 \x03(\v2\x1f.lattice.control.v1.ResourceSetR\fresourceSets\"b\n" +
-	"\x13RouterConfiguration\x12\x18\n" +
+	"\rresource_sets\x18\x02 \x03(\v2\x1f.lattice.control.v1.ResourceSetR\fresourceSets\"e\n" +
+	"\x16DataplaneConfiguration\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x121\n" +
 	"\x06models\x18\x02 \x03(\v2\x19.lattice.control.v1.ModelR\x06models\"\xd5\x01\n" +
 	"\x05Model\x12\x14\n" +
@@ -724,9 +733,9 @@ const file_api_lattice_control_v1_control_proto_rawDesc = "" +
 	"\btype_url\x18\x02 \x01(\tR\atypeUrl\x12\x14\n" +
 	"\x05nonce\x18\x03 \x01(\tR\x05nonce\x12\x1a\n" +
 	"\baccepted\x18\x04 \x01(\bR\baccepted\x12\x14\n" +
-	"\x05error\x18\x05 \x01(\tR\x05error2\x85\x01\n" +
-	"\x13ControlPlaneService\x12n\n" +
-	"\x1cSubscribeRouterConfiguration\x12!.lattice.control.v1.RouterMessage\x1a'.lattice.control.v1.ControlPlaneMessage(\x010\x01BMZKgithub.com/latticecorp/lattice4all/ai-libs/api/lattice/control/v1;controlv1b\x06proto3"
+	"\x05error\x18\x05 \x01(\tR\x05error2\x8b\x01\n" +
+	"\x13ControlPlaneService\x12t\n" +
+	"\x1fSubscribeDataplaneConfiguration\x12$.lattice.control.v1.DataplaneMessage\x1a'.lattice.control.v1.ControlPlaneMessage(\x010\x01BMZKgithub.com/latticecorp/lattice4all/ai-libs/api/lattice/control/v1;controlv1b\x06proto3"
 
 var (
 	file_api_lattice_control_v1_control_proto_rawDescOnce sync.Once
@@ -742,28 +751,28 @@ func file_api_lattice_control_v1_control_proto_rawDescGZIP() []byte {
 
 var file_api_lattice_control_v1_control_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_api_lattice_control_v1_control_proto_goTypes = []any{
-	(*Subscribe)(nil),           // 0: lattice.control.v1.Subscribe
-	(*RouterMessage)(nil),       // 1: lattice.control.v1.RouterMessage
-	(*ControlPlaneMessage)(nil), // 2: lattice.control.v1.ControlPlaneMessage
-	(*ResourceSet)(nil),         // 3: lattice.control.v1.ResourceSet
-	(*XdsConfiguration)(nil),    // 4: lattice.control.v1.XdsConfiguration
-	(*RouterConfiguration)(nil), // 5: lattice.control.v1.RouterConfiguration
-	(*Model)(nil),               // 6: lattice.control.v1.Model
-	(*UpdateStatus)(nil),        // 7: lattice.control.v1.UpdateStatus
-	(*EnvoyStatus)(nil),         // 8: lattice.control.v1.EnvoyStatus
-	(*anypb.Any)(nil),           // 9: google.protobuf.Any
+	(*Subscribe)(nil),              // 0: lattice.control.v1.Subscribe
+	(*DataplaneMessage)(nil),       // 1: lattice.control.v1.DataplaneMessage
+	(*ControlPlaneMessage)(nil),    // 2: lattice.control.v1.ControlPlaneMessage
+	(*ResourceSet)(nil),            // 3: lattice.control.v1.ResourceSet
+	(*XdsConfiguration)(nil),       // 4: lattice.control.v1.XdsConfiguration
+	(*DataplaneConfiguration)(nil), // 5: lattice.control.v1.DataplaneConfiguration
+	(*Model)(nil),                  // 6: lattice.control.v1.Model
+	(*UpdateStatus)(nil),           // 7: lattice.control.v1.UpdateStatus
+	(*EnvoyStatus)(nil),            // 8: lattice.control.v1.EnvoyStatus
+	(*anypb.Any)(nil),              // 9: google.protobuf.Any
 }
 var file_api_lattice_control_v1_control_proto_depIdxs = []int32{
-	0, // 0: lattice.control.v1.RouterMessage.subscribe:type_name -> lattice.control.v1.Subscribe
-	7, // 1: lattice.control.v1.RouterMessage.update_status:type_name -> lattice.control.v1.UpdateStatus
-	8, // 2: lattice.control.v1.RouterMessage.envoy_status:type_name -> lattice.control.v1.EnvoyStatus
+	0, // 0: lattice.control.v1.DataplaneMessage.subscribe:type_name -> lattice.control.v1.Subscribe
+	7, // 1: lattice.control.v1.DataplaneMessage.update_status:type_name -> lattice.control.v1.UpdateStatus
+	8, // 2: lattice.control.v1.DataplaneMessage.envoy_status:type_name -> lattice.control.v1.EnvoyStatus
 	4, // 3: lattice.control.v1.ControlPlaneMessage.xds_configuration:type_name -> lattice.control.v1.XdsConfiguration
-	5, // 4: lattice.control.v1.ControlPlaneMessage.router_configuration:type_name -> lattice.control.v1.RouterConfiguration
+	5, // 4: lattice.control.v1.ControlPlaneMessage.dataplane_configuration:type_name -> lattice.control.v1.DataplaneConfiguration
 	9, // 5: lattice.control.v1.ResourceSet.resources:type_name -> google.protobuf.Any
 	3, // 6: lattice.control.v1.XdsConfiguration.resource_sets:type_name -> lattice.control.v1.ResourceSet
-	6, // 7: lattice.control.v1.RouterConfiguration.models:type_name -> lattice.control.v1.Model
-	1, // 8: lattice.control.v1.ControlPlaneService.SubscribeRouterConfiguration:input_type -> lattice.control.v1.RouterMessage
-	2, // 9: lattice.control.v1.ControlPlaneService.SubscribeRouterConfiguration:output_type -> lattice.control.v1.ControlPlaneMessage
+	6, // 7: lattice.control.v1.DataplaneConfiguration.models:type_name -> lattice.control.v1.Model
+	1, // 8: lattice.control.v1.ControlPlaneService.SubscribeDataplaneConfiguration:input_type -> lattice.control.v1.DataplaneMessage
+	2, // 9: lattice.control.v1.ControlPlaneService.SubscribeDataplaneConfiguration:output_type -> lattice.control.v1.ControlPlaneMessage
 	9, // [9:10] is the sub-list for method output_type
 	8, // [8:9] is the sub-list for method input_type
 	8, // [8:8] is the sub-list for extension type_name
@@ -777,13 +786,13 @@ func file_api_lattice_control_v1_control_proto_init() {
 		return
 	}
 	file_api_lattice_control_v1_control_proto_msgTypes[1].OneofWrappers = []any{
-		(*RouterMessage_Subscribe)(nil),
-		(*RouterMessage_UpdateStatus)(nil),
-		(*RouterMessage_EnvoyStatus)(nil),
+		(*DataplaneMessage_Subscribe)(nil),
+		(*DataplaneMessage_UpdateStatus)(nil),
+		(*DataplaneMessage_EnvoyStatus)(nil),
 	}
 	file_api_lattice_control_v1_control_proto_msgTypes[2].OneofWrappers = []any{
 		(*ControlPlaneMessage_XdsConfiguration)(nil),
-		(*ControlPlaneMessage_RouterConfiguration)(nil),
+		(*ControlPlaneMessage_DataplaneConfiguration)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

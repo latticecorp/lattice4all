@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.1.0-dev.2
+
+- Breaking: rename the streaming RPC to `SubscribeDataplaneConfiguration`.
+- Replace `router_id` with required `service_id` and `service_instance_id`.
+- Merge resume fields into `last_dataplane_version`, the last jointly stored
+  xDS/dataplane generation; an empty checkpoint requests a full replay.
+- Rename `RouterMessage` to `DataplaneMessage`, `RouterConfiguration` to
+  `DataplaneConfiguration`, and response field `router_configuration` to
+  `dataplane_configuration`. Feedback target is now `dataplane`.
+- Regenerate Go bindings. CatalogService remains unchanged.
+- Both streaming clients and servers must upgrade together. dev.1 remains
+  immutable for Go proxy/checksum compatibility.
+
 ## v0.1.0-dev.1
 
 - Extract the public CatalogService schema from `lattice-cp` commit

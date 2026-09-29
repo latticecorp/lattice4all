@@ -19,17 +19,17 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ControlPlaneService_SubscribeRouterConfiguration_FullMethodName = "/lattice.control.v1.ControlPlaneService/SubscribeRouterConfiguration"
+	ControlPlaneService_SubscribeDataplaneConfiguration_FullMethodName = "/lattice.control.v1.ControlPlaneService/SubscribeDataplaneConfiguration"
 )
 
 // ControlPlaneServiceClient is the client API for ControlPlaneService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// Router configuration delivery protocol, distinct from Envoy ADS.
+// Dataplane configuration delivery protocol, distinct from Envoy ADS.
 // The development server implements this; lattice-cp currently serves CatalogService.
 type ControlPlaneServiceClient interface {
-	SubscribeRouterConfiguration(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[RouterMessage, ControlPlaneMessage], error)
+	SubscribeDataplaneConfiguration(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[DataplaneMessage, ControlPlaneMessage], error)
 }
 
 type controlPlaneServiceClient struct {
@@ -40,27 +40,27 @@ func NewControlPlaneServiceClient(cc grpc.ClientConnInterface) ControlPlaneServi
 	return &controlPlaneServiceClient{cc}
 }
 
-func (c *controlPlaneServiceClient) SubscribeRouterConfiguration(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[RouterMessage, ControlPlaneMessage], error) {
+func (c *controlPlaneServiceClient) SubscribeDataplaneConfiguration(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[DataplaneMessage, ControlPlaneMessage], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &ControlPlaneService_ServiceDesc.Streams[0], ControlPlaneService_SubscribeRouterConfiguration_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &ControlPlaneService_ServiceDesc.Streams[0], ControlPlaneService_SubscribeDataplaneConfiguration_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[RouterMessage, ControlPlaneMessage]{ClientStream: stream}
+	x := &grpc.GenericClientStream[DataplaneMessage, ControlPlaneMessage]{ClientStream: stream}
 	return x, nil
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type ControlPlaneService_SubscribeRouterConfigurationClient = grpc.BidiStreamingClient[RouterMessage, ControlPlaneMessage]
+type ControlPlaneService_SubscribeDataplaneConfigurationClient = grpc.BidiStreamingClient[DataplaneMessage, ControlPlaneMessage]
 
 // ControlPlaneServiceServer is the server API for ControlPlaneService service.
 // All implementations must embed UnimplementedControlPlaneServiceServer
 // for forward compatibility.
 //
-// Router configuration delivery protocol, distinct from Envoy ADS.
+// Dataplane configuration delivery protocol, distinct from Envoy ADS.
 // The development server implements this; lattice-cp currently serves CatalogService.
 type ControlPlaneServiceServer interface {
-	SubscribeRouterConfiguration(grpc.BidiStreamingServer[RouterMessage, ControlPlaneMessage]) error
+	SubscribeDataplaneConfiguration(grpc.BidiStreamingServer[DataplaneMessage, ControlPlaneMessage]) error
 	mustEmbedUnimplementedControlPlaneServiceServer()
 }
 
@@ -71,8 +71,8 @@ type ControlPlaneServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedControlPlaneServiceServer struct{}
 
-func (UnimplementedControlPlaneServiceServer) SubscribeRouterConfiguration(grpc.BidiStreamingServer[RouterMessage, ControlPlaneMessage]) error {
-	return status.Error(codes.Unimplemented, "method SubscribeRouterConfiguration not implemented")
+func (UnimplementedControlPlaneServiceServer) SubscribeDataplaneConfiguration(grpc.BidiStreamingServer[DataplaneMessage, ControlPlaneMessage]) error {
+	return status.Error(codes.Unimplemented, "method SubscribeDataplaneConfiguration not implemented")
 }
 func (UnimplementedControlPlaneServiceServer) mustEmbedUnimplementedControlPlaneServiceServer() {}
 func (UnimplementedControlPlaneServiceServer) testEmbeddedByValue()                             {}
@@ -95,12 +95,12 @@ func RegisterControlPlaneServiceServer(s grpc.ServiceRegistrar, srv ControlPlane
 	s.RegisterService(&ControlPlaneService_ServiceDesc, srv)
 }
 
-func _ControlPlaneService_SubscribeRouterConfiguration_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(ControlPlaneServiceServer).SubscribeRouterConfiguration(&grpc.GenericServerStream[RouterMessage, ControlPlaneMessage]{ServerStream: stream})
+func _ControlPlaneService_SubscribeDataplaneConfiguration_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(ControlPlaneServiceServer).SubscribeDataplaneConfiguration(&grpc.GenericServerStream[DataplaneMessage, ControlPlaneMessage]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type ControlPlaneService_SubscribeRouterConfigurationServer = grpc.BidiStreamingServer[RouterMessage, ControlPlaneMessage]
+type ControlPlaneService_SubscribeDataplaneConfigurationServer = grpc.BidiStreamingServer[DataplaneMessage, ControlPlaneMessage]
 
 // ControlPlaneService_ServiceDesc is the grpc.ServiceDesc for ControlPlaneService service.
 // It's only intended for direct use with grpc.RegisterService,
@@ -111,8 +111,8 @@ var ControlPlaneService_ServiceDesc = grpc.ServiceDesc{
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "SubscribeRouterConfiguration",
-			Handler:       _ControlPlaneService_SubscribeRouterConfiguration_Handler,
+			StreamName:    "SubscribeDataplaneConfiguration",
+			Handler:       _ControlPlaneService_SubscribeDataplaneConfiguration_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},
