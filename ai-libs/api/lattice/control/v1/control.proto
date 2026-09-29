@@ -1,0 +1,72 @@
+syntax = "proto3";
+package lattice.control.v1;
+option go_package = "github.com/latticecorp/lattice4all/ai-libs/api/lattice/control/v1;controlv1";
+
+import "google/protobuf/any.proto";
+
+// Router configuration delivery protocol, distinct from Envoy ADS.
+// The development server implements this; lattice-cp currently serves CatalogService.
+service ControlPlaneService {
+  rpc SubscribeRouterConfiguration(stream RouterMessage) returns (stream ControlPlaneMessage);
+}
+
+message Subscribe {
+  string router_id = 1;
+  string last_xds_version = 2;
+  string last_router_version = 3;
+  uint32 schema_version = 4;
+}
+message RouterMessage {
+  oneof payload {
+    Subscribe subscribe = 1;
+    UpdateStatus update_status = 2;
+    EnvoyStatus envoy_status = 3;
+  }
+}
+message ControlPlaneMessage {
+  // Unique within a stream; echoed in UpdateStatus. Versions are opaque and
+  // immutable. Resending an identical version refreshes its freshness lease.
+  string nonce = 1;
+  oneof payload {
+    XdsConfiguration xds_configuration = 2;
+    RouterConfiguration router_configuration = 3;
+  }
+}
+message ResourceSet {
+  string type_url = 1;
+  repeated google.protobuf.Any resources = 2;
+}
+message XdsConfiguration {
+  string version = 1;
+  // Complete state-of-the-world CDS, EDS, LDS and RDS bundle. Missing sets
+  // mean empty sets, not patches. SDS and mesh-owned secrets are unsupported.
+  repeated ResourceSet resource_sets = 2;
+}
+message RouterConfiguration {
+  // Must match trusted x-iir-route-generation gRPC initial metadata in RDS.
+  string version = 1;
+  repeated Model models = 2;
+}
+message Model {
+  string alias = 1;
+  string upstream_model = 2;
+  // Exact x-iir-model header token matched by the corresponding Envoy route.
+  string route_token = 3;
+  bool enabled = 4;
+  bool supports_streaming = 5;
+  bool supports_tools = 6;
+}
+message UpdateStatus {
+  string nonce = 1;
+  string version = 2;
+  string target = 3; // "xds" or "router"
+  bool accepted = 4; // Validated and stored in memory; NOT an Envoy ACK.
+  string error = 5; // Bounded diagnostic; never raw configuration or prompts.
+}
+message EnvoyStatus {
+  string version = 1;
+  string type_url = 2;
+  string nonce = 3;
+  bool accepted = 4;
+  string error = 5;
+}

@@ -1,0 +1,101 @@
+syntax = "proto3";
+package lattice.catalog.v1;
+option go_package = "github.com/latticecorp/lattice4all/ai-libs/api/lattice/catalog/v1;catalogv1";
+
+// Native catalog management. All catalog RPCs require authorization and
+// x-lattice-scope metadata; mutations also require x-request-id metadata.
+service CatalogService {
+  rpc CreateService(CreateServiceRequest) returns (MutationResult);
+  rpc GetService(GetServiceRequest) returns (GetServiceResponse);
+  rpc ListServices(ListServicesRequest) returns (ListServicesResponse);
+  rpc UpdateService(UpdateServiceRequest) returns (MutationResult);
+  rpc DeleteService(DeleteServiceRequest) returns (MutationResult);
+  rpc ApplyTransaction(ApplyTransactionRequest) returns (MutationResult);
+  rpc GetOperation(GetOperationRequest) returns (GetOperationResponse);
+  rpc CheckHealth(CheckHealthRequest) returns (CheckHealthResponse);
+}
+message Address { string type = 1; string value = 2; }
+message Capabilities {
+  repeated string model_ids = 1 [json_name = "modelIDs"];
+  repeated string protocols = 2;
+  repeated string tool_names = 3;
+}
+message ServiceInput {
+  string kind = 1;
+  string name = 2;
+  string scope = 3;
+  map<string,string> labels = 4;
+  Capabilities capabilities = 5;
+  repeated Address addresses = 6;
+}
+message Service {
+  string kind = 1;
+  string name = 2;
+  string scope = 3;
+  map<string,string> labels = 4;
+  Capabilities capabilities = 5;
+  repeated Address addresses = 6;
+  string id = 7;
+  uint32 schema_version = 8;
+  uint64 revision = 9;
+  string origin = 10;
+  string owner = 11;
+  string created_at = 12;
+  string updated_at = 13;
+}
+message Operation {
+  string type = 1;
+  string id = 2;
+  uint64 expected_revision = 3;
+  ServiceInput service = 4;
+  // JSON Merge Patch over editable service fields. Used only by update.
+  bytes patch_json = 5;
+}
+message ServiceError {
+  string code = 1;
+  string message = 2;
+  int32 status = 3;
+  map<string,string> details = 4;
+}
+message MutationResult {
+  string request_id = 1 [json_name = "requestID"];
+  uint64 catalog_revision = 2;
+  uint64 applied_index = 3;
+  repeated Service services = 4;
+  repeated string deleted_ids = 5 [json_name = "deletedIDs"];
+  ServiceError error = 6;
+}
+// stale=true means this view may lag the leader. The index/revision identify
+// the captured local state; observed_at is the capture time, not a sync promise.
+message ReadMetadata {
+  bool stale = 1;
+  uint64 catalog_revision = 2;
+  uint64 applied_index = 3;
+  string serving_node = 4;
+  string observed_at = 5;
+}
+message CreateServiceRequest { ServiceInput service = 1; }
+message GetServiceRequest { string id = 1; optional bool stale = 2; }
+message GetServiceResponse { Service service = 1; ReadMetadata read = 2; }
+message ListServicesRequest {
+  optional bool stale = 1;
+  string kind = 2;
+  string name = 3;
+  string origin = 4;
+  map<string,string> labels = 5;
+  uint32 limit = 6;
+  string cursor = 7;
+}
+message ListServicesResponse {
+  repeated Service items = 1;
+  string next_cursor = 2;
+  uint64 catalog_revision = 3;
+  ReadMetadata read = 4;
+}
+message UpdateServiceRequest { string id = 1; uint64 expected_revision = 2; bytes patch_json = 3; }
+message DeleteServiceRequest { string id = 1; uint64 expected_revision = 2; }
+message ApplyTransactionRequest { repeated Operation operations = 1; }
+message GetOperationRequest { string request_id = 1 [json_name = "requestID"]; optional bool stale = 2; }
+message GetOperationResponse { MutationResult result = 1; ReadMetadata read = 2; }
+message CheckHealthRequest { bool quorum = 1; }
+message CheckHealthResponse { string status = 1; string node_id = 2 [json_name = "nodeID"]; }
