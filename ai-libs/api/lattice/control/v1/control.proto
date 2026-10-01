@@ -10,6 +10,12 @@ service ControlPlaneService {
   rpc SubscribeDataplaneConfiguration(stream DataplaneMessage) returns (stream ControlPlaneMessage);
 }
 
+enum DataplaneKind {
+  DATAPLANE_KIND_UNSPECIFIED = 0;
+  DATAPLANE_KIND_INFERENCE_ROUTER = 1;
+  DATAPLANE_KIND_AI_AGENT = 2;
+}
+
 message Subscribe {
   // Logical catalog service and its concrete running dataplane instance.
   // Both are required; the server must authorize them against the connection identity.
@@ -20,6 +26,8 @@ message Subscribe {
   // This is a delivery checkpoint, not confirmation of Envoy ACK/readiness.
   string last_dataplane_version = 3;
   uint32 schema_version = 4;
+  // Identifies the type of dataplane subscribing.
+  DataplaneKind kind = 5;
 }
 message DataplaneMessage {
   oneof payload {
