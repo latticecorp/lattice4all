@@ -22,6 +22,7 @@ const (
 	CatalogService_CreateService_FullMethodName    = "/lattice.catalog.v1.CatalogService/CreateService"
 	CatalogService_GetService_FullMethodName       = "/lattice.catalog.v1.CatalogService/GetService"
 	CatalogService_ListServices_FullMethodName     = "/lattice.catalog.v1.CatalogService/ListServices"
+	CatalogService_ListScopes_FullMethodName       = "/lattice.catalog.v1.CatalogService/ListScopes"
 	CatalogService_UpdateService_FullMethodName    = "/lattice.catalog.v1.CatalogService/UpdateService"
 	CatalogService_DeleteService_FullMethodName    = "/lattice.catalog.v1.CatalogService/DeleteService"
 	CatalogService_ApplyTransaction_FullMethodName = "/lattice.catalog.v1.CatalogService/ApplyTransaction"
@@ -39,6 +40,7 @@ type CatalogServiceClient interface {
 	CreateService(ctx context.Context, in *CreateServiceRequest, opts ...grpc.CallOption) (*MutationResult, error)
 	GetService(ctx context.Context, in *GetServiceRequest, opts ...grpc.CallOption) (*GetServiceResponse, error)
 	ListServices(ctx context.Context, in *ListServicesRequest, opts ...grpc.CallOption) (*ListServicesResponse, error)
+	ListScopes(ctx context.Context, in *ListScopesRequest, opts ...grpc.CallOption) (*ListScopesResponse, error)
 	UpdateService(ctx context.Context, in *UpdateServiceRequest, opts ...grpc.CallOption) (*MutationResult, error)
 	DeleteService(ctx context.Context, in *DeleteServiceRequest, opts ...grpc.CallOption) (*MutationResult, error)
 	ApplyTransaction(ctx context.Context, in *ApplyTransactionRequest, opts ...grpc.CallOption) (*MutationResult, error)
@@ -78,6 +80,16 @@ func (c *catalogServiceClient) ListServices(ctx context.Context, in *ListService
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListServicesResponse)
 	err := c.cc.Invoke(ctx, CatalogService_ListServices_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catalogServiceClient) ListScopes(ctx context.Context, in *ListScopesRequest, opts ...grpc.CallOption) (*ListScopesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListScopesResponse)
+	err := c.cc.Invoke(ctx, CatalogService_ListScopes_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -144,6 +156,7 @@ type CatalogServiceServer interface {
 	CreateService(context.Context, *CreateServiceRequest) (*MutationResult, error)
 	GetService(context.Context, *GetServiceRequest) (*GetServiceResponse, error)
 	ListServices(context.Context, *ListServicesRequest) (*ListServicesResponse, error)
+	ListScopes(context.Context, *ListScopesRequest) (*ListScopesResponse, error)
 	UpdateService(context.Context, *UpdateServiceRequest) (*MutationResult, error)
 	DeleteService(context.Context, *DeleteServiceRequest) (*MutationResult, error)
 	ApplyTransaction(context.Context, *ApplyTransactionRequest) (*MutationResult, error)
@@ -167,6 +180,9 @@ func (UnimplementedCatalogServiceServer) GetService(context.Context, *GetService
 }
 func (UnimplementedCatalogServiceServer) ListServices(context.Context, *ListServicesRequest) (*ListServicesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListServices not implemented")
+}
+func (UnimplementedCatalogServiceServer) ListScopes(context.Context, *ListScopesRequest) (*ListScopesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListScopes not implemented")
 }
 func (UnimplementedCatalogServiceServer) UpdateService(context.Context, *UpdateServiceRequest) (*MutationResult, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateService not implemented")
@@ -254,6 +270,24 @@ func _CatalogService_ListServices_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CatalogServiceServer).ListServices(ctx, req.(*ListServicesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatalogService_ListScopes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListScopesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatalogServiceServer).ListScopes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatalogService_ListScopes_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatalogServiceServer).ListScopes(ctx, req.(*ListScopesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -366,6 +400,10 @@ var CatalogService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListServices",
 			Handler:    _CatalogService_ListServices_Handler,
+		},
+		{
+			MethodName: "ListScopes",
+			Handler:    _CatalogService_ListScopes_Handler,
 		},
 		{
 			MethodName: "UpdateService",

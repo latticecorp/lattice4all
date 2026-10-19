@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.1.0-dev.4
+
+- Update `CatalogService` schema (`api/lattice/catalog/v1/catalog.proto`) from `lattice-cp`:
+  - Add `ListScopes` RPC (`ListScopesRequest`, `ListScopesResponse`).
+  - Add `CredentialHeader` message (`header`, `prefix`, `secret_key`).
+  - Add model routing, credential, and instance fields (`type`, `protocol`, `description`, `model_name`, `model_endpoint`, `credential_id`, `secret_file`, `headers`, `instances`) to `ServiceInput` and `Service`.
+  - Add `instance_id` to `Operation`.
+- Regenerate Go protobuf and gRPC bindings for `api/lattice/catalog/v1`.
+
+## v0.1.0-dev.3
+
+- Add `DataplaneKind` enum and `kind` field to `Subscribe` in `api/lattice/control/v1/control.proto`.
+
 ## v0.1.0-dev.2
 
 - Breaking: rename the streaming RPC to `SubscribeDataplaneConfiguration`.

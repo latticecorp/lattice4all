@@ -133,21 +133,93 @@ func (x *Capabilities) GetToolNames() []string {
 	return nil
 }
 
-type ServiceInput struct {
+type CredentialHeader struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Kind          string                 `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Scope         string                 `protobuf:"bytes,3,opt,name=scope,proto3" json:"scope,omitempty"`
-	Labels        map[string]string      `protobuf:"bytes,4,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Capabilities  *Capabilities          `protobuf:"bytes,5,opt,name=capabilities,proto3" json:"capabilities,omitempty"`
-	Addresses     []*Address             `protobuf:"bytes,6,rep,name=addresses,proto3" json:"addresses,omitempty"`
+	Header        string                 `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
+	Prefix        string                 `protobuf:"bytes,2,opt,name=prefix,proto3" json:"prefix,omitempty"`
+	SecretKey     string                 `protobuf:"bytes,3,opt,name=secret_key,proto3" json:"secret_key,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CredentialHeader) Reset() {
+	*x = CredentialHeader{}
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CredentialHeader) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CredentialHeader) ProtoMessage() {}
+
+func (x *CredentialHeader) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CredentialHeader.ProtoReflect.Descriptor instead.
+func (*CredentialHeader) Descriptor() ([]byte, []int) {
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *CredentialHeader) GetHeader() string {
+	if x != nil {
+		return x.Header
+	}
+	return ""
+}
+
+func (x *CredentialHeader) GetPrefix() string {
+	if x != nil {
+		return x.Prefix
+	}
+	return ""
+}
+
+func (x *CredentialHeader) GetSecretKey() string {
+	if x != nil {
+		return x.SecretKey
+	}
+	return ""
+}
+
+type ServiceInput struct {
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	Kind         string                 `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
+	Name         string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Scope        string                 `protobuf:"bytes,3,opt,name=scope,proto3" json:"scope,omitempty"`
+	Labels       map[string]string      `protobuf:"bytes,4,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Capabilities *Capabilities          `protobuf:"bytes,5,opt,name=capabilities,proto3" json:"capabilities,omitempty"`
+	Addresses    []*Address             `protobuf:"bytes,6,rep,name=addresses,proto3" json:"addresses,omitempty"`
+	// Optional model routing details; empty values mean unspecified.
+	Type     string `protobuf:"bytes,7,opt,name=type,proto3" json:"type,omitempty"`
+	Protocol string `protobuf:"bytes,8,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	// Task-selection rubric describing suitable workloads.
+	Description string `protobuf:"bytes,9,opt,name=description,proto3" json:"description,omitempty"`
+	ModelName   string `protobuf:"bytes,10,opt,name=model_name,json=modelName,proto3" json:"model_name,omitempty"`
+	// API path only, e.g. /v1/chat/completions; host and port come from addresses.
+	ModelEndpoint string              `protobuf:"bytes,11,opt,name=model_endpoint,json=modelEndpoint,proto3" json:"model_endpoint,omitempty"`
+	CredentialId  string              `protobuf:"bytes,12,opt,name=credential_id,json=credentialID,proto3" json:"credential_id,omitempty"`
+	SecretFile    string              `protobuf:"bytes,13,opt,name=secret_file,json=secretFile,proto3" json:"secret_file,omitempty"`
+	Headers       []*CredentialHeader `protobuf:"bytes,14,rep,name=headers,proto3" json:"headers,omitempty"`
+	Instances     []string            `protobuf:"bytes,15,rep,name=instances,proto3" json:"instances,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ServiceInput) Reset() {
 	*x = ServiceInput{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[2]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -159,7 +231,7 @@ func (x *ServiceInput) String() string {
 func (*ServiceInput) ProtoMessage() {}
 
 func (x *ServiceInput) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[2]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -172,7 +244,7 @@ func (x *ServiceInput) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ServiceInput.ProtoReflect.Descriptor instead.
 func (*ServiceInput) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{2}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ServiceInput) GetKind() string {
@@ -217,6 +289,69 @@ func (x *ServiceInput) GetAddresses() []*Address {
 	return nil
 }
 
+func (x *ServiceInput) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *ServiceInput) GetProtocol() string {
+	if x != nil {
+		return x.Protocol
+	}
+	return ""
+}
+
+func (x *ServiceInput) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *ServiceInput) GetModelName() string {
+	if x != nil {
+		return x.ModelName
+	}
+	return ""
+}
+
+func (x *ServiceInput) GetModelEndpoint() string {
+	if x != nil {
+		return x.ModelEndpoint
+	}
+	return ""
+}
+
+func (x *ServiceInput) GetCredentialId() string {
+	if x != nil {
+		return x.CredentialId
+	}
+	return ""
+}
+
+func (x *ServiceInput) GetSecretFile() string {
+	if x != nil {
+		return x.SecretFile
+	}
+	return ""
+}
+
+func (x *ServiceInput) GetHeaders() []*CredentialHeader {
+	if x != nil {
+		return x.Headers
+	}
+	return nil
+}
+
+func (x *ServiceInput) GetInstances() []string {
+	if x != nil {
+		return x.Instances
+	}
+	return nil
+}
+
 type Service struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Kind          string                 `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
@@ -232,13 +367,24 @@ type Service struct {
 	Owner         string                 `protobuf:"bytes,11,opt,name=owner,proto3" json:"owner,omitempty"`
 	CreatedAt     string                 `protobuf:"bytes,12,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     string                 `protobuf:"bytes,13,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	// Optional model routing details; empty values mean unspecified.
+	Type        string `protobuf:"bytes,14,opt,name=type,proto3" json:"type,omitempty"`
+	Protocol    string `protobuf:"bytes,15,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	Description string `protobuf:"bytes,16,opt,name=description,proto3" json:"description,omitempty"`
+	ModelName   string `protobuf:"bytes,17,opt,name=model_name,json=modelName,proto3" json:"model_name,omitempty"`
+	// API path only, e.g. /v1/chat/completions; host and port come from addresses.
+	ModelEndpoint string              `protobuf:"bytes,18,opt,name=model_endpoint,json=modelEndpoint,proto3" json:"model_endpoint,omitempty"`
+	CredentialId  string              `protobuf:"bytes,19,opt,name=credential_id,json=credentialID,proto3" json:"credential_id,omitempty"`
+	SecretFile    string              `protobuf:"bytes,20,opt,name=secret_file,json=secretFile,proto3" json:"secret_file,omitempty"`
+	Headers       []*CredentialHeader `protobuf:"bytes,21,rep,name=headers,proto3" json:"headers,omitempty"`
+	Instances     []string            `protobuf:"bytes,22,rep,name=instances,proto3" json:"instances,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Service) Reset() {
 	*x = Service{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[3]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -250,7 +396,7 @@ func (x *Service) String() string {
 func (*Service) ProtoMessage() {}
 
 func (x *Service) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[3]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -263,7 +409,7 @@ func (x *Service) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Service.ProtoReflect.Descriptor instead.
 func (*Service) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{3}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Service) GetKind() string {
@@ -357,6 +503,69 @@ func (x *Service) GetUpdatedAt() string {
 	return ""
 }
 
+func (x *Service) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *Service) GetProtocol() string {
+	if x != nil {
+		return x.Protocol
+	}
+	return ""
+}
+
+func (x *Service) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *Service) GetModelName() string {
+	if x != nil {
+		return x.ModelName
+	}
+	return ""
+}
+
+func (x *Service) GetModelEndpoint() string {
+	if x != nil {
+		return x.ModelEndpoint
+	}
+	return ""
+}
+
+func (x *Service) GetCredentialId() string {
+	if x != nil {
+		return x.CredentialId
+	}
+	return ""
+}
+
+func (x *Service) GetSecretFile() string {
+	if x != nil {
+		return x.SecretFile
+	}
+	return ""
+}
+
+func (x *Service) GetHeaders() []*CredentialHeader {
+	if x != nil {
+		return x.Headers
+	}
+	return nil
+}
+
+func (x *Service) GetInstances() []string {
+	if x != nil {
+		return x.Instances
+	}
+	return nil
+}
+
 type Operation struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	Type             string                 `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
@@ -365,13 +574,14 @@ type Operation struct {
 	Service          *ServiceInput          `protobuf:"bytes,4,opt,name=service,proto3" json:"service,omitempty"`
 	// JSON Merge Patch over editable service fields. Used only by update.
 	PatchJson     []byte `protobuf:"bytes,5,opt,name=patch_json,json=patchJson,proto3" json:"patch_json,omitempty"`
+	InstanceId    string `protobuf:"bytes,6,opt,name=instance_id,json=instanceID,proto3" json:"instance_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Operation) Reset() {
 	*x = Operation{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[4]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -383,7 +593,7 @@ func (x *Operation) String() string {
 func (*Operation) ProtoMessage() {}
 
 func (x *Operation) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[4]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -396,7 +606,7 @@ func (x *Operation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Operation.ProtoReflect.Descriptor instead.
 func (*Operation) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{4}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Operation) GetType() string {
@@ -434,6 +644,13 @@ func (x *Operation) GetPatchJson() []byte {
 	return nil
 }
 
+func (x *Operation) GetInstanceId() string {
+	if x != nil {
+		return x.InstanceId
+	}
+	return ""
+}
+
 type ServiceError struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
@@ -446,7 +663,7 @@ type ServiceError struct {
 
 func (x *ServiceError) Reset() {
 	*x = ServiceError{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[5]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -458,7 +675,7 @@ func (x *ServiceError) String() string {
 func (*ServiceError) ProtoMessage() {}
 
 func (x *ServiceError) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[5]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -471,7 +688,7 @@ func (x *ServiceError) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ServiceError.ProtoReflect.Descriptor instead.
 func (*ServiceError) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{5}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ServiceError) GetCode() string {
@@ -516,7 +733,7 @@ type MutationResult struct {
 
 func (x *MutationResult) Reset() {
 	*x = MutationResult{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[6]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -528,7 +745,7 @@ func (x *MutationResult) String() string {
 func (*MutationResult) ProtoMessage() {}
 
 func (x *MutationResult) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[6]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -541,7 +758,7 @@ func (x *MutationResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MutationResult.ProtoReflect.Descriptor instead.
 func (*MutationResult) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{6}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *MutationResult) GetRequestId() string {
@@ -601,7 +818,7 @@ type ReadMetadata struct {
 
 func (x *ReadMetadata) Reset() {
 	*x = ReadMetadata{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[7]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -613,7 +830,7 @@ func (x *ReadMetadata) String() string {
 func (*ReadMetadata) ProtoMessage() {}
 
 func (x *ReadMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[7]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -626,7 +843,7 @@ func (x *ReadMetadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReadMetadata.ProtoReflect.Descriptor instead.
 func (*ReadMetadata) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{7}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ReadMetadata) GetStale() bool {
@@ -673,7 +890,7 @@ type CreateServiceRequest struct {
 
 func (x *CreateServiceRequest) Reset() {
 	*x = CreateServiceRequest{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[8]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -685,7 +902,7 @@ func (x *CreateServiceRequest) String() string {
 func (*CreateServiceRequest) ProtoMessage() {}
 
 func (x *CreateServiceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[8]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -698,7 +915,7 @@ func (x *CreateServiceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateServiceRequest.ProtoReflect.Descriptor instead.
 func (*CreateServiceRequest) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{8}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CreateServiceRequest) GetService() *ServiceInput {
@@ -718,7 +935,7 @@ type GetServiceRequest struct {
 
 func (x *GetServiceRequest) Reset() {
 	*x = GetServiceRequest{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[9]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -730,7 +947,7 @@ func (x *GetServiceRequest) String() string {
 func (*GetServiceRequest) ProtoMessage() {}
 
 func (x *GetServiceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[9]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -743,7 +960,7 @@ func (x *GetServiceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetServiceRequest.ProtoReflect.Descriptor instead.
 func (*GetServiceRequest) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{9}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *GetServiceRequest) GetId() string {
@@ -770,7 +987,7 @@ type GetServiceResponse struct {
 
 func (x *GetServiceResponse) Reset() {
 	*x = GetServiceResponse{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[10]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -782,7 +999,7 @@ func (x *GetServiceResponse) String() string {
 func (*GetServiceResponse) ProtoMessage() {}
 
 func (x *GetServiceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[10]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -795,7 +1012,7 @@ func (x *GetServiceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetServiceResponse.ProtoReflect.Descriptor instead.
 func (*GetServiceResponse) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{10}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *GetServiceResponse) GetService() *Service {
@@ -827,7 +1044,7 @@ type ListServicesRequest struct {
 
 func (x *ListServicesRequest) Reset() {
 	*x = ListServicesRequest{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[11]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -839,7 +1056,7 @@ func (x *ListServicesRequest) String() string {
 func (*ListServicesRequest) ProtoMessage() {}
 
 func (x *ListServicesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[11]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -852,7 +1069,7 @@ func (x *ListServicesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListServicesRequest.ProtoReflect.Descriptor instead.
 func (*ListServicesRequest) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{11}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ListServicesRequest) GetStale() bool {
@@ -916,7 +1133,7 @@ type ListServicesResponse struct {
 
 func (x *ListServicesResponse) Reset() {
 	*x = ListServicesResponse{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[12]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -928,7 +1145,7 @@ func (x *ListServicesResponse) String() string {
 func (*ListServicesResponse) ProtoMessage() {}
 
 func (x *ListServicesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[12]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -941,7 +1158,7 @@ func (x *ListServicesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListServicesResponse.ProtoReflect.Descriptor instead.
 func (*ListServicesResponse) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{12}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ListServicesResponse) GetItems() []*Service {
@@ -972,6 +1189,103 @@ func (x *ListServicesResponse) GetRead() *ReadMetadata {
 	return nil
 }
 
+// Scope discovery is catalog-wide; scopes select data, not authorization.
+type ListScopesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Stale         *bool                  `protobuf:"varint,1,opt,name=stale,proto3,oneof" json:"stale,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListScopesRequest) Reset() {
+	*x = ListScopesRequest{}
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListScopesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListScopesRequest) ProtoMessage() {}
+
+func (x *ListScopesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListScopesRequest.ProtoReflect.Descriptor instead.
+func (*ListScopesRequest) Descriptor() ([]byte, []int) {
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *ListScopesRequest) GetStale() bool {
+	if x != nil && x.Stale != nil {
+		return *x.Stale
+	}
+	return false
+}
+
+type ListScopesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Scopes        []string               `protobuf:"bytes,1,rep,name=scopes,proto3" json:"scopes,omitempty"`
+	Read          *ReadMetadata          `protobuf:"bytes,2,opt,name=read,proto3" json:"read,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListScopesResponse) Reset() {
+	*x = ListScopesResponse{}
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListScopesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListScopesResponse) ProtoMessage() {}
+
+func (x *ListScopesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListScopesResponse.ProtoReflect.Descriptor instead.
+func (*ListScopesResponse) Descriptor() ([]byte, []int) {
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *ListScopesResponse) GetScopes() []string {
+	if x != nil {
+		return x.Scopes
+	}
+	return nil
+}
+
+func (x *ListScopesResponse) GetRead() *ReadMetadata {
+	if x != nil {
+		return x.Read
+	}
+	return nil
+}
+
 type UpdateServiceRequest struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	Id               string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -983,7 +1297,7 @@ type UpdateServiceRequest struct {
 
 func (x *UpdateServiceRequest) Reset() {
 	*x = UpdateServiceRequest{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[13]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -995,7 +1309,7 @@ func (x *UpdateServiceRequest) String() string {
 func (*UpdateServiceRequest) ProtoMessage() {}
 
 func (x *UpdateServiceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[13]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1008,7 +1322,7 @@ func (x *UpdateServiceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateServiceRequest.ProtoReflect.Descriptor instead.
 func (*UpdateServiceRequest) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{13}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *UpdateServiceRequest) GetId() string {
@@ -1042,7 +1356,7 @@ type DeleteServiceRequest struct {
 
 func (x *DeleteServiceRequest) Reset() {
 	*x = DeleteServiceRequest{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[14]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1054,7 +1368,7 @@ func (x *DeleteServiceRequest) String() string {
 func (*DeleteServiceRequest) ProtoMessage() {}
 
 func (x *DeleteServiceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[14]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1067,7 +1381,7 @@ func (x *DeleteServiceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteServiceRequest.ProtoReflect.Descriptor instead.
 func (*DeleteServiceRequest) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{14}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *DeleteServiceRequest) GetId() string {
@@ -1093,7 +1407,7 @@ type ApplyTransactionRequest struct {
 
 func (x *ApplyTransactionRequest) Reset() {
 	*x = ApplyTransactionRequest{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[15]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1105,7 +1419,7 @@ func (x *ApplyTransactionRequest) String() string {
 func (*ApplyTransactionRequest) ProtoMessage() {}
 
 func (x *ApplyTransactionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[15]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1118,7 +1432,7 @@ func (x *ApplyTransactionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApplyTransactionRequest.ProtoReflect.Descriptor instead.
 func (*ApplyTransactionRequest) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{15}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ApplyTransactionRequest) GetOperations() []*Operation {
@@ -1138,7 +1452,7 @@ type GetOperationRequest struct {
 
 func (x *GetOperationRequest) Reset() {
 	*x = GetOperationRequest{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[16]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1150,7 +1464,7 @@ func (x *GetOperationRequest) String() string {
 func (*GetOperationRequest) ProtoMessage() {}
 
 func (x *GetOperationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[16]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1163,7 +1477,7 @@ func (x *GetOperationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetOperationRequest.ProtoReflect.Descriptor instead.
 func (*GetOperationRequest) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{16}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *GetOperationRequest) GetRequestId() string {
@@ -1190,7 +1504,7 @@ type GetOperationResponse struct {
 
 func (x *GetOperationResponse) Reset() {
 	*x = GetOperationResponse{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[17]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1202,7 +1516,7 @@ func (x *GetOperationResponse) String() string {
 func (*GetOperationResponse) ProtoMessage() {}
 
 func (x *GetOperationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[17]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1215,7 +1529,7 @@ func (x *GetOperationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetOperationResponse.ProtoReflect.Descriptor instead.
 func (*GetOperationResponse) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{17}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *GetOperationResponse) GetResult() *MutationResult {
@@ -1241,7 +1555,7 @@ type CheckHealthRequest struct {
 
 func (x *CheckHealthRequest) Reset() {
 	*x = CheckHealthRequest{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[18]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1253,7 +1567,7 @@ func (x *CheckHealthRequest) String() string {
 func (*CheckHealthRequest) ProtoMessage() {}
 
 func (x *CheckHealthRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[18]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1266,7 +1580,7 @@ func (x *CheckHealthRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckHealthRequest.ProtoReflect.Descriptor instead.
 func (*CheckHealthRequest) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{18}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *CheckHealthRequest) GetQuorum() bool {
@@ -1286,7 +1600,7 @@ type CheckHealthResponse struct {
 
 func (x *CheckHealthResponse) Reset() {
 	*x = CheckHealthResponse{}
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[19]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1298,7 +1612,7 @@ func (x *CheckHealthResponse) String() string {
 func (*CheckHealthResponse) ProtoMessage() {}
 
 func (x *CheckHealthResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[19]
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1311,7 +1625,7 @@ func (x *CheckHealthResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckHealthResponse.ProtoReflect.Descriptor instead.
 func (*CheckHealthResponse) Descriptor() ([]byte, []int) {
-	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{19}
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *CheckHealthResponse) GetStatus() string {
@@ -1340,17 +1654,35 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\tmodel_ids\x18\x01 \x03(\tR\bmodelIDs\x12\x1c\n" +
 	"\tprotocols\x18\x02 \x03(\tR\tprotocols\x12\x1d\n" +
 	"\n" +
-	"tool_names\x18\x03 \x03(\tR\ttoolNames\"\xce\x02\n" +
+	"tool_names\x18\x03 \x03(\tR\ttoolNames\"b\n" +
+	"\x10CredentialHeader\x12\x16\n" +
+	"\x06header\x18\x01 \x01(\tR\x06header\x12\x16\n" +
+	"\x06prefix\x18\x02 \x01(\tR\x06prefix\x12\x1e\n" +
+	"\n" +
+	"secret_key\x18\x03 \x01(\tR\n" +
+	"secret_key\"\x8a\x05\n" +
 	"\fServiceInput\x12\x12\n" +
 	"\x04kind\x18\x01 \x01(\tR\x04kind\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
 	"\x05scope\x18\x03 \x01(\tR\x05scope\x12D\n" +
 	"\x06labels\x18\x04 \x03(\v2,.lattice.catalog.v1.ServiceInput.LabelsEntryR\x06labels\x12D\n" +
 	"\fcapabilities\x18\x05 \x01(\v2 .lattice.catalog.v1.CapabilitiesR\fcapabilities\x129\n" +
-	"\taddresses\x18\x06 \x03(\v2\x1b.lattice.catalog.v1.AddressR\taddresses\x1a9\n" +
+	"\taddresses\x18\x06 \x03(\v2\x1b.lattice.catalog.v1.AddressR\taddresses\x12\x12\n" +
+	"\x04type\x18\a \x01(\tR\x04type\x12\x1a\n" +
+	"\bprotocol\x18\b \x01(\tR\bprotocol\x12 \n" +
+	"\vdescription\x18\t \x01(\tR\vdescription\x12\x1d\n" +
+	"\n" +
+	"model_name\x18\n" +
+	" \x01(\tR\tmodelName\x12%\n" +
+	"\x0emodel_endpoint\x18\v \x01(\tR\rmodelEndpoint\x12#\n" +
+	"\rcredential_id\x18\f \x01(\tR\fcredentialID\x12\x1f\n" +
+	"\vsecret_file\x18\r \x01(\tR\n" +
+	"secretFile\x12>\n" +
+	"\aheaders\x18\x0e \x03(\v2$.lattice.catalog.v1.CredentialHeaderR\aheaders\x12\x1c\n" +
+	"\tinstances\x18\x0f \x03(\tR\tinstances\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x83\x04\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xbf\x06\n" +
 	"\aService\x12\x12\n" +
 	"\x04kind\x18\x01 \x01(\tR\x04kind\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -1367,17 +1699,30 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\f \x01(\tR\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\r \x01(\tR\tupdatedAt\x1a9\n" +
+	"updated_at\x18\r \x01(\tR\tupdatedAt\x12\x12\n" +
+	"\x04type\x18\x0e \x01(\tR\x04type\x12\x1a\n" +
+	"\bprotocol\x18\x0f \x01(\tR\bprotocol\x12 \n" +
+	"\vdescription\x18\x10 \x01(\tR\vdescription\x12\x1d\n" +
+	"\n" +
+	"model_name\x18\x11 \x01(\tR\tmodelName\x12%\n" +
+	"\x0emodel_endpoint\x18\x12 \x01(\tR\rmodelEndpoint\x12#\n" +
+	"\rcredential_id\x18\x13 \x01(\tR\fcredentialID\x12\x1f\n" +
+	"\vsecret_file\x18\x14 \x01(\tR\n" +
+	"secretFile\x12>\n" +
+	"\aheaders\x18\x15 \x03(\v2$.lattice.catalog.v1.CredentialHeaderR\aheaders\x12\x1c\n" +
+	"\tinstances\x18\x16 \x03(\tR\tinstances\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xb7\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd8\x01\n" +
 	"\tOperation\x12\x12\n" +
 	"\x04type\x18\x01 \x01(\tR\x04type\x12\x0e\n" +
 	"\x02id\x18\x02 \x01(\tR\x02id\x12+\n" +
 	"\x11expected_revision\x18\x03 \x01(\x04R\x10expectedRevision\x12:\n" +
 	"\aservice\x18\x04 \x01(\v2 .lattice.catalog.v1.ServiceInputR\aservice\x12\x1d\n" +
 	"\n" +
-	"patch_json\x18\x05 \x01(\fR\tpatchJson\"\xd9\x01\n" +
+	"patch_json\x18\x05 \x01(\fR\tpatchJson\x12\x1f\n" +
+	"\vinstance_id\x18\x06 \x01(\tR\n" +
+	"instanceID\"\xd9\x01\n" +
 	"\fServiceError\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12\x16\n" +
@@ -1428,7 +1773,13 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\vnext_cursor\x18\x02 \x01(\tR\n" +
 	"nextCursor\x12)\n" +
 	"\x10catalog_revision\x18\x03 \x01(\x04R\x0fcatalogRevision\x124\n" +
-	"\x04read\x18\x04 \x01(\v2 .lattice.catalog.v1.ReadMetadataR\x04read\"r\n" +
+	"\x04read\x18\x04 \x01(\v2 .lattice.catalog.v1.ReadMetadataR\x04read\"8\n" +
+	"\x11ListScopesRequest\x12\x19\n" +
+	"\x05stale\x18\x01 \x01(\bH\x00R\x05stale\x88\x01\x01B\b\n" +
+	"\x06_stale\"b\n" +
+	"\x12ListScopesResponse\x12\x16\n" +
+	"\x06scopes\x18\x01 \x03(\tR\x06scopes\x124\n" +
+	"\x04read\x18\x02 \x01(\v2 .lattice.catalog.v1.ReadMetadataR\x04read\"r\n" +
 	"\x14UpdateServiceRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12+\n" +
 	"\x11expected_revision\x18\x02 \x01(\x04R\x10expectedRevision\x12\x1d\n" +
@@ -1453,12 +1804,14 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\x06quorum\x18\x01 \x01(\bR\x06quorum\"F\n" +
 	"\x13CheckHealthResponse\x12\x16\n" +
 	"\x06status\x18\x01 \x01(\tR\x06status\x12\x17\n" +
-	"\anode_id\x18\x02 \x01(\tR\x06nodeID2\x95\x06\n" +
+	"\anode_id\x18\x02 \x01(\tR\x06nodeID2\xf2\x06\n" +
 	"\x0eCatalogService\x12]\n" +
 	"\rCreateService\x12(.lattice.catalog.v1.CreateServiceRequest\x1a\".lattice.catalog.v1.MutationResult\x12[\n" +
 	"\n" +
 	"GetService\x12%.lattice.catalog.v1.GetServiceRequest\x1a&.lattice.catalog.v1.GetServiceResponse\x12a\n" +
-	"\fListServices\x12'.lattice.catalog.v1.ListServicesRequest\x1a(.lattice.catalog.v1.ListServicesResponse\x12]\n" +
+	"\fListServices\x12'.lattice.catalog.v1.ListServicesRequest\x1a(.lattice.catalog.v1.ListServicesResponse\x12[\n" +
+	"\n" +
+	"ListScopes\x12%.lattice.catalog.v1.ListScopesRequest\x1a&.lattice.catalog.v1.ListScopesResponse\x12]\n" +
 	"\rUpdateService\x12(.lattice.catalog.v1.UpdateServiceRequest\x1a\".lattice.catalog.v1.MutationResult\x12]\n" +
 	"\rDeleteService\x12(.lattice.catalog.v1.DeleteServiceRequest\x1a\".lattice.catalog.v1.MutationResult\x12c\n" +
 	"\x10ApplyTransaction\x12+.lattice.catalog.v1.ApplyTransactionRequest\x1a\".lattice.catalog.v1.MutationResult\x12a\n" +
@@ -1477,74 +1830,82 @@ func file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP() []byte {
 	return file_api_lattice_catalog_v1_catalog_proto_rawDescData
 }
 
-var file_api_lattice_catalog_v1_catalog_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_api_lattice_catalog_v1_catalog_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_api_lattice_catalog_v1_catalog_proto_goTypes = []any{
 	(*Address)(nil),                 // 0: lattice.catalog.v1.Address
 	(*Capabilities)(nil),            // 1: lattice.catalog.v1.Capabilities
-	(*ServiceInput)(nil),            // 2: lattice.catalog.v1.ServiceInput
-	(*Service)(nil),                 // 3: lattice.catalog.v1.Service
-	(*Operation)(nil),               // 4: lattice.catalog.v1.Operation
-	(*ServiceError)(nil),            // 5: lattice.catalog.v1.ServiceError
-	(*MutationResult)(nil),          // 6: lattice.catalog.v1.MutationResult
-	(*ReadMetadata)(nil),            // 7: lattice.catalog.v1.ReadMetadata
-	(*CreateServiceRequest)(nil),    // 8: lattice.catalog.v1.CreateServiceRequest
-	(*GetServiceRequest)(nil),       // 9: lattice.catalog.v1.GetServiceRequest
-	(*GetServiceResponse)(nil),      // 10: lattice.catalog.v1.GetServiceResponse
-	(*ListServicesRequest)(nil),     // 11: lattice.catalog.v1.ListServicesRequest
-	(*ListServicesResponse)(nil),    // 12: lattice.catalog.v1.ListServicesResponse
-	(*UpdateServiceRequest)(nil),    // 13: lattice.catalog.v1.UpdateServiceRequest
-	(*DeleteServiceRequest)(nil),    // 14: lattice.catalog.v1.DeleteServiceRequest
-	(*ApplyTransactionRequest)(nil), // 15: lattice.catalog.v1.ApplyTransactionRequest
-	(*GetOperationRequest)(nil),     // 16: lattice.catalog.v1.GetOperationRequest
-	(*GetOperationResponse)(nil),    // 17: lattice.catalog.v1.GetOperationResponse
-	(*CheckHealthRequest)(nil),      // 18: lattice.catalog.v1.CheckHealthRequest
-	(*CheckHealthResponse)(nil),     // 19: lattice.catalog.v1.CheckHealthResponse
-	nil,                             // 20: lattice.catalog.v1.ServiceInput.LabelsEntry
-	nil,                             // 21: lattice.catalog.v1.Service.LabelsEntry
-	nil,                             // 22: lattice.catalog.v1.ServiceError.DetailsEntry
-	nil,                             // 23: lattice.catalog.v1.ListServicesRequest.LabelsEntry
+	(*CredentialHeader)(nil),        // 2: lattice.catalog.v1.CredentialHeader
+	(*ServiceInput)(nil),            // 3: lattice.catalog.v1.ServiceInput
+	(*Service)(nil),                 // 4: lattice.catalog.v1.Service
+	(*Operation)(nil),               // 5: lattice.catalog.v1.Operation
+	(*ServiceError)(nil),            // 6: lattice.catalog.v1.ServiceError
+	(*MutationResult)(nil),          // 7: lattice.catalog.v1.MutationResult
+	(*ReadMetadata)(nil),            // 8: lattice.catalog.v1.ReadMetadata
+	(*CreateServiceRequest)(nil),    // 9: lattice.catalog.v1.CreateServiceRequest
+	(*GetServiceRequest)(nil),       // 10: lattice.catalog.v1.GetServiceRequest
+	(*GetServiceResponse)(nil),      // 11: lattice.catalog.v1.GetServiceResponse
+	(*ListServicesRequest)(nil),     // 12: lattice.catalog.v1.ListServicesRequest
+	(*ListServicesResponse)(nil),    // 13: lattice.catalog.v1.ListServicesResponse
+	(*ListScopesRequest)(nil),       // 14: lattice.catalog.v1.ListScopesRequest
+	(*ListScopesResponse)(nil),      // 15: lattice.catalog.v1.ListScopesResponse
+	(*UpdateServiceRequest)(nil),    // 16: lattice.catalog.v1.UpdateServiceRequest
+	(*DeleteServiceRequest)(nil),    // 17: lattice.catalog.v1.DeleteServiceRequest
+	(*ApplyTransactionRequest)(nil), // 18: lattice.catalog.v1.ApplyTransactionRequest
+	(*GetOperationRequest)(nil),     // 19: lattice.catalog.v1.GetOperationRequest
+	(*GetOperationResponse)(nil),    // 20: lattice.catalog.v1.GetOperationResponse
+	(*CheckHealthRequest)(nil),      // 21: lattice.catalog.v1.CheckHealthRequest
+	(*CheckHealthResponse)(nil),     // 22: lattice.catalog.v1.CheckHealthResponse
+	nil,                             // 23: lattice.catalog.v1.ServiceInput.LabelsEntry
+	nil,                             // 24: lattice.catalog.v1.Service.LabelsEntry
+	nil,                             // 25: lattice.catalog.v1.ServiceError.DetailsEntry
+	nil,                             // 26: lattice.catalog.v1.ListServicesRequest.LabelsEntry
 }
 var file_api_lattice_catalog_v1_catalog_proto_depIdxs = []int32{
-	20, // 0: lattice.catalog.v1.ServiceInput.labels:type_name -> lattice.catalog.v1.ServiceInput.LabelsEntry
+	23, // 0: lattice.catalog.v1.ServiceInput.labels:type_name -> lattice.catalog.v1.ServiceInput.LabelsEntry
 	1,  // 1: lattice.catalog.v1.ServiceInput.capabilities:type_name -> lattice.catalog.v1.Capabilities
 	0,  // 2: lattice.catalog.v1.ServiceInput.addresses:type_name -> lattice.catalog.v1.Address
-	21, // 3: lattice.catalog.v1.Service.labels:type_name -> lattice.catalog.v1.Service.LabelsEntry
-	1,  // 4: lattice.catalog.v1.Service.capabilities:type_name -> lattice.catalog.v1.Capabilities
-	0,  // 5: lattice.catalog.v1.Service.addresses:type_name -> lattice.catalog.v1.Address
-	2,  // 6: lattice.catalog.v1.Operation.service:type_name -> lattice.catalog.v1.ServiceInput
-	22, // 7: lattice.catalog.v1.ServiceError.details:type_name -> lattice.catalog.v1.ServiceError.DetailsEntry
-	3,  // 8: lattice.catalog.v1.MutationResult.services:type_name -> lattice.catalog.v1.Service
-	5,  // 9: lattice.catalog.v1.MutationResult.error:type_name -> lattice.catalog.v1.ServiceError
-	2,  // 10: lattice.catalog.v1.CreateServiceRequest.service:type_name -> lattice.catalog.v1.ServiceInput
-	3,  // 11: lattice.catalog.v1.GetServiceResponse.service:type_name -> lattice.catalog.v1.Service
-	7,  // 12: lattice.catalog.v1.GetServiceResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
-	23, // 13: lattice.catalog.v1.ListServicesRequest.labels:type_name -> lattice.catalog.v1.ListServicesRequest.LabelsEntry
-	3,  // 14: lattice.catalog.v1.ListServicesResponse.items:type_name -> lattice.catalog.v1.Service
-	7,  // 15: lattice.catalog.v1.ListServicesResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
-	4,  // 16: lattice.catalog.v1.ApplyTransactionRequest.operations:type_name -> lattice.catalog.v1.Operation
-	6,  // 17: lattice.catalog.v1.GetOperationResponse.result:type_name -> lattice.catalog.v1.MutationResult
-	7,  // 18: lattice.catalog.v1.GetOperationResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
-	8,  // 19: lattice.catalog.v1.CatalogService.CreateService:input_type -> lattice.catalog.v1.CreateServiceRequest
-	9,  // 20: lattice.catalog.v1.CatalogService.GetService:input_type -> lattice.catalog.v1.GetServiceRequest
-	11, // 21: lattice.catalog.v1.CatalogService.ListServices:input_type -> lattice.catalog.v1.ListServicesRequest
-	13, // 22: lattice.catalog.v1.CatalogService.UpdateService:input_type -> lattice.catalog.v1.UpdateServiceRequest
-	14, // 23: lattice.catalog.v1.CatalogService.DeleteService:input_type -> lattice.catalog.v1.DeleteServiceRequest
-	15, // 24: lattice.catalog.v1.CatalogService.ApplyTransaction:input_type -> lattice.catalog.v1.ApplyTransactionRequest
-	16, // 25: lattice.catalog.v1.CatalogService.GetOperation:input_type -> lattice.catalog.v1.GetOperationRequest
-	18, // 26: lattice.catalog.v1.CatalogService.CheckHealth:input_type -> lattice.catalog.v1.CheckHealthRequest
-	6,  // 27: lattice.catalog.v1.CatalogService.CreateService:output_type -> lattice.catalog.v1.MutationResult
-	10, // 28: lattice.catalog.v1.CatalogService.GetService:output_type -> lattice.catalog.v1.GetServiceResponse
-	12, // 29: lattice.catalog.v1.CatalogService.ListServices:output_type -> lattice.catalog.v1.ListServicesResponse
-	6,  // 30: lattice.catalog.v1.CatalogService.UpdateService:output_type -> lattice.catalog.v1.MutationResult
-	6,  // 31: lattice.catalog.v1.CatalogService.DeleteService:output_type -> lattice.catalog.v1.MutationResult
-	6,  // 32: lattice.catalog.v1.CatalogService.ApplyTransaction:output_type -> lattice.catalog.v1.MutationResult
-	17, // 33: lattice.catalog.v1.CatalogService.GetOperation:output_type -> lattice.catalog.v1.GetOperationResponse
-	19, // 34: lattice.catalog.v1.CatalogService.CheckHealth:output_type -> lattice.catalog.v1.CheckHealthResponse
-	27, // [27:35] is the sub-list for method output_type
-	19, // [19:27] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	2,  // 3: lattice.catalog.v1.ServiceInput.headers:type_name -> lattice.catalog.v1.CredentialHeader
+	24, // 4: lattice.catalog.v1.Service.labels:type_name -> lattice.catalog.v1.Service.LabelsEntry
+	1,  // 5: lattice.catalog.v1.Service.capabilities:type_name -> lattice.catalog.v1.Capabilities
+	0,  // 6: lattice.catalog.v1.Service.addresses:type_name -> lattice.catalog.v1.Address
+	2,  // 7: lattice.catalog.v1.Service.headers:type_name -> lattice.catalog.v1.CredentialHeader
+	3,  // 8: lattice.catalog.v1.Operation.service:type_name -> lattice.catalog.v1.ServiceInput
+	25, // 9: lattice.catalog.v1.ServiceError.details:type_name -> lattice.catalog.v1.ServiceError.DetailsEntry
+	4,  // 10: lattice.catalog.v1.MutationResult.services:type_name -> lattice.catalog.v1.Service
+	6,  // 11: lattice.catalog.v1.MutationResult.error:type_name -> lattice.catalog.v1.ServiceError
+	3,  // 12: lattice.catalog.v1.CreateServiceRequest.service:type_name -> lattice.catalog.v1.ServiceInput
+	4,  // 13: lattice.catalog.v1.GetServiceResponse.service:type_name -> lattice.catalog.v1.Service
+	8,  // 14: lattice.catalog.v1.GetServiceResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
+	26, // 15: lattice.catalog.v1.ListServicesRequest.labels:type_name -> lattice.catalog.v1.ListServicesRequest.LabelsEntry
+	4,  // 16: lattice.catalog.v1.ListServicesResponse.items:type_name -> lattice.catalog.v1.Service
+	8,  // 17: lattice.catalog.v1.ListServicesResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
+	8,  // 18: lattice.catalog.v1.ListScopesResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
+	5,  // 19: lattice.catalog.v1.ApplyTransactionRequest.operations:type_name -> lattice.catalog.v1.Operation
+	7,  // 20: lattice.catalog.v1.GetOperationResponse.result:type_name -> lattice.catalog.v1.MutationResult
+	8,  // 21: lattice.catalog.v1.GetOperationResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
+	9,  // 22: lattice.catalog.v1.CatalogService.CreateService:input_type -> lattice.catalog.v1.CreateServiceRequest
+	10, // 23: lattice.catalog.v1.CatalogService.GetService:input_type -> lattice.catalog.v1.GetServiceRequest
+	12, // 24: lattice.catalog.v1.CatalogService.ListServices:input_type -> lattice.catalog.v1.ListServicesRequest
+	14, // 25: lattice.catalog.v1.CatalogService.ListScopes:input_type -> lattice.catalog.v1.ListScopesRequest
+	16, // 26: lattice.catalog.v1.CatalogService.UpdateService:input_type -> lattice.catalog.v1.UpdateServiceRequest
+	17, // 27: lattice.catalog.v1.CatalogService.DeleteService:input_type -> lattice.catalog.v1.DeleteServiceRequest
+	18, // 28: lattice.catalog.v1.CatalogService.ApplyTransaction:input_type -> lattice.catalog.v1.ApplyTransactionRequest
+	19, // 29: lattice.catalog.v1.CatalogService.GetOperation:input_type -> lattice.catalog.v1.GetOperationRequest
+	21, // 30: lattice.catalog.v1.CatalogService.CheckHealth:input_type -> lattice.catalog.v1.CheckHealthRequest
+	7,  // 31: lattice.catalog.v1.CatalogService.CreateService:output_type -> lattice.catalog.v1.MutationResult
+	11, // 32: lattice.catalog.v1.CatalogService.GetService:output_type -> lattice.catalog.v1.GetServiceResponse
+	13, // 33: lattice.catalog.v1.CatalogService.ListServices:output_type -> lattice.catalog.v1.ListServicesResponse
+	15, // 34: lattice.catalog.v1.CatalogService.ListScopes:output_type -> lattice.catalog.v1.ListScopesResponse
+	7,  // 35: lattice.catalog.v1.CatalogService.UpdateService:output_type -> lattice.catalog.v1.MutationResult
+	7,  // 36: lattice.catalog.v1.CatalogService.DeleteService:output_type -> lattice.catalog.v1.MutationResult
+	7,  // 37: lattice.catalog.v1.CatalogService.ApplyTransaction:output_type -> lattice.catalog.v1.MutationResult
+	20, // 38: lattice.catalog.v1.CatalogService.GetOperation:output_type -> lattice.catalog.v1.GetOperationResponse
+	22, // 39: lattice.catalog.v1.CatalogService.CheckHealth:output_type -> lattice.catalog.v1.CheckHealthResponse
+	31, // [31:40] is the sub-list for method output_type
+	22, // [22:31] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_api_lattice_catalog_v1_catalog_proto_init() }
@@ -1552,16 +1913,17 @@ func file_api_lattice_catalog_v1_catalog_proto_init() {
 	if File_api_lattice_catalog_v1_catalog_proto != nil {
 		return
 	}
-	file_api_lattice_catalog_v1_catalog_proto_msgTypes[9].OneofWrappers = []any{}
-	file_api_lattice_catalog_v1_catalog_proto_msgTypes[11].OneofWrappers = []any{}
-	file_api_lattice_catalog_v1_catalog_proto_msgTypes[16].OneofWrappers = []any{}
+	file_api_lattice_catalog_v1_catalog_proto_msgTypes[10].OneofWrappers = []any{}
+	file_api_lattice_catalog_v1_catalog_proto_msgTypes[12].OneofWrappers = []any{}
+	file_api_lattice_catalog_v1_catalog_proto_msgTypes[14].OneofWrappers = []any{}
+	file_api_lattice_catalog_v1_catalog_proto_msgTypes[19].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_lattice_catalog_v1_catalog_proto_rawDesc), len(file_api_lattice_catalog_v1_catalog_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   24,
+			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

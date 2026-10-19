@@ -8,6 +8,7 @@ service CatalogService {
   rpc CreateService(CreateServiceRequest) returns (MutationResult);
   rpc GetService(GetServiceRequest) returns (GetServiceResponse);
   rpc ListServices(ListServicesRequest) returns (ListServicesResponse);
+  rpc ListScopes(ListScopesRequest) returns (ListScopesResponse);
   rpc UpdateService(UpdateServiceRequest) returns (MutationResult);
   rpc DeleteService(DeleteServiceRequest) returns (MutationResult);
   rpc ApplyTransaction(ApplyTransactionRequest) returns (MutationResult);
@@ -20,6 +21,11 @@ message Capabilities {
   repeated string protocols = 2;
   repeated string tool_names = 3;
 }
+message CredentialHeader {
+  string header = 1;
+  string prefix = 2;
+  string secret_key = 3 [json_name = "secret_key"];
+}
 message ServiceInput {
   string kind = 1;
   string name = 2;
@@ -27,6 +33,18 @@ message ServiceInput {
   map<string,string> labels = 4;
   Capabilities capabilities = 5;
   repeated Address addresses = 6;
+  // Optional model routing details; empty values mean unspecified.
+  string type = 7;
+  string protocol = 8;
+  // Task-selection rubric describing suitable workloads.
+  string description = 9;
+  string model_name = 10;
+  // API path only, e.g. /v1/chat/completions; host and port come from addresses.
+  string model_endpoint = 11;
+  string credential_id = 12 [json_name = "credentialID"];
+  string secret_file = 13;
+  repeated CredentialHeader headers = 14;
+  repeated string instances = 15;
 }
 message Service {
   string kind = 1;
@@ -42,6 +60,17 @@ message Service {
   string owner = 11;
   string created_at = 12;
   string updated_at = 13;
+  // Optional model routing details; empty values mean unspecified.
+  string type = 14;
+  string protocol = 15;
+  string description = 16;
+  string model_name = 17;
+  // API path only, e.g. /v1/chat/completions; host and port come from addresses.
+  string model_endpoint = 18;
+  string credential_id = 19 [json_name = "credentialID"];
+  string secret_file = 20;
+  repeated CredentialHeader headers = 21;
+  repeated string instances = 22;
 }
 message Operation {
   string type = 1;
@@ -50,6 +79,7 @@ message Operation {
   ServiceInput service = 4;
   // JSON Merge Patch over editable service fields. Used only by update.
   bytes patch_json = 5;
+  string instance_id = 6 [json_name = "instanceID"];
 }
 message ServiceError {
   string code = 1;
@@ -92,6 +122,9 @@ message ListServicesResponse {
   uint64 catalog_revision = 3;
   ReadMetadata read = 4;
 }
+// Scope discovery is catalog-wide; scopes select data, not authorization.
+message ListScopesRequest { optional bool stale = 1; }
+message ListScopesResponse { repeated string scopes = 1; ReadMetadata read = 2; }
 message UpdateServiceRequest { string id = 1; uint64 expected_revision = 2; bytes patch_json = 3; }
 message DeleteServiceRequest { string id = 1; uint64 expected_revision = 2; }
 message ApplyTransactionRequest { repeated Operation operations = 1; }
