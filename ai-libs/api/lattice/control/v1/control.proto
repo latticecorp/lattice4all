@@ -14,6 +14,24 @@ enum DataplaneKind {
   DATAPLANE_KIND_UNSPECIFIED = 0;
   DATAPLANE_KIND_INFERENCE_ROUTER = 1;
   DATAPLANE_KIND_AI_AGENT = 2;
+  DATAPLANE_KIND_MCP = 3;
+}
+
+message WellKnownSkill {
+  string name = 1;
+  string description = 2;
+  string version = 3;
+  string tool_schema = 4 [json_name = "toolSchema"];
+}
+
+message WellKnownMetadata {
+  string service_id = 1;
+  string raw_json = 2;
+  repeated WellKnownSkill skills = 3;
+}
+
+message WellKnownRequest {
+  string service_id = 1;
 }
 
 message Subscribe {
@@ -28,12 +46,15 @@ message Subscribe {
   uint32 schema_version = 4;
   // Identifies the type of dataplane subscribing.
   DataplaneKind kind = 5;
+  // Optional well-known metadata pushed by the agent/MCP at stream startup.
+  WellKnownMetadata well_known = 6;
 }
 message DataplaneMessage {
   oneof payload {
     Subscribe subscribe = 1;
     UpdateStatus update_status = 2;
     EnvoyStatus envoy_status = 3;
+    WellKnownMetadata well_known = 4;
   }
 }
 message ControlPlaneMessage {
@@ -45,6 +66,7 @@ message ControlPlaneMessage {
   oneof payload {
     XdsConfiguration xds_configuration = 2;
     DataplaneConfiguration dataplane_configuration = 3;
+    WellKnownRequest well_known_request = 4;
   }
 }
 message ResourceSet {

@@ -208,13 +208,18 @@ type ServiceInput struct {
 	Description string `protobuf:"bytes,9,opt,name=description,proto3" json:"description,omitempty"`
 	ModelName   string `protobuf:"bytes,10,opt,name=model_name,json=modelName,proto3" json:"model_name,omitempty"`
 	// API path only, e.g. /v1/chat/completions; host and port come from addresses.
-	ModelEndpoint string              `protobuf:"bytes,11,opt,name=model_endpoint,json=modelEndpoint,proto3" json:"model_endpoint,omitempty"`
-	CredentialId  string              `protobuf:"bytes,12,opt,name=credential_id,json=credentialID,proto3" json:"credential_id,omitempty"`
-	SecretFile    string              `protobuf:"bytes,13,opt,name=secret_file,json=secretFile,proto3" json:"secret_file,omitempty"`
-	Headers       []*CredentialHeader `protobuf:"bytes,14,rep,name=headers,proto3" json:"headers,omitempty"`
-	Instances     []string            `protobuf:"bytes,15,rep,name=instances,proto3" json:"instances,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	ModelEndpoint   string              `protobuf:"bytes,11,opt,name=model_endpoint,json=modelEndpoint,proto3" json:"model_endpoint,omitempty"`
+	CredentialId    string              `protobuf:"bytes,12,opt,name=credential_id,json=credentialID,proto3" json:"credential_id,omitempty"`
+	SecretFile      string              `protobuf:"bytes,13,opt,name=secret_file,json=secretFile,proto3" json:"secret_file,omitempty"`
+	Headers         []*CredentialHeader `protobuf:"bytes,14,rep,name=headers,proto3" json:"headers,omitempty"`
+	Instances       []string            `protobuf:"bytes,15,rep,name=instances,proto3" json:"instances,omitempty"`
+	SourceServiceId string              `protobuf:"bytes,16,opt,name=source_service_id,json=sourceServiceID,proto3" json:"source_service_id,omitempty"`
+	Status          string              `protobuf:"bytes,17,opt,name=status,proto3" json:"status,omitempty"`
+	ToolSchema      string              `protobuf:"bytes,18,opt,name=tool_schema,json=toolSchema,proto3" json:"tool_schema,omitempty"`
+	ExportedTools   []string            `protobuf:"bytes,19,rep,name=exported_tools,json=exportedTools,proto3" json:"exported_tools,omitempty"`
+	ImportedTools   []string            `protobuf:"bytes,20,rep,name=imported_tools,json=importedTools,proto3" json:"imported_tools,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *ServiceInput) Reset() {
@@ -352,6 +357,41 @@ func (x *ServiceInput) GetInstances() []string {
 	return nil
 }
 
+func (x *ServiceInput) GetSourceServiceId() string {
+	if x != nil {
+		return x.SourceServiceId
+	}
+	return ""
+}
+
+func (x *ServiceInput) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *ServiceInput) GetToolSchema() string {
+	if x != nil {
+		return x.ToolSchema
+	}
+	return ""
+}
+
+func (x *ServiceInput) GetExportedTools() []string {
+	if x != nil {
+		return x.ExportedTools
+	}
+	return nil
+}
+
+func (x *ServiceInput) GetImportedTools() []string {
+	if x != nil {
+		return x.ImportedTools
+	}
+	return nil
+}
+
 type Service struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Kind          string                 `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
@@ -373,13 +413,18 @@ type Service struct {
 	Description string `protobuf:"bytes,16,opt,name=description,proto3" json:"description,omitempty"`
 	ModelName   string `protobuf:"bytes,17,opt,name=model_name,json=modelName,proto3" json:"model_name,omitempty"`
 	// API path only, e.g. /v1/chat/completions; host and port come from addresses.
-	ModelEndpoint string              `protobuf:"bytes,18,opt,name=model_endpoint,json=modelEndpoint,proto3" json:"model_endpoint,omitempty"`
-	CredentialId  string              `protobuf:"bytes,19,opt,name=credential_id,json=credentialID,proto3" json:"credential_id,omitempty"`
-	SecretFile    string              `protobuf:"bytes,20,opt,name=secret_file,json=secretFile,proto3" json:"secret_file,omitempty"`
-	Headers       []*CredentialHeader `protobuf:"bytes,21,rep,name=headers,proto3" json:"headers,omitempty"`
-	Instances     []string            `protobuf:"bytes,22,rep,name=instances,proto3" json:"instances,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	ModelEndpoint   string              `protobuf:"bytes,18,opt,name=model_endpoint,json=modelEndpoint,proto3" json:"model_endpoint,omitempty"`
+	CredentialId    string              `protobuf:"bytes,19,opt,name=credential_id,json=credentialID,proto3" json:"credential_id,omitempty"`
+	SecretFile      string              `protobuf:"bytes,20,opt,name=secret_file,json=secretFile,proto3" json:"secret_file,omitempty"`
+	Headers         []*CredentialHeader `protobuf:"bytes,21,rep,name=headers,proto3" json:"headers,omitempty"`
+	Instances       []string            `protobuf:"bytes,22,rep,name=instances,proto3" json:"instances,omitempty"`
+	SourceServiceId string              `protobuf:"bytes,23,opt,name=source_service_id,json=sourceServiceID,proto3" json:"source_service_id,omitempty"`
+	Status          string              `protobuf:"bytes,24,opt,name=status,proto3" json:"status,omitempty"`
+	ToolSchema      string              `protobuf:"bytes,25,opt,name=tool_schema,json=toolSchema,proto3" json:"tool_schema,omitempty"`
+	ExportedTools   []string            `protobuf:"bytes,26,rep,name=exported_tools,json=exportedTools,proto3" json:"exported_tools,omitempty"`
+	ImportedTools   []string            `protobuf:"bytes,27,rep,name=imported_tools,json=importedTools,proto3" json:"imported_tools,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Service) Reset() {
@@ -562,6 +607,41 @@ func (x *Service) GetHeaders() []*CredentialHeader {
 func (x *Service) GetInstances() []string {
 	if x != nil {
 		return x.Instances
+	}
+	return nil
+}
+
+func (x *Service) GetSourceServiceId() string {
+	if x != nil {
+		return x.SourceServiceId
+	}
+	return ""
+}
+
+func (x *Service) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *Service) GetToolSchema() string {
+	if x != nil {
+		return x.ToolSchema
+	}
+	return ""
+}
+
+func (x *Service) GetExportedTools() []string {
+	if x != nil {
+		return x.ExportedTools
+	}
+	return nil
+}
+
+func (x *Service) GetImportedTools() []string {
+	if x != nil {
+		return x.ImportedTools
 	}
 	return nil
 }
@@ -1642,6 +1722,178 @@ func (x *CheckHealthResponse) GetNodeId() string {
 	return ""
 }
 
+type DiscoveredSkill struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Version       string                 `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
+	ToolSchema    string                 `protobuf:"bytes,4,opt,name=tool_schema,json=toolSchema,proto3" json:"tool_schema,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DiscoveredSkill) Reset() {
+	*x = DiscoveredSkill{}
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DiscoveredSkill) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DiscoveredSkill) ProtoMessage() {}
+
+func (x *DiscoveredSkill) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DiscoveredSkill.ProtoReflect.Descriptor instead.
+func (*DiscoveredSkill) Descriptor() ([]byte, []int) {
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *DiscoveredSkill) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *DiscoveredSkill) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *DiscoveredSkill) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
+func (x *DiscoveredSkill) GetToolSchema() string {
+	if x != nil {
+		return x.ToolSchema
+	}
+	return ""
+}
+
+type LoadWellKnownRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoadWellKnownRequest) Reset() {
+	*x = LoadWellKnownRequest{}
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoadWellKnownRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoadWellKnownRequest) ProtoMessage() {}
+
+func (x *LoadWellKnownRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoadWellKnownRequest.ProtoReflect.Descriptor instead.
+func (*LoadWellKnownRequest) Descriptor() ([]byte, []int) {
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *LoadWellKnownRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type LoadWellKnownResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ServiceId     string                 `protobuf:"bytes,1,opt,name=service_id,json=serviceID,proto3" json:"service_id,omitempty"`
+	Source        string                 `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`
+	Skills        []*DiscoveredSkill     `protobuf:"bytes,3,rep,name=skills,proto3" json:"skills,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoadWellKnownResponse) Reset() {
+	*x = LoadWellKnownResponse{}
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoadWellKnownResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoadWellKnownResponse) ProtoMessage() {}
+
+func (x *LoadWellKnownResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoadWellKnownResponse.ProtoReflect.Descriptor instead.
+func (*LoadWellKnownResponse) Descriptor() ([]byte, []int) {
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *LoadWellKnownResponse) GetServiceId() string {
+	if x != nil {
+		return x.ServiceId
+	}
+	return ""
+}
+
+func (x *LoadWellKnownResponse) GetSource() string {
+	if x != nil {
+		return x.Source
+	}
+	return ""
+}
+
+func (x *LoadWellKnownResponse) GetSkills() []*DiscoveredSkill {
+	if x != nil {
+		return x.Skills
+	}
+	return nil
+}
+
 var File_api_lattice_catalog_v1_catalog_proto protoreflect.FileDescriptor
 
 const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
@@ -1660,7 +1912,7 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\x06prefix\x18\x02 \x01(\tR\x06prefix\x12\x1e\n" +
 	"\n" +
 	"secret_key\x18\x03 \x01(\tR\n" +
-	"secret_key\"\x8a\x05\n" +
+	"secret_key\"\xbd\x06\n" +
 	"\fServiceInput\x12\x12\n" +
 	"\x04kind\x18\x01 \x01(\tR\x04kind\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -1679,10 +1931,16 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\vsecret_file\x18\r \x01(\tR\n" +
 	"secretFile\x12>\n" +
 	"\aheaders\x18\x0e \x03(\v2$.lattice.catalog.v1.CredentialHeaderR\aheaders\x12\x1c\n" +
-	"\tinstances\x18\x0f \x03(\tR\tinstances\x1a9\n" +
+	"\tinstances\x18\x0f \x03(\tR\tinstances\x12*\n" +
+	"\x11source_service_id\x18\x10 \x01(\tR\x0fsourceServiceID\x12\x16\n" +
+	"\x06status\x18\x11 \x01(\tR\x06status\x12\x1f\n" +
+	"\vtool_schema\x18\x12 \x01(\tR\n" +
+	"toolSchema\x12%\n" +
+	"\x0eexported_tools\x18\x13 \x03(\tR\rexportedTools\x12%\n" +
+	"\x0eimported_tools\x18\x14 \x03(\tR\rimportedTools\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xbf\x06\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xf2\a\n" +
 	"\aService\x12\x12\n" +
 	"\x04kind\x18\x01 \x01(\tR\x04kind\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -1710,7 +1968,13 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\vsecret_file\x18\x14 \x01(\tR\n" +
 	"secretFile\x12>\n" +
 	"\aheaders\x18\x15 \x03(\v2$.lattice.catalog.v1.CredentialHeaderR\aheaders\x12\x1c\n" +
-	"\tinstances\x18\x16 \x03(\tR\tinstances\x1a9\n" +
+	"\tinstances\x18\x16 \x03(\tR\tinstances\x12*\n" +
+	"\x11source_service_id\x18\x17 \x01(\tR\x0fsourceServiceID\x12\x16\n" +
+	"\x06status\x18\x18 \x01(\tR\x06status\x12\x1f\n" +
+	"\vtool_schema\x18\x19 \x01(\tR\n" +
+	"toolSchema\x12%\n" +
+	"\x0eexported_tools\x18\x1a \x03(\tR\rexportedTools\x12%\n" +
+	"\x0eimported_tools\x18\x1b \x03(\tR\rimportedTools\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd8\x01\n" +
@@ -1804,7 +2068,20 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\x06quorum\x18\x01 \x01(\bR\x06quorum\"F\n" +
 	"\x13CheckHealthResponse\x12\x16\n" +
 	"\x06status\x18\x01 \x01(\tR\x06status\x12\x17\n" +
-	"\anode_id\x18\x02 \x01(\tR\x06nodeID2\xf2\x06\n" +
+	"\anode_id\x18\x02 \x01(\tR\x06nodeID\"\x82\x01\n" +
+	"\x0fDiscoveredSkill\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x18\n" +
+	"\aversion\x18\x03 \x01(\tR\aversion\x12\x1f\n" +
+	"\vtool_schema\x18\x04 \x01(\tR\n" +
+	"toolSchema\"&\n" +
+	"\x14LoadWellKnownRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\x8b\x01\n" +
+	"\x15LoadWellKnownResponse\x12\x1d\n" +
+	"\n" +
+	"service_id\x18\x01 \x01(\tR\tserviceID\x12\x16\n" +
+	"\x06source\x18\x02 \x01(\tR\x06source\x12;\n" +
+	"\x06skills\x18\x03 \x03(\v2#.lattice.catalog.v1.DiscoveredSkillR\x06skills2\xd8\a\n" +
 	"\x0eCatalogService\x12]\n" +
 	"\rCreateService\x12(.lattice.catalog.v1.CreateServiceRequest\x1a\".lattice.catalog.v1.MutationResult\x12[\n" +
 	"\n" +
@@ -1816,7 +2093,8 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\rDeleteService\x12(.lattice.catalog.v1.DeleteServiceRequest\x1a\".lattice.catalog.v1.MutationResult\x12c\n" +
 	"\x10ApplyTransaction\x12+.lattice.catalog.v1.ApplyTransactionRequest\x1a\".lattice.catalog.v1.MutationResult\x12a\n" +
 	"\fGetOperation\x12'.lattice.catalog.v1.GetOperationRequest\x1a(.lattice.catalog.v1.GetOperationResponse\x12^\n" +
-	"\vCheckHealth\x12&.lattice.catalog.v1.CheckHealthRequest\x1a'.lattice.catalog.v1.CheckHealthResponseBMZKgithub.com/latticecorp/lattice4all/ai-libs/api/lattice/catalog/v1;catalogv1b\x06proto3"
+	"\vCheckHealth\x12&.lattice.catalog.v1.CheckHealthRequest\x1a'.lattice.catalog.v1.CheckHealthResponse\x12d\n" +
+	"\rLoadWellKnown\x12(.lattice.catalog.v1.LoadWellKnownRequest\x1a).lattice.catalog.v1.LoadWellKnownResponseBMZKgithub.com/latticecorp/lattice4all/ai-libs/api/lattice/catalog/v1;catalogv1b\x06proto3"
 
 var (
 	file_api_lattice_catalog_v1_catalog_proto_rawDescOnce sync.Once
@@ -1830,7 +2108,7 @@ func file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP() []byte {
 	return file_api_lattice_catalog_v1_catalog_proto_rawDescData
 }
 
-var file_api_lattice_catalog_v1_catalog_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
+var file_api_lattice_catalog_v1_catalog_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_api_lattice_catalog_v1_catalog_proto_goTypes = []any{
 	(*Address)(nil),                 // 0: lattice.catalog.v1.Address
 	(*Capabilities)(nil),            // 1: lattice.catalog.v1.Capabilities
@@ -1855,57 +2133,63 @@ var file_api_lattice_catalog_v1_catalog_proto_goTypes = []any{
 	(*GetOperationResponse)(nil),    // 20: lattice.catalog.v1.GetOperationResponse
 	(*CheckHealthRequest)(nil),      // 21: lattice.catalog.v1.CheckHealthRequest
 	(*CheckHealthResponse)(nil),     // 22: lattice.catalog.v1.CheckHealthResponse
-	nil,                             // 23: lattice.catalog.v1.ServiceInput.LabelsEntry
-	nil,                             // 24: lattice.catalog.v1.Service.LabelsEntry
-	nil,                             // 25: lattice.catalog.v1.ServiceError.DetailsEntry
-	nil,                             // 26: lattice.catalog.v1.ListServicesRequest.LabelsEntry
+	(*DiscoveredSkill)(nil),         // 23: lattice.catalog.v1.DiscoveredSkill
+	(*LoadWellKnownRequest)(nil),    // 24: lattice.catalog.v1.LoadWellKnownRequest
+	(*LoadWellKnownResponse)(nil),   // 25: lattice.catalog.v1.LoadWellKnownResponse
+	nil,                             // 26: lattice.catalog.v1.ServiceInput.LabelsEntry
+	nil,                             // 27: lattice.catalog.v1.Service.LabelsEntry
+	nil,                             // 28: lattice.catalog.v1.ServiceError.DetailsEntry
+	nil,                             // 29: lattice.catalog.v1.ListServicesRequest.LabelsEntry
 }
 var file_api_lattice_catalog_v1_catalog_proto_depIdxs = []int32{
-	23, // 0: lattice.catalog.v1.ServiceInput.labels:type_name -> lattice.catalog.v1.ServiceInput.LabelsEntry
+	26, // 0: lattice.catalog.v1.ServiceInput.labels:type_name -> lattice.catalog.v1.ServiceInput.LabelsEntry
 	1,  // 1: lattice.catalog.v1.ServiceInput.capabilities:type_name -> lattice.catalog.v1.Capabilities
 	0,  // 2: lattice.catalog.v1.ServiceInput.addresses:type_name -> lattice.catalog.v1.Address
 	2,  // 3: lattice.catalog.v1.ServiceInput.headers:type_name -> lattice.catalog.v1.CredentialHeader
-	24, // 4: lattice.catalog.v1.Service.labels:type_name -> lattice.catalog.v1.Service.LabelsEntry
+	27, // 4: lattice.catalog.v1.Service.labels:type_name -> lattice.catalog.v1.Service.LabelsEntry
 	1,  // 5: lattice.catalog.v1.Service.capabilities:type_name -> lattice.catalog.v1.Capabilities
 	0,  // 6: lattice.catalog.v1.Service.addresses:type_name -> lattice.catalog.v1.Address
 	2,  // 7: lattice.catalog.v1.Service.headers:type_name -> lattice.catalog.v1.CredentialHeader
 	3,  // 8: lattice.catalog.v1.Operation.service:type_name -> lattice.catalog.v1.ServiceInput
-	25, // 9: lattice.catalog.v1.ServiceError.details:type_name -> lattice.catalog.v1.ServiceError.DetailsEntry
+	28, // 9: lattice.catalog.v1.ServiceError.details:type_name -> lattice.catalog.v1.ServiceError.DetailsEntry
 	4,  // 10: lattice.catalog.v1.MutationResult.services:type_name -> lattice.catalog.v1.Service
 	6,  // 11: lattice.catalog.v1.MutationResult.error:type_name -> lattice.catalog.v1.ServiceError
 	3,  // 12: lattice.catalog.v1.CreateServiceRequest.service:type_name -> lattice.catalog.v1.ServiceInput
 	4,  // 13: lattice.catalog.v1.GetServiceResponse.service:type_name -> lattice.catalog.v1.Service
 	8,  // 14: lattice.catalog.v1.GetServiceResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
-	26, // 15: lattice.catalog.v1.ListServicesRequest.labels:type_name -> lattice.catalog.v1.ListServicesRequest.LabelsEntry
+	29, // 15: lattice.catalog.v1.ListServicesRequest.labels:type_name -> lattice.catalog.v1.ListServicesRequest.LabelsEntry
 	4,  // 16: lattice.catalog.v1.ListServicesResponse.items:type_name -> lattice.catalog.v1.Service
 	8,  // 17: lattice.catalog.v1.ListServicesResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
 	8,  // 18: lattice.catalog.v1.ListScopesResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
 	5,  // 19: lattice.catalog.v1.ApplyTransactionRequest.operations:type_name -> lattice.catalog.v1.Operation
 	7,  // 20: lattice.catalog.v1.GetOperationResponse.result:type_name -> lattice.catalog.v1.MutationResult
 	8,  // 21: lattice.catalog.v1.GetOperationResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
-	9,  // 22: lattice.catalog.v1.CatalogService.CreateService:input_type -> lattice.catalog.v1.CreateServiceRequest
-	10, // 23: lattice.catalog.v1.CatalogService.GetService:input_type -> lattice.catalog.v1.GetServiceRequest
-	12, // 24: lattice.catalog.v1.CatalogService.ListServices:input_type -> lattice.catalog.v1.ListServicesRequest
-	14, // 25: lattice.catalog.v1.CatalogService.ListScopes:input_type -> lattice.catalog.v1.ListScopesRequest
-	16, // 26: lattice.catalog.v1.CatalogService.UpdateService:input_type -> lattice.catalog.v1.UpdateServiceRequest
-	17, // 27: lattice.catalog.v1.CatalogService.DeleteService:input_type -> lattice.catalog.v1.DeleteServiceRequest
-	18, // 28: lattice.catalog.v1.CatalogService.ApplyTransaction:input_type -> lattice.catalog.v1.ApplyTransactionRequest
-	19, // 29: lattice.catalog.v1.CatalogService.GetOperation:input_type -> lattice.catalog.v1.GetOperationRequest
-	21, // 30: lattice.catalog.v1.CatalogService.CheckHealth:input_type -> lattice.catalog.v1.CheckHealthRequest
-	7,  // 31: lattice.catalog.v1.CatalogService.CreateService:output_type -> lattice.catalog.v1.MutationResult
-	11, // 32: lattice.catalog.v1.CatalogService.GetService:output_type -> lattice.catalog.v1.GetServiceResponse
-	13, // 33: lattice.catalog.v1.CatalogService.ListServices:output_type -> lattice.catalog.v1.ListServicesResponse
-	15, // 34: lattice.catalog.v1.CatalogService.ListScopes:output_type -> lattice.catalog.v1.ListScopesResponse
-	7,  // 35: lattice.catalog.v1.CatalogService.UpdateService:output_type -> lattice.catalog.v1.MutationResult
-	7,  // 36: lattice.catalog.v1.CatalogService.DeleteService:output_type -> lattice.catalog.v1.MutationResult
-	7,  // 37: lattice.catalog.v1.CatalogService.ApplyTransaction:output_type -> lattice.catalog.v1.MutationResult
-	20, // 38: lattice.catalog.v1.CatalogService.GetOperation:output_type -> lattice.catalog.v1.GetOperationResponse
-	22, // 39: lattice.catalog.v1.CatalogService.CheckHealth:output_type -> lattice.catalog.v1.CheckHealthResponse
-	31, // [31:40] is the sub-list for method output_type
-	22, // [22:31] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	23, // 22: lattice.catalog.v1.LoadWellKnownResponse.skills:type_name -> lattice.catalog.v1.DiscoveredSkill
+	9,  // 23: lattice.catalog.v1.CatalogService.CreateService:input_type -> lattice.catalog.v1.CreateServiceRequest
+	10, // 24: lattice.catalog.v1.CatalogService.GetService:input_type -> lattice.catalog.v1.GetServiceRequest
+	12, // 25: lattice.catalog.v1.CatalogService.ListServices:input_type -> lattice.catalog.v1.ListServicesRequest
+	14, // 26: lattice.catalog.v1.CatalogService.ListScopes:input_type -> lattice.catalog.v1.ListScopesRequest
+	16, // 27: lattice.catalog.v1.CatalogService.UpdateService:input_type -> lattice.catalog.v1.UpdateServiceRequest
+	17, // 28: lattice.catalog.v1.CatalogService.DeleteService:input_type -> lattice.catalog.v1.DeleteServiceRequest
+	18, // 29: lattice.catalog.v1.CatalogService.ApplyTransaction:input_type -> lattice.catalog.v1.ApplyTransactionRequest
+	19, // 30: lattice.catalog.v1.CatalogService.GetOperation:input_type -> lattice.catalog.v1.GetOperationRequest
+	21, // 31: lattice.catalog.v1.CatalogService.CheckHealth:input_type -> lattice.catalog.v1.CheckHealthRequest
+	24, // 32: lattice.catalog.v1.CatalogService.LoadWellKnown:input_type -> lattice.catalog.v1.LoadWellKnownRequest
+	7,  // 33: lattice.catalog.v1.CatalogService.CreateService:output_type -> lattice.catalog.v1.MutationResult
+	11, // 34: lattice.catalog.v1.CatalogService.GetService:output_type -> lattice.catalog.v1.GetServiceResponse
+	13, // 35: lattice.catalog.v1.CatalogService.ListServices:output_type -> lattice.catalog.v1.ListServicesResponse
+	15, // 36: lattice.catalog.v1.CatalogService.ListScopes:output_type -> lattice.catalog.v1.ListScopesResponse
+	7,  // 37: lattice.catalog.v1.CatalogService.UpdateService:output_type -> lattice.catalog.v1.MutationResult
+	7,  // 38: lattice.catalog.v1.CatalogService.DeleteService:output_type -> lattice.catalog.v1.MutationResult
+	7,  // 39: lattice.catalog.v1.CatalogService.ApplyTransaction:output_type -> lattice.catalog.v1.MutationResult
+	20, // 40: lattice.catalog.v1.CatalogService.GetOperation:output_type -> lattice.catalog.v1.GetOperationResponse
+	22, // 41: lattice.catalog.v1.CatalogService.CheckHealth:output_type -> lattice.catalog.v1.CheckHealthResponse
+	25, // 42: lattice.catalog.v1.CatalogService.LoadWellKnown:output_type -> lattice.catalog.v1.LoadWellKnownResponse
+	33, // [33:43] is the sub-list for method output_type
+	23, // [23:33] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_api_lattice_catalog_v1_catalog_proto_init() }
@@ -1923,7 +2207,7 @@ func file_api_lattice_catalog_v1_catalog_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_lattice_catalog_v1_catalog_proto_rawDesc), len(file_api_lattice_catalog_v1_catalog_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   27,
+			NumMessages:   30,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

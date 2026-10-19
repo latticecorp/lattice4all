@@ -14,6 +14,7 @@ service CatalogService {
   rpc ApplyTransaction(ApplyTransactionRequest) returns (MutationResult);
   rpc GetOperation(GetOperationRequest) returns (GetOperationResponse);
   rpc CheckHealth(CheckHealthRequest) returns (CheckHealthResponse);
+  rpc LoadWellKnown(LoadWellKnownRequest) returns (LoadWellKnownResponse);
 }
 message Address { string type = 1; string value = 2; }
 message Capabilities {
@@ -45,6 +46,11 @@ message ServiceInput {
   string secret_file = 13;
   repeated CredentialHeader headers = 14;
   repeated string instances = 15;
+  string source_service_id = 16 [json_name = "sourceServiceID"];
+  string status = 17;
+  string tool_schema = 18 [json_name = "toolSchema"];
+  repeated string exported_tools = 19 [json_name = "exportedTools"];
+  repeated string imported_tools = 20 [json_name = "importedTools"];
 }
 message Service {
   string kind = 1;
@@ -71,6 +77,11 @@ message Service {
   string secret_file = 20;
   repeated CredentialHeader headers = 21;
   repeated string instances = 22;
+  string source_service_id = 23 [json_name = "sourceServiceID"];
+  string status = 24;
+  string tool_schema = 25 [json_name = "toolSchema"];
+  repeated string exported_tools = 26 [json_name = "exportedTools"];
+  repeated string imported_tools = 27 [json_name = "importedTools"];
 }
 message Operation {
   string type = 1;
@@ -132,3 +143,17 @@ message GetOperationRequest { string request_id = 1 [json_name = "requestID"]; o
 message GetOperationResponse { MutationResult result = 1; ReadMetadata read = 2; }
 message CheckHealthRequest { bool quorum = 1; }
 message CheckHealthResponse { string status = 1; string node_id = 2 [json_name = "nodeID"]; }
+message DiscoveredSkill {
+  string name = 1;
+  string description = 2;
+  string version = 3;
+  string tool_schema = 4 [json_name = "toolSchema"];
+}
+message LoadWellKnownRequest {
+  string id = 1;
+}
+message LoadWellKnownResponse {
+  string service_id = 1 [json_name = "serviceID"];
+  string source = 2;
+  repeated DiscoveredSkill skills = 3;
+}

@@ -28,6 +28,7 @@ const (
 	CatalogService_ApplyTransaction_FullMethodName = "/lattice.catalog.v1.CatalogService/ApplyTransaction"
 	CatalogService_GetOperation_FullMethodName     = "/lattice.catalog.v1.CatalogService/GetOperation"
 	CatalogService_CheckHealth_FullMethodName      = "/lattice.catalog.v1.CatalogService/CheckHealth"
+	CatalogService_LoadWellKnown_FullMethodName    = "/lattice.catalog.v1.CatalogService/LoadWellKnown"
 )
 
 // CatalogServiceClient is the client API for CatalogService service.
@@ -46,6 +47,7 @@ type CatalogServiceClient interface {
 	ApplyTransaction(ctx context.Context, in *ApplyTransactionRequest, opts ...grpc.CallOption) (*MutationResult, error)
 	GetOperation(ctx context.Context, in *GetOperationRequest, opts ...grpc.CallOption) (*GetOperationResponse, error)
 	CheckHealth(ctx context.Context, in *CheckHealthRequest, opts ...grpc.CallOption) (*CheckHealthResponse, error)
+	LoadWellKnown(ctx context.Context, in *LoadWellKnownRequest, opts ...grpc.CallOption) (*LoadWellKnownResponse, error)
 }
 
 type catalogServiceClient struct {
@@ -146,6 +148,16 @@ func (c *catalogServiceClient) CheckHealth(ctx context.Context, in *CheckHealthR
 	return out, nil
 }
 
+func (c *catalogServiceClient) LoadWellKnown(ctx context.Context, in *LoadWellKnownRequest, opts ...grpc.CallOption) (*LoadWellKnownResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LoadWellKnownResponse)
+	err := c.cc.Invoke(ctx, CatalogService_LoadWellKnown_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CatalogServiceServer is the server API for CatalogService service.
 // All implementations must embed UnimplementedCatalogServiceServer
 // for forward compatibility.
@@ -162,6 +174,7 @@ type CatalogServiceServer interface {
 	ApplyTransaction(context.Context, *ApplyTransactionRequest) (*MutationResult, error)
 	GetOperation(context.Context, *GetOperationRequest) (*GetOperationResponse, error)
 	CheckHealth(context.Context, *CheckHealthRequest) (*CheckHealthResponse, error)
+	LoadWellKnown(context.Context, *LoadWellKnownRequest) (*LoadWellKnownResponse, error)
 	mustEmbedUnimplementedCatalogServiceServer()
 }
 
@@ -198,6 +211,9 @@ func (UnimplementedCatalogServiceServer) GetOperation(context.Context, *GetOpera
 }
 func (UnimplementedCatalogServiceServer) CheckHealth(context.Context, *CheckHealthRequest) (*CheckHealthResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CheckHealth not implemented")
+}
+func (UnimplementedCatalogServiceServer) LoadWellKnown(context.Context, *LoadWellKnownRequest) (*LoadWellKnownResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method LoadWellKnown not implemented")
 }
 func (UnimplementedCatalogServiceServer) mustEmbedUnimplementedCatalogServiceServer() {}
 func (UnimplementedCatalogServiceServer) testEmbeddedByValue()                        {}
@@ -382,6 +398,24 @@ func _CatalogService_CheckHealth_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CatalogService_LoadWellKnown_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoadWellKnownRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatalogServiceServer).LoadWellKnown(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatalogService_LoadWellKnown_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatalogServiceServer).LoadWellKnown(ctx, req.(*LoadWellKnownRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CatalogService_ServiceDesc is the grpc.ServiceDesc for CatalogService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -424,6 +458,10 @@ var CatalogService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckHealth",
 			Handler:    _CatalogService_CheckHealth_Handler,
+		},
+		{
+			MethodName: "LoadWellKnown",
+			Handler:    _CatalogService_LoadWellKnown_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

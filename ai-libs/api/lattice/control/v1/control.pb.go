@@ -28,6 +28,7 @@ const (
 	DataplaneKind_DATAPLANE_KIND_UNSPECIFIED      DataplaneKind = 0
 	DataplaneKind_DATAPLANE_KIND_INFERENCE_ROUTER DataplaneKind = 1
 	DataplaneKind_DATAPLANE_KIND_AI_AGENT         DataplaneKind = 2
+	DataplaneKind_DATAPLANE_KIND_MCP              DataplaneKind = 3
 )
 
 // Enum value maps for DataplaneKind.
@@ -36,11 +37,13 @@ var (
 		0: "DATAPLANE_KIND_UNSPECIFIED",
 		1: "DATAPLANE_KIND_INFERENCE_ROUTER",
 		2: "DATAPLANE_KIND_AI_AGENT",
+		3: "DATAPLANE_KIND_MCP",
 	}
 	DataplaneKind_value = map[string]int32{
 		"DATAPLANE_KIND_UNSPECIFIED":      0,
 		"DATAPLANE_KIND_INFERENCE_ROUTER": 1,
 		"DATAPLANE_KIND_AI_AGENT":         2,
+		"DATAPLANE_KIND_MCP":              3,
 	}
 )
 
@@ -71,6 +74,178 @@ func (DataplaneKind) EnumDescriptor() ([]byte, []int) {
 	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{0}
 }
 
+type WellKnownSkill struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Version       string                 `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
+	ToolSchema    string                 `protobuf:"bytes,4,opt,name=tool_schema,json=toolSchema,proto3" json:"tool_schema,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WellKnownSkill) Reset() {
+	*x = WellKnownSkill{}
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WellKnownSkill) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WellKnownSkill) ProtoMessage() {}
+
+func (x *WellKnownSkill) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WellKnownSkill.ProtoReflect.Descriptor instead.
+func (*WellKnownSkill) Descriptor() ([]byte, []int) {
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *WellKnownSkill) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *WellKnownSkill) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *WellKnownSkill) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
+func (x *WellKnownSkill) GetToolSchema() string {
+	if x != nil {
+		return x.ToolSchema
+	}
+	return ""
+}
+
+type WellKnownMetadata struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ServiceId     string                 `protobuf:"bytes,1,opt,name=service_id,json=serviceId,proto3" json:"service_id,omitempty"`
+	RawJson       string                 `protobuf:"bytes,2,opt,name=raw_json,json=rawJson,proto3" json:"raw_json,omitempty"`
+	Skills        []*WellKnownSkill      `protobuf:"bytes,3,rep,name=skills,proto3" json:"skills,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WellKnownMetadata) Reset() {
+	*x = WellKnownMetadata{}
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WellKnownMetadata) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WellKnownMetadata) ProtoMessage() {}
+
+func (x *WellKnownMetadata) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WellKnownMetadata.ProtoReflect.Descriptor instead.
+func (*WellKnownMetadata) Descriptor() ([]byte, []int) {
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *WellKnownMetadata) GetServiceId() string {
+	if x != nil {
+		return x.ServiceId
+	}
+	return ""
+}
+
+func (x *WellKnownMetadata) GetRawJson() string {
+	if x != nil {
+		return x.RawJson
+	}
+	return ""
+}
+
+func (x *WellKnownMetadata) GetSkills() []*WellKnownSkill {
+	if x != nil {
+		return x.Skills
+	}
+	return nil
+}
+
+type WellKnownRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ServiceId     string                 `protobuf:"bytes,1,opt,name=service_id,json=serviceId,proto3" json:"service_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WellKnownRequest) Reset() {
+	*x = WellKnownRequest{}
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WellKnownRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WellKnownRequest) ProtoMessage() {}
+
+func (x *WellKnownRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WellKnownRequest.ProtoReflect.Descriptor instead.
+func (*WellKnownRequest) Descriptor() ([]byte, []int) {
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *WellKnownRequest) GetServiceId() string {
+	if x != nil {
+		return x.ServiceId
+	}
+	return ""
+}
+
 type Subscribe struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Logical catalog service and its concrete running dataplane instance.
@@ -83,14 +258,16 @@ type Subscribe struct {
 	LastDataplaneVersion string `protobuf:"bytes,3,opt,name=last_dataplane_version,json=lastDataplaneVersion,proto3" json:"last_dataplane_version,omitempty"`
 	SchemaVersion        uint32 `protobuf:"varint,4,opt,name=schema_version,json=schemaVersion,proto3" json:"schema_version,omitempty"`
 	// Identifies the type of dataplane subscribing.
-	Kind          DataplaneKind `protobuf:"varint,5,opt,name=kind,proto3,enum=lattice.control.v1.DataplaneKind" json:"kind,omitempty"`
+	Kind DataplaneKind `protobuf:"varint,5,opt,name=kind,proto3,enum=lattice.control.v1.DataplaneKind" json:"kind,omitempty"`
+	// Optional well-known metadata pushed by the agent/MCP at stream startup.
+	WellKnown     *WellKnownMetadata `protobuf:"bytes,6,opt,name=well_known,json=wellKnown,proto3" json:"well_known,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Subscribe) Reset() {
 	*x = Subscribe{}
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[0]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -102,7 +279,7 @@ func (x *Subscribe) String() string {
 func (*Subscribe) ProtoMessage() {}
 
 func (x *Subscribe) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[0]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -115,7 +292,7 @@ func (x *Subscribe) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Subscribe.ProtoReflect.Descriptor instead.
 func (*Subscribe) Descriptor() ([]byte, []int) {
-	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{0}
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Subscribe) GetServiceId() string {
@@ -153,6 +330,13 @@ func (x *Subscribe) GetKind() DataplaneKind {
 	return DataplaneKind_DATAPLANE_KIND_UNSPECIFIED
 }
 
+func (x *Subscribe) GetWellKnown() *WellKnownMetadata {
+	if x != nil {
+		return x.WellKnown
+	}
+	return nil
+}
+
 type DataplaneMessage struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Payload:
@@ -160,6 +344,7 @@ type DataplaneMessage struct {
 	//	*DataplaneMessage_Subscribe
 	//	*DataplaneMessage_UpdateStatus
 	//	*DataplaneMessage_EnvoyStatus
+	//	*DataplaneMessage_WellKnown
 	Payload       isDataplaneMessage_Payload `protobuf_oneof:"payload"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -167,7 +352,7 @@ type DataplaneMessage struct {
 
 func (x *DataplaneMessage) Reset() {
 	*x = DataplaneMessage{}
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[1]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -179,7 +364,7 @@ func (x *DataplaneMessage) String() string {
 func (*DataplaneMessage) ProtoMessage() {}
 
 func (x *DataplaneMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[1]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -192,7 +377,7 @@ func (x *DataplaneMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DataplaneMessage.ProtoReflect.Descriptor instead.
 func (*DataplaneMessage) Descriptor() ([]byte, []int) {
-	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{1}
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *DataplaneMessage) GetPayload() isDataplaneMessage_Payload {
@@ -229,6 +414,15 @@ func (x *DataplaneMessage) GetEnvoyStatus() *EnvoyStatus {
 	return nil
 }
 
+func (x *DataplaneMessage) GetWellKnown() *WellKnownMetadata {
+	if x != nil {
+		if x, ok := x.Payload.(*DataplaneMessage_WellKnown); ok {
+			return x.WellKnown
+		}
+	}
+	return nil
+}
+
 type isDataplaneMessage_Payload interface {
 	isDataplaneMessage_Payload()
 }
@@ -245,11 +439,17 @@ type DataplaneMessage_EnvoyStatus struct {
 	EnvoyStatus *EnvoyStatus `protobuf:"bytes,3,opt,name=envoy_status,json=envoyStatus,proto3,oneof"`
 }
 
+type DataplaneMessage_WellKnown struct {
+	WellKnown *WellKnownMetadata `protobuf:"bytes,4,opt,name=well_known,json=wellKnown,proto3,oneof"`
+}
+
 func (*DataplaneMessage_Subscribe) isDataplaneMessage_Payload() {}
 
 func (*DataplaneMessage_UpdateStatus) isDataplaneMessage_Payload() {}
 
 func (*DataplaneMessage_EnvoyStatus) isDataplaneMessage_Payload() {}
+
+func (*DataplaneMessage_WellKnown) isDataplaneMessage_Payload() {}
 
 type ControlPlaneMessage struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -262,6 +462,7 @@ type ControlPlaneMessage struct {
 	//
 	//	*ControlPlaneMessage_XdsConfiguration
 	//	*ControlPlaneMessage_DataplaneConfiguration
+	//	*ControlPlaneMessage_WellKnownRequest
 	Payload       isControlPlaneMessage_Payload `protobuf_oneof:"payload"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -269,7 +470,7 @@ type ControlPlaneMessage struct {
 
 func (x *ControlPlaneMessage) Reset() {
 	*x = ControlPlaneMessage{}
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[2]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -281,7 +482,7 @@ func (x *ControlPlaneMessage) String() string {
 func (*ControlPlaneMessage) ProtoMessage() {}
 
 func (x *ControlPlaneMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[2]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -294,7 +495,7 @@ func (x *ControlPlaneMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ControlPlaneMessage.ProtoReflect.Descriptor instead.
 func (*ControlPlaneMessage) Descriptor() ([]byte, []int) {
-	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{2}
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ControlPlaneMessage) GetNonce() string {
@@ -329,6 +530,15 @@ func (x *ControlPlaneMessage) GetDataplaneConfiguration() *DataplaneConfiguratio
 	return nil
 }
 
+func (x *ControlPlaneMessage) GetWellKnownRequest() *WellKnownRequest {
+	if x != nil {
+		if x, ok := x.Payload.(*ControlPlaneMessage_WellKnownRequest); ok {
+			return x.WellKnownRequest
+		}
+	}
+	return nil
+}
+
 type isControlPlaneMessage_Payload interface {
 	isControlPlaneMessage_Payload()
 }
@@ -341,9 +551,15 @@ type ControlPlaneMessage_DataplaneConfiguration struct {
 	DataplaneConfiguration *DataplaneConfiguration `protobuf:"bytes,3,opt,name=dataplane_configuration,json=dataplaneConfiguration,proto3,oneof"`
 }
 
+type ControlPlaneMessage_WellKnownRequest struct {
+	WellKnownRequest *WellKnownRequest `protobuf:"bytes,4,opt,name=well_known_request,json=wellKnownRequest,proto3,oneof"`
+}
+
 func (*ControlPlaneMessage_XdsConfiguration) isControlPlaneMessage_Payload() {}
 
 func (*ControlPlaneMessage_DataplaneConfiguration) isControlPlaneMessage_Payload() {}
+
+func (*ControlPlaneMessage_WellKnownRequest) isControlPlaneMessage_Payload() {}
 
 type ResourceSet struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -355,7 +571,7 @@ type ResourceSet struct {
 
 func (x *ResourceSet) Reset() {
 	*x = ResourceSet{}
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[3]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -367,7 +583,7 @@ func (x *ResourceSet) String() string {
 func (*ResourceSet) ProtoMessage() {}
 
 func (x *ResourceSet) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[3]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -380,7 +596,7 @@ func (x *ResourceSet) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResourceSet.ProtoReflect.Descriptor instead.
 func (*ResourceSet) Descriptor() ([]byte, []int) {
-	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{3}
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ResourceSet) GetTypeUrl() string {
@@ -410,7 +626,7 @@ type XdsConfiguration struct {
 
 func (x *XdsConfiguration) Reset() {
 	*x = XdsConfiguration{}
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[4]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -422,7 +638,7 @@ func (x *XdsConfiguration) String() string {
 func (*XdsConfiguration) ProtoMessage() {}
 
 func (x *XdsConfiguration) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[4]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -435,7 +651,7 @@ func (x *XdsConfiguration) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use XdsConfiguration.ProtoReflect.Descriptor instead.
 func (*XdsConfiguration) Descriptor() ([]byte, []int) {
-	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{4}
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *XdsConfiguration) GetVersion() string {
@@ -463,7 +679,7 @@ type DataplaneConfiguration struct {
 
 func (x *DataplaneConfiguration) Reset() {
 	*x = DataplaneConfiguration{}
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[5]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -475,7 +691,7 @@ func (x *DataplaneConfiguration) String() string {
 func (*DataplaneConfiguration) ProtoMessage() {}
 
 func (x *DataplaneConfiguration) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[5]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -488,7 +704,7 @@ func (x *DataplaneConfiguration) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DataplaneConfiguration.ProtoReflect.Descriptor instead.
 func (*DataplaneConfiguration) Descriptor() ([]byte, []int) {
-	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{5}
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DataplaneConfiguration) GetVersion() string {
@@ -520,7 +736,7 @@ type Model struct {
 
 func (x *Model) Reset() {
 	*x = Model{}
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[6]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -532,7 +748,7 @@ func (x *Model) String() string {
 func (*Model) ProtoMessage() {}
 
 func (x *Model) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[6]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -545,7 +761,7 @@ func (x *Model) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Model.ProtoReflect.Descriptor instead.
 func (*Model) Descriptor() ([]byte, []int) {
-	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{6}
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *Model) GetAlias() string {
@@ -603,7 +819,7 @@ type UpdateStatus struct {
 
 func (x *UpdateStatus) Reset() {
 	*x = UpdateStatus{}
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[7]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -615,7 +831,7 @@ func (x *UpdateStatus) String() string {
 func (*UpdateStatus) ProtoMessage() {}
 
 func (x *UpdateStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[7]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -628,7 +844,7 @@ func (x *UpdateStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateStatus.ProtoReflect.Descriptor instead.
 func (*UpdateStatus) Descriptor() ([]byte, []int) {
-	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{7}
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *UpdateStatus) GetNonce() string {
@@ -679,7 +895,7 @@ type EnvoyStatus struct {
 
 func (x *EnvoyStatus) Reset() {
 	*x = EnvoyStatus{}
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[8]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -691,7 +907,7 @@ func (x *EnvoyStatus) String() string {
 func (*EnvoyStatus) ProtoMessage() {}
 
 func (x *EnvoyStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_api_lattice_control_v1_control_proto_msgTypes[8]
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -704,7 +920,7 @@ func (x *EnvoyStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EnvoyStatus.ProtoReflect.Descriptor instead.
 func (*EnvoyStatus) Descriptor() ([]byte, []int) {
-	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{8}
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *EnvoyStatus) GetVersion() string {
@@ -746,23 +962,42 @@ var File_api_lattice_control_v1_control_proto protoreflect.FileDescriptor
 
 const file_api_lattice_control_v1_control_proto_rawDesc = "" +
 	"\n" +
-	"$api/lattice/control/v1/control.proto\x12\x12lattice.control.v1\x1a\x19google/protobuf/any.proto\"\xee\x01\n" +
+	"$api/lattice/control/v1/control.proto\x12\x12lattice.control.v1\x1a\x19google/protobuf/any.proto\"\x81\x01\n" +
+	"\x0eWellKnownSkill\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x18\n" +
+	"\aversion\x18\x03 \x01(\tR\aversion\x12\x1f\n" +
+	"\vtool_schema\x18\x04 \x01(\tR\n" +
+	"toolSchema\"\x89\x01\n" +
+	"\x11WellKnownMetadata\x12\x1d\n" +
+	"\n" +
+	"service_id\x18\x01 \x01(\tR\tserviceId\x12\x19\n" +
+	"\braw_json\x18\x02 \x01(\tR\arawJson\x12:\n" +
+	"\x06skills\x18\x03 \x03(\v2\".lattice.control.v1.WellKnownSkillR\x06skills\"1\n" +
+	"\x10WellKnownRequest\x12\x1d\n" +
+	"\n" +
+	"service_id\x18\x01 \x01(\tR\tserviceId\"\xb4\x02\n" +
 	"\tSubscribe\x12\x1d\n" +
 	"\n" +
 	"service_id\x18\x01 \x01(\tR\tserviceId\x12.\n" +
 	"\x13service_instance_id\x18\x02 \x01(\tR\x11serviceInstanceId\x124\n" +
 	"\x16last_dataplane_version\x18\x03 \x01(\tR\x14lastDataplaneVersion\x12%\n" +
 	"\x0eschema_version\x18\x04 \x01(\rR\rschemaVersion\x125\n" +
-	"\x04kind\x18\x05 \x01(\x0e2!.lattice.control.v1.DataplaneKindR\x04kind\"\xeb\x01\n" +
+	"\x04kind\x18\x05 \x01(\x0e2!.lattice.control.v1.DataplaneKindR\x04kind\x12D\n" +
+	"\n" +
+	"well_known\x18\x06 \x01(\v2%.lattice.control.v1.WellKnownMetadataR\twellKnown\"\xb3\x02\n" +
 	"\x10DataplaneMessage\x12=\n" +
 	"\tsubscribe\x18\x01 \x01(\v2\x1d.lattice.control.v1.SubscribeH\x00R\tsubscribe\x12G\n" +
 	"\rupdate_status\x18\x02 \x01(\v2 .lattice.control.v1.UpdateStatusH\x00R\fupdateStatus\x12D\n" +
-	"\fenvoy_status\x18\x03 \x01(\v2\x1f.lattice.control.v1.EnvoyStatusH\x00R\venvoyStatusB\t\n" +
-	"\apayload\"\xf2\x01\n" +
+	"\fenvoy_status\x18\x03 \x01(\v2\x1f.lattice.control.v1.EnvoyStatusH\x00R\venvoyStatus\x12F\n" +
+	"\n" +
+	"well_known\x18\x04 \x01(\v2%.lattice.control.v1.WellKnownMetadataH\x00R\twellKnownB\t\n" +
+	"\apayload\"\xc8\x02\n" +
 	"\x13ControlPlaneMessage\x12\x14\n" +
 	"\x05nonce\x18\x01 \x01(\tR\x05nonce\x12S\n" +
 	"\x11xds_configuration\x18\x02 \x01(\v2$.lattice.control.v1.XdsConfigurationH\x00R\x10xdsConfiguration\x12e\n" +
-	"\x17dataplane_configuration\x18\x03 \x01(\v2*.lattice.control.v1.DataplaneConfigurationH\x00R\x16dataplaneConfigurationB\t\n" +
+	"\x17dataplane_configuration\x18\x03 \x01(\v2*.lattice.control.v1.DataplaneConfigurationH\x00R\x16dataplaneConfiguration\x12T\n" +
+	"\x12well_known_request\x18\x04 \x01(\v2$.lattice.control.v1.WellKnownRequestH\x00R\x10wellKnownRequestB\t\n" +
 	"\apayload\"\\\n" +
 	"\vResourceSet\x12\x19\n" +
 	"\btype_url\x18\x01 \x01(\tR\atypeUrl\x122\n" +
@@ -792,11 +1027,12 @@ const file_api_lattice_control_v1_control_proto_rawDesc = "" +
 	"\btype_url\x18\x02 \x01(\tR\atypeUrl\x12\x14\n" +
 	"\x05nonce\x18\x03 \x01(\tR\x05nonce\x12\x1a\n" +
 	"\baccepted\x18\x04 \x01(\bR\baccepted\x12\x14\n" +
-	"\x05error\x18\x05 \x01(\tR\x05error*q\n" +
+	"\x05error\x18\x05 \x01(\tR\x05error*\x89\x01\n" +
 	"\rDataplaneKind\x12\x1e\n" +
 	"\x1aDATAPLANE_KIND_UNSPECIFIED\x10\x00\x12#\n" +
 	"\x1fDATAPLANE_KIND_INFERENCE_ROUTER\x10\x01\x12\x1b\n" +
-	"\x17DATAPLANE_KIND_AI_AGENT\x10\x022\x8b\x01\n" +
+	"\x17DATAPLANE_KIND_AI_AGENT\x10\x02\x12\x16\n" +
+	"\x12DATAPLANE_KIND_MCP\x10\x032\x8b\x01\n" +
 	"\x13ControlPlaneService\x12t\n" +
 	"\x1fSubscribeDataplaneConfiguration\x12$.lattice.control.v1.DataplaneMessage\x1a'.lattice.control.v1.ControlPlaneMessage(\x010\x01BMZKgithub.com/latticecorp/lattice4all/ai-libs/api/lattice/control/v1;controlv1b\x06proto3"
 
@@ -813,37 +1049,44 @@ func file_api_lattice_control_v1_control_proto_rawDescGZIP() []byte {
 }
 
 var file_api_lattice_control_v1_control_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_api_lattice_control_v1_control_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_api_lattice_control_v1_control_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_api_lattice_control_v1_control_proto_goTypes = []any{
 	(DataplaneKind)(0),             // 0: lattice.control.v1.DataplaneKind
-	(*Subscribe)(nil),              // 1: lattice.control.v1.Subscribe
-	(*DataplaneMessage)(nil),       // 2: lattice.control.v1.DataplaneMessage
-	(*ControlPlaneMessage)(nil),    // 3: lattice.control.v1.ControlPlaneMessage
-	(*ResourceSet)(nil),            // 4: lattice.control.v1.ResourceSet
-	(*XdsConfiguration)(nil),       // 5: lattice.control.v1.XdsConfiguration
-	(*DataplaneConfiguration)(nil), // 6: lattice.control.v1.DataplaneConfiguration
-	(*Model)(nil),                  // 7: lattice.control.v1.Model
-	(*UpdateStatus)(nil),           // 8: lattice.control.v1.UpdateStatus
-	(*EnvoyStatus)(nil),            // 9: lattice.control.v1.EnvoyStatus
-	(*anypb.Any)(nil),              // 10: google.protobuf.Any
+	(*WellKnownSkill)(nil),         // 1: lattice.control.v1.WellKnownSkill
+	(*WellKnownMetadata)(nil),      // 2: lattice.control.v1.WellKnownMetadata
+	(*WellKnownRequest)(nil),       // 3: lattice.control.v1.WellKnownRequest
+	(*Subscribe)(nil),              // 4: lattice.control.v1.Subscribe
+	(*DataplaneMessage)(nil),       // 5: lattice.control.v1.DataplaneMessage
+	(*ControlPlaneMessage)(nil),    // 6: lattice.control.v1.ControlPlaneMessage
+	(*ResourceSet)(nil),            // 7: lattice.control.v1.ResourceSet
+	(*XdsConfiguration)(nil),       // 8: lattice.control.v1.XdsConfiguration
+	(*DataplaneConfiguration)(nil), // 9: lattice.control.v1.DataplaneConfiguration
+	(*Model)(nil),                  // 10: lattice.control.v1.Model
+	(*UpdateStatus)(nil),           // 11: lattice.control.v1.UpdateStatus
+	(*EnvoyStatus)(nil),            // 12: lattice.control.v1.EnvoyStatus
+	(*anypb.Any)(nil),              // 13: google.protobuf.Any
 }
 var file_api_lattice_control_v1_control_proto_depIdxs = []int32{
-	0,  // 0: lattice.control.v1.Subscribe.kind:type_name -> lattice.control.v1.DataplaneKind
-	1,  // 1: lattice.control.v1.DataplaneMessage.subscribe:type_name -> lattice.control.v1.Subscribe
-	8,  // 2: lattice.control.v1.DataplaneMessage.update_status:type_name -> lattice.control.v1.UpdateStatus
-	9,  // 3: lattice.control.v1.DataplaneMessage.envoy_status:type_name -> lattice.control.v1.EnvoyStatus
-	5,  // 4: lattice.control.v1.ControlPlaneMessage.xds_configuration:type_name -> lattice.control.v1.XdsConfiguration
-	6,  // 5: lattice.control.v1.ControlPlaneMessage.dataplane_configuration:type_name -> lattice.control.v1.DataplaneConfiguration
-	10, // 6: lattice.control.v1.ResourceSet.resources:type_name -> google.protobuf.Any
-	4,  // 7: lattice.control.v1.XdsConfiguration.resource_sets:type_name -> lattice.control.v1.ResourceSet
-	7,  // 8: lattice.control.v1.DataplaneConfiguration.models:type_name -> lattice.control.v1.Model
-	2,  // 9: lattice.control.v1.ControlPlaneService.SubscribeDataplaneConfiguration:input_type -> lattice.control.v1.DataplaneMessage
-	3,  // 10: lattice.control.v1.ControlPlaneService.SubscribeDataplaneConfiguration:output_type -> lattice.control.v1.ControlPlaneMessage
-	10, // [10:11] is the sub-list for method output_type
-	9,  // [9:10] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	1,  // 0: lattice.control.v1.WellKnownMetadata.skills:type_name -> lattice.control.v1.WellKnownSkill
+	0,  // 1: lattice.control.v1.Subscribe.kind:type_name -> lattice.control.v1.DataplaneKind
+	2,  // 2: lattice.control.v1.Subscribe.well_known:type_name -> lattice.control.v1.WellKnownMetadata
+	4,  // 3: lattice.control.v1.DataplaneMessage.subscribe:type_name -> lattice.control.v1.Subscribe
+	11, // 4: lattice.control.v1.DataplaneMessage.update_status:type_name -> lattice.control.v1.UpdateStatus
+	12, // 5: lattice.control.v1.DataplaneMessage.envoy_status:type_name -> lattice.control.v1.EnvoyStatus
+	2,  // 6: lattice.control.v1.DataplaneMessage.well_known:type_name -> lattice.control.v1.WellKnownMetadata
+	8,  // 7: lattice.control.v1.ControlPlaneMessage.xds_configuration:type_name -> lattice.control.v1.XdsConfiguration
+	9,  // 8: lattice.control.v1.ControlPlaneMessage.dataplane_configuration:type_name -> lattice.control.v1.DataplaneConfiguration
+	3,  // 9: lattice.control.v1.ControlPlaneMessage.well_known_request:type_name -> lattice.control.v1.WellKnownRequest
+	13, // 10: lattice.control.v1.ResourceSet.resources:type_name -> google.protobuf.Any
+	7,  // 11: lattice.control.v1.XdsConfiguration.resource_sets:type_name -> lattice.control.v1.ResourceSet
+	10, // 12: lattice.control.v1.DataplaneConfiguration.models:type_name -> lattice.control.v1.Model
+	5,  // 13: lattice.control.v1.ControlPlaneService.SubscribeDataplaneConfiguration:input_type -> lattice.control.v1.DataplaneMessage
+	6,  // 14: lattice.control.v1.ControlPlaneService.SubscribeDataplaneConfiguration:output_type -> lattice.control.v1.ControlPlaneMessage
+	14, // [14:15] is the sub-list for method output_type
+	13, // [13:14] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_api_lattice_control_v1_control_proto_init() }
@@ -851,14 +1094,16 @@ func file_api_lattice_control_v1_control_proto_init() {
 	if File_api_lattice_control_v1_control_proto != nil {
 		return
 	}
-	file_api_lattice_control_v1_control_proto_msgTypes[1].OneofWrappers = []any{
+	file_api_lattice_control_v1_control_proto_msgTypes[4].OneofWrappers = []any{
 		(*DataplaneMessage_Subscribe)(nil),
 		(*DataplaneMessage_UpdateStatus)(nil),
 		(*DataplaneMessage_EnvoyStatus)(nil),
+		(*DataplaneMessage_WellKnown)(nil),
 	}
-	file_api_lattice_control_v1_control_proto_msgTypes[2].OneofWrappers = []any{
+	file_api_lattice_control_v1_control_proto_msgTypes[5].OneofWrappers = []any{
 		(*ControlPlaneMessage_XdsConfiguration)(nil),
 		(*ControlPlaneMessage_DataplaneConfiguration)(nil),
+		(*ControlPlaneMessage_WellKnownRequest)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -866,7 +1111,7 @@ func file_api_lattice_control_v1_control_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_lattice_control_v1_control_proto_rawDesc), len(file_api_lattice_control_v1_control_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   9,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
