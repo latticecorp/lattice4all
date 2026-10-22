@@ -14,6 +14,7 @@ service CatalogService {
   rpc ApplyTransaction(ApplyTransactionRequest) returns (MutationResult);
   rpc GetOperation(GetOperationRequest) returns (GetOperationResponse);
   rpc CheckHealth(CheckHealthRequest) returns (CheckHealthResponse);
+  rpc RefreshAgentCard(RefreshAgentCardRequest) returns (MutationResult);
   rpc LoadWellKnown(LoadWellKnownRequest) returns (LoadWellKnownResponse);
 }
 message Address { string type = 1; string value = 2; }
@@ -51,6 +52,10 @@ message ServiceInput {
   string tool_schema = 18 [json_name = "toolSchema"];
   repeated string exported_tools = 19 [json_name = "exportedTools"];
   repeated string imported_tools = 20 [json_name = "importedTools"];
+  string parent_agent_id = 21 [json_name = "parentAgentID"];
+  string a2a_version = 22 [json_name = "a2aVersion"];
+  string original_card_raw = 23 [json_name = "originalCardRaw"];
+  string active_card_raw = 24 [json_name = "activeCardRaw"];
 }
 message Service {
   string kind = 1;
@@ -82,6 +87,13 @@ message Service {
   string tool_schema = 25 [json_name = "toolSchema"];
   repeated string exported_tools = 26 [json_name = "exportedTools"];
   repeated string imported_tools = 27 [json_name = "importedTools"];
+  repeated AgentCardRevision card_history = 32;
+  repeated AgentCardSkill skills = 33;
+  string agent_card_id = 34 [json_name = "agentCardID"];
+  string parent_agent_id = 28 [json_name = "parentAgentID"];
+  string a2a_version = 29 [json_name = "a2aVersion"];
+  string original_card_raw = 30 [json_name = "originalCardRaw"];
+  string active_card_raw = 31 [json_name = "activeCardRaw"];
 }
 message Operation {
   string type = 1;
@@ -156,4 +168,23 @@ message LoadWellKnownResponse {
   string service_id = 1 [json_name = "serviceID"];
   string source = 2;
   repeated DiscoveredSkill skills = 3;
+}
+
+message RefreshAgentCardRequest { string id = 1; uint64 expected_revision = 2; string raw_card = 3; string a2a_version = 4; }
+
+// Derived from active_card_raw; not independently mutable.
+message AgentCardSkill {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  bytes input_schema = 4;
+  bytes output_schema = 5;
+  repeated string tags = 6;
+  bool custom_flag = 7;
+  bytes dispatch_rules = 8;
+}
+message AgentCardRevision {
+  uint64 revision = 1;
+  string a2a_version = 2;
+  string active_card_raw = 3;
 }

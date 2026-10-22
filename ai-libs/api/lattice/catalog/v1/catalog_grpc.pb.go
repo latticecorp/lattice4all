@@ -28,6 +28,7 @@ const (
 	CatalogService_ApplyTransaction_FullMethodName = "/lattice.catalog.v1.CatalogService/ApplyTransaction"
 	CatalogService_GetOperation_FullMethodName     = "/lattice.catalog.v1.CatalogService/GetOperation"
 	CatalogService_CheckHealth_FullMethodName      = "/lattice.catalog.v1.CatalogService/CheckHealth"
+	CatalogService_RefreshAgentCard_FullMethodName = "/lattice.catalog.v1.CatalogService/RefreshAgentCard"
 	CatalogService_LoadWellKnown_FullMethodName    = "/lattice.catalog.v1.CatalogService/LoadWellKnown"
 )
 
@@ -47,6 +48,7 @@ type CatalogServiceClient interface {
 	ApplyTransaction(ctx context.Context, in *ApplyTransactionRequest, opts ...grpc.CallOption) (*MutationResult, error)
 	GetOperation(ctx context.Context, in *GetOperationRequest, opts ...grpc.CallOption) (*GetOperationResponse, error)
 	CheckHealth(ctx context.Context, in *CheckHealthRequest, opts ...grpc.CallOption) (*CheckHealthResponse, error)
+	RefreshAgentCard(ctx context.Context, in *RefreshAgentCardRequest, opts ...grpc.CallOption) (*MutationResult, error)
 	LoadWellKnown(ctx context.Context, in *LoadWellKnownRequest, opts ...grpc.CallOption) (*LoadWellKnownResponse, error)
 }
 
@@ -148,6 +150,16 @@ func (c *catalogServiceClient) CheckHealth(ctx context.Context, in *CheckHealthR
 	return out, nil
 }
 
+func (c *catalogServiceClient) RefreshAgentCard(ctx context.Context, in *RefreshAgentCardRequest, opts ...grpc.CallOption) (*MutationResult, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MutationResult)
+	err := c.cc.Invoke(ctx, CatalogService_RefreshAgentCard_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *catalogServiceClient) LoadWellKnown(ctx context.Context, in *LoadWellKnownRequest, opts ...grpc.CallOption) (*LoadWellKnownResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(LoadWellKnownResponse)
@@ -174,6 +186,7 @@ type CatalogServiceServer interface {
 	ApplyTransaction(context.Context, *ApplyTransactionRequest) (*MutationResult, error)
 	GetOperation(context.Context, *GetOperationRequest) (*GetOperationResponse, error)
 	CheckHealth(context.Context, *CheckHealthRequest) (*CheckHealthResponse, error)
+	RefreshAgentCard(context.Context, *RefreshAgentCardRequest) (*MutationResult, error)
 	LoadWellKnown(context.Context, *LoadWellKnownRequest) (*LoadWellKnownResponse, error)
 	mustEmbedUnimplementedCatalogServiceServer()
 }
@@ -211,6 +224,9 @@ func (UnimplementedCatalogServiceServer) GetOperation(context.Context, *GetOpera
 }
 func (UnimplementedCatalogServiceServer) CheckHealth(context.Context, *CheckHealthRequest) (*CheckHealthResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CheckHealth not implemented")
+}
+func (UnimplementedCatalogServiceServer) RefreshAgentCard(context.Context, *RefreshAgentCardRequest) (*MutationResult, error) {
+	return nil, status.Error(codes.Unimplemented, "method RefreshAgentCard not implemented")
 }
 func (UnimplementedCatalogServiceServer) LoadWellKnown(context.Context, *LoadWellKnownRequest) (*LoadWellKnownResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method LoadWellKnown not implemented")
@@ -398,6 +414,24 @@ func _CatalogService_CheckHealth_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CatalogService_RefreshAgentCard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RefreshAgentCardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatalogServiceServer).RefreshAgentCard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatalogService_RefreshAgentCard_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatalogServiceServer).RefreshAgentCard(ctx, req.(*RefreshAgentCardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _CatalogService_LoadWellKnown_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LoadWellKnownRequest)
 	if err := dec(in); err != nil {
@@ -458,6 +492,10 @@ var CatalogService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckHealth",
 			Handler:    _CatalogService_CheckHealth_Handler,
+		},
+		{
+			MethodName: "RefreshAgentCard",
+			Handler:    _CatalogService_RefreshAgentCard_Handler,
 		},
 		{
 			MethodName: "LoadWellKnown",

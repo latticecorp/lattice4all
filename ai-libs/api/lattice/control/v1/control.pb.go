@@ -29,6 +29,7 @@ const (
 	DataplaneKind_DATAPLANE_KIND_INFERENCE_ROUTER DataplaneKind = 1
 	DataplaneKind_DATAPLANE_KIND_AI_AGENT         DataplaneKind = 2
 	DataplaneKind_DATAPLANE_KIND_MCP              DataplaneKind = 3
+	DataplaneKind_DATAPLANE_KIND_AGENT            DataplaneKind = 4
 )
 
 // Enum value maps for DataplaneKind.
@@ -38,12 +39,14 @@ var (
 		1: "DATAPLANE_KIND_INFERENCE_ROUTER",
 		2: "DATAPLANE_KIND_AI_AGENT",
 		3: "DATAPLANE_KIND_MCP",
+		4: "DATAPLANE_KIND_AGENT",
 	}
 	DataplaneKind_value = map[string]int32{
 		"DATAPLANE_KIND_UNSPECIFIED":      0,
 		"DATAPLANE_KIND_INFERENCE_ROUTER": 1,
 		"DATAPLANE_KIND_AI_AGENT":         2,
 		"DATAPLANE_KIND_MCP":              3,
+		"DATAPLANE_KIND_AGENT":            4,
 	}
 )
 
@@ -671,8 +674,10 @@ func (x *XdsConfiguration) GetResourceSets() []*ResourceSet {
 type DataplaneConfiguration struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Must match trusted x-iir-route-generation gRPC initial metadata in RDS.
-	Version       string   `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
-	Models        []*Model `protobuf:"bytes,2,rep,name=models,proto3" json:"models,omitempty"`
+	Version       string               `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
+	Models        []*Model             `protobuf:"bytes,2,rep,name=models,proto3" json:"models,omitempty"`
+	AgentCards    []*RegistryAgentCard `protobuf:"bytes,3,rep,name=agent_cards,json=agentCards,proto3" json:"agent_cards,omitempty"`
+	Tools         []*RegistryTool      `protobuf:"bytes,4,rep,name=tools,proto3" json:"tools,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -717,6 +722,20 @@ func (x *DataplaneConfiguration) GetVersion() string {
 func (x *DataplaneConfiguration) GetModels() []*Model {
 	if x != nil {
 		return x.Models
+	}
+	return nil
+}
+
+func (x *DataplaneConfiguration) GetAgentCards() []*RegistryAgentCard {
+	if x != nil {
+		return x.AgentCards
+	}
+	return nil
+}
+
+func (x *DataplaneConfiguration) GetTools() []*RegistryTool {
+	if x != nil {
+		return x.Tools
 	}
 	return nil
 }
@@ -958,6 +977,167 @@ func (x *EnvoyStatus) GetError() string {
 	return ""
 }
 
+// Authoritative discovery payload; consumers must not substitute runtime metadata.
+type RegistryAgentCard struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ParentAgentId string                 `protobuf:"bytes,1,opt,name=parent_agent_id,json=parentAgentId,proto3" json:"parent_agent_id,omitempty"`
+	ActiveCardRaw string                 `protobuf:"bytes,2,opt,name=active_card_raw,json=activeCardRaw,proto3" json:"active_card_raw,omitempty"`
+	Protocol      string                 `protobuf:"bytes,3,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	A2AVersion    string                 `protobuf:"bytes,4,opt,name=a2a_version,json=a2aVersion,proto3" json:"a2a_version,omitempty"`
+	Revision      uint64                 `protobuf:"varint,5,opt,name=revision,proto3" json:"revision,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RegistryAgentCard) Reset() {
+	*x = RegistryAgentCard{}
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegistryAgentCard) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegistryAgentCard) ProtoMessage() {}
+
+func (x *RegistryAgentCard) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegistryAgentCard.ProtoReflect.Descriptor instead.
+func (*RegistryAgentCard) Descriptor() ([]byte, []int) {
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *RegistryAgentCard) GetParentAgentId() string {
+	if x != nil {
+		return x.ParentAgentId
+	}
+	return ""
+}
+
+func (x *RegistryAgentCard) GetActiveCardRaw() string {
+	if x != nil {
+		return x.ActiveCardRaw
+	}
+	return ""
+}
+
+func (x *RegistryAgentCard) GetProtocol() string {
+	if x != nil {
+		return x.Protocol
+	}
+	return ""
+}
+
+func (x *RegistryAgentCard) GetA2AVersion() string {
+	if x != nil {
+		return x.A2AVersion
+	}
+	return ""
+}
+
+func (x *RegistryAgentCard) GetRevision() uint64 {
+	if x != nil {
+		return x.Revision
+	}
+	return 0
+}
+
+type RegistryTool struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	SourceServiceId string                 `protobuf:"bytes,2,opt,name=source_service_id,json=sourceServiceId,proto3" json:"source_service_id,omitempty"`
+	Protocol        string                 `protobuf:"bytes,3,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	A2AVersion      string                 `protobuf:"bytes,4,opt,name=a2a_version,json=a2aVersion,proto3" json:"a2a_version,omitempty"`
+	ToolSchema      string                 `protobuf:"bytes,5,opt,name=tool_schema,json=toolSchema,proto3" json:"tool_schema,omitempty"`
+	Status          string                 `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *RegistryTool) Reset() {
+	*x = RegistryTool{}
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegistryTool) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegistryTool) ProtoMessage() {}
+
+func (x *RegistryTool) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_control_v1_control_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegistryTool.ProtoReflect.Descriptor instead.
+func (*RegistryTool) Descriptor() ([]byte, []int) {
+	return file_api_lattice_control_v1_control_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *RegistryTool) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *RegistryTool) GetSourceServiceId() string {
+	if x != nil {
+		return x.SourceServiceId
+	}
+	return ""
+}
+
+func (x *RegistryTool) GetProtocol() string {
+	if x != nil {
+		return x.Protocol
+	}
+	return ""
+}
+
+func (x *RegistryTool) GetA2AVersion() string {
+	if x != nil {
+		return x.A2AVersion
+	}
+	return ""
+}
+
+func (x *RegistryTool) GetToolSchema() string {
+	if x != nil {
+		return x.ToolSchema
+	}
+	return ""
+}
+
+func (x *RegistryTool) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
 var File_api_lattice_control_v1_control_proto protoreflect.FileDescriptor
 
 const file_api_lattice_control_v1_control_proto_rawDesc = "" +
@@ -1004,10 +1184,13 @@ const file_api_lattice_control_v1_control_proto_rawDesc = "" +
 	"\tresources\x18\x02 \x03(\v2\x14.google.protobuf.AnyR\tresources\"r\n" +
 	"\x10XdsConfiguration\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12D\n" +
-	"\rresource_sets\x18\x02 \x03(\v2\x1f.lattice.control.v1.ResourceSetR\fresourceSets\"e\n" +
+	"\rresource_sets\x18\x02 \x03(\v2\x1f.lattice.control.v1.ResourceSetR\fresourceSets\"\xe5\x01\n" +
 	"\x16DataplaneConfiguration\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x121\n" +
-	"\x06models\x18\x02 \x03(\v2\x19.lattice.control.v1.ModelR\x06models\"\xd5\x01\n" +
+	"\x06models\x18\x02 \x03(\v2\x19.lattice.control.v1.ModelR\x06models\x12F\n" +
+	"\vagent_cards\x18\x03 \x03(\v2%.lattice.control.v1.RegistryAgentCardR\n" +
+	"agentCards\x126\n" +
+	"\x05tools\x18\x04 \x03(\v2 .lattice.control.v1.RegistryToolR\x05tools\"\xd5\x01\n" +
 	"\x05Model\x12\x14\n" +
 	"\x05alias\x18\x01 \x01(\tR\x05alias\x12%\n" +
 	"\x0eupstream_model\x18\x02 \x01(\tR\rupstreamModel\x12\x1f\n" +
@@ -1027,12 +1210,29 @@ const file_api_lattice_control_v1_control_proto_rawDesc = "" +
 	"\btype_url\x18\x02 \x01(\tR\atypeUrl\x12\x14\n" +
 	"\x05nonce\x18\x03 \x01(\tR\x05nonce\x12\x1a\n" +
 	"\baccepted\x18\x04 \x01(\bR\baccepted\x12\x14\n" +
-	"\x05error\x18\x05 \x01(\tR\x05error*\x89\x01\n" +
+	"\x05error\x18\x05 \x01(\tR\x05error\"\xbc\x01\n" +
+	"\x11RegistryAgentCard\x12&\n" +
+	"\x0fparent_agent_id\x18\x01 \x01(\tR\rparentAgentId\x12&\n" +
+	"\x0factive_card_raw\x18\x02 \x01(\tR\ractiveCardRaw\x12\x1a\n" +
+	"\bprotocol\x18\x03 \x01(\tR\bprotocol\x12\x1f\n" +
+	"\va2a_version\x18\x04 \x01(\tR\n" +
+	"a2aVersion\x12\x1a\n" +
+	"\brevision\x18\x05 \x01(\x04R\brevision\"\xc0\x01\n" +
+	"\fRegistryTool\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12*\n" +
+	"\x11source_service_id\x18\x02 \x01(\tR\x0fsourceServiceId\x12\x1a\n" +
+	"\bprotocol\x18\x03 \x01(\tR\bprotocol\x12\x1f\n" +
+	"\va2a_version\x18\x04 \x01(\tR\n" +
+	"a2aVersion\x12\x1f\n" +
+	"\vtool_schema\x18\x05 \x01(\tR\n" +
+	"toolSchema\x12\x16\n" +
+	"\x06status\x18\x06 \x01(\tR\x06status*\xa3\x01\n" +
 	"\rDataplaneKind\x12\x1e\n" +
 	"\x1aDATAPLANE_KIND_UNSPECIFIED\x10\x00\x12#\n" +
 	"\x1fDATAPLANE_KIND_INFERENCE_ROUTER\x10\x01\x12\x1b\n" +
 	"\x17DATAPLANE_KIND_AI_AGENT\x10\x02\x12\x16\n" +
-	"\x12DATAPLANE_KIND_MCP\x10\x032\x8b\x01\n" +
+	"\x12DATAPLANE_KIND_MCP\x10\x03\x12\x18\n" +
+	"\x14DATAPLANE_KIND_AGENT\x10\x042\x8b\x01\n" +
 	"\x13ControlPlaneService\x12t\n" +
 	"\x1fSubscribeDataplaneConfiguration\x12$.lattice.control.v1.DataplaneMessage\x1a'.lattice.control.v1.ControlPlaneMessage(\x010\x01BMZKgithub.com/latticecorp/lattice4all/ai-libs/api/lattice/control/v1;controlv1b\x06proto3"
 
@@ -1049,7 +1249,7 @@ func file_api_lattice_control_v1_control_proto_rawDescGZIP() []byte {
 }
 
 var file_api_lattice_control_v1_control_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_api_lattice_control_v1_control_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_api_lattice_control_v1_control_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_api_lattice_control_v1_control_proto_goTypes = []any{
 	(DataplaneKind)(0),             // 0: lattice.control.v1.DataplaneKind
 	(*WellKnownSkill)(nil),         // 1: lattice.control.v1.WellKnownSkill
@@ -1064,7 +1264,9 @@ var file_api_lattice_control_v1_control_proto_goTypes = []any{
 	(*Model)(nil),                  // 10: lattice.control.v1.Model
 	(*UpdateStatus)(nil),           // 11: lattice.control.v1.UpdateStatus
 	(*EnvoyStatus)(nil),            // 12: lattice.control.v1.EnvoyStatus
-	(*anypb.Any)(nil),              // 13: google.protobuf.Any
+	(*RegistryAgentCard)(nil),      // 13: lattice.control.v1.RegistryAgentCard
+	(*RegistryTool)(nil),           // 14: lattice.control.v1.RegistryTool
+	(*anypb.Any)(nil),              // 15: google.protobuf.Any
 }
 var file_api_lattice_control_v1_control_proto_depIdxs = []int32{
 	1,  // 0: lattice.control.v1.WellKnownMetadata.skills:type_name -> lattice.control.v1.WellKnownSkill
@@ -1077,16 +1279,18 @@ var file_api_lattice_control_v1_control_proto_depIdxs = []int32{
 	8,  // 7: lattice.control.v1.ControlPlaneMessage.xds_configuration:type_name -> lattice.control.v1.XdsConfiguration
 	9,  // 8: lattice.control.v1.ControlPlaneMessage.dataplane_configuration:type_name -> lattice.control.v1.DataplaneConfiguration
 	3,  // 9: lattice.control.v1.ControlPlaneMessage.well_known_request:type_name -> lattice.control.v1.WellKnownRequest
-	13, // 10: lattice.control.v1.ResourceSet.resources:type_name -> google.protobuf.Any
+	15, // 10: lattice.control.v1.ResourceSet.resources:type_name -> google.protobuf.Any
 	7,  // 11: lattice.control.v1.XdsConfiguration.resource_sets:type_name -> lattice.control.v1.ResourceSet
 	10, // 12: lattice.control.v1.DataplaneConfiguration.models:type_name -> lattice.control.v1.Model
-	5,  // 13: lattice.control.v1.ControlPlaneService.SubscribeDataplaneConfiguration:input_type -> lattice.control.v1.DataplaneMessage
-	6,  // 14: lattice.control.v1.ControlPlaneService.SubscribeDataplaneConfiguration:output_type -> lattice.control.v1.ControlPlaneMessage
-	14, // [14:15] is the sub-list for method output_type
-	13, // [13:14] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	13, // 13: lattice.control.v1.DataplaneConfiguration.agent_cards:type_name -> lattice.control.v1.RegistryAgentCard
+	14, // 14: lattice.control.v1.DataplaneConfiguration.tools:type_name -> lattice.control.v1.RegistryTool
+	5,  // 15: lattice.control.v1.ControlPlaneService.SubscribeDataplaneConfiguration:input_type -> lattice.control.v1.DataplaneMessage
+	6,  // 16: lattice.control.v1.ControlPlaneService.SubscribeDataplaneConfiguration:output_type -> lattice.control.v1.ControlPlaneMessage
+	16, // [16:17] is the sub-list for method output_type
+	15, // [15:16] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_api_lattice_control_v1_control_proto_init() }
@@ -1111,7 +1315,7 @@ func file_api_lattice_control_v1_control_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_lattice_control_v1_control_proto_rawDesc), len(file_api_lattice_control_v1_control_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   12,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

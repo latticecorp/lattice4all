@@ -218,6 +218,10 @@ type ServiceInput struct {
 	ToolSchema      string              `protobuf:"bytes,18,opt,name=tool_schema,json=toolSchema,proto3" json:"tool_schema,omitempty"`
 	ExportedTools   []string            `protobuf:"bytes,19,rep,name=exported_tools,json=exportedTools,proto3" json:"exported_tools,omitempty"`
 	ImportedTools   []string            `protobuf:"bytes,20,rep,name=imported_tools,json=importedTools,proto3" json:"imported_tools,omitempty"`
+	ParentAgentId   string              `protobuf:"bytes,21,opt,name=parent_agent_id,json=parentAgentID,proto3" json:"parent_agent_id,omitempty"`
+	A2AVersion      string              `protobuf:"bytes,22,opt,name=a2a_version,json=a2aVersion,proto3" json:"a2a_version,omitempty"`
+	OriginalCardRaw string              `protobuf:"bytes,23,opt,name=original_card_raw,json=originalCardRaw,proto3" json:"original_card_raw,omitempty"`
+	ActiveCardRaw   string              `protobuf:"bytes,24,opt,name=active_card_raw,json=activeCardRaw,proto3" json:"active_card_raw,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -392,6 +396,34 @@ func (x *ServiceInput) GetImportedTools() []string {
 	return nil
 }
 
+func (x *ServiceInput) GetParentAgentId() string {
+	if x != nil {
+		return x.ParentAgentId
+	}
+	return ""
+}
+
+func (x *ServiceInput) GetA2AVersion() string {
+	if x != nil {
+		return x.A2AVersion
+	}
+	return ""
+}
+
+func (x *ServiceInput) GetOriginalCardRaw() string {
+	if x != nil {
+		return x.OriginalCardRaw
+	}
+	return ""
+}
+
+func (x *ServiceInput) GetActiveCardRaw() string {
+	if x != nil {
+		return x.ActiveCardRaw
+	}
+	return ""
+}
+
 type Service struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Kind          string                 `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
@@ -413,16 +445,23 @@ type Service struct {
 	Description string `protobuf:"bytes,16,opt,name=description,proto3" json:"description,omitempty"`
 	ModelName   string `protobuf:"bytes,17,opt,name=model_name,json=modelName,proto3" json:"model_name,omitempty"`
 	// API path only, e.g. /v1/chat/completions; host and port come from addresses.
-	ModelEndpoint   string              `protobuf:"bytes,18,opt,name=model_endpoint,json=modelEndpoint,proto3" json:"model_endpoint,omitempty"`
-	CredentialId    string              `protobuf:"bytes,19,opt,name=credential_id,json=credentialID,proto3" json:"credential_id,omitempty"`
-	SecretFile      string              `protobuf:"bytes,20,opt,name=secret_file,json=secretFile,proto3" json:"secret_file,omitempty"`
-	Headers         []*CredentialHeader `protobuf:"bytes,21,rep,name=headers,proto3" json:"headers,omitempty"`
-	Instances       []string            `protobuf:"bytes,22,rep,name=instances,proto3" json:"instances,omitempty"`
-	SourceServiceId string              `protobuf:"bytes,23,opt,name=source_service_id,json=sourceServiceID,proto3" json:"source_service_id,omitempty"`
-	Status          string              `protobuf:"bytes,24,opt,name=status,proto3" json:"status,omitempty"`
-	ToolSchema      string              `protobuf:"bytes,25,opt,name=tool_schema,json=toolSchema,proto3" json:"tool_schema,omitempty"`
-	ExportedTools   []string            `protobuf:"bytes,26,rep,name=exported_tools,json=exportedTools,proto3" json:"exported_tools,omitempty"`
-	ImportedTools   []string            `protobuf:"bytes,27,rep,name=imported_tools,json=importedTools,proto3" json:"imported_tools,omitempty"`
+	ModelEndpoint   string               `protobuf:"bytes,18,opt,name=model_endpoint,json=modelEndpoint,proto3" json:"model_endpoint,omitempty"`
+	CredentialId    string               `protobuf:"bytes,19,opt,name=credential_id,json=credentialID,proto3" json:"credential_id,omitempty"`
+	SecretFile      string               `protobuf:"bytes,20,opt,name=secret_file,json=secretFile,proto3" json:"secret_file,omitempty"`
+	Headers         []*CredentialHeader  `protobuf:"bytes,21,rep,name=headers,proto3" json:"headers,omitempty"`
+	Instances       []string             `protobuf:"bytes,22,rep,name=instances,proto3" json:"instances,omitempty"`
+	SourceServiceId string               `protobuf:"bytes,23,opt,name=source_service_id,json=sourceServiceID,proto3" json:"source_service_id,omitempty"`
+	Status          string               `protobuf:"bytes,24,opt,name=status,proto3" json:"status,omitempty"`
+	ToolSchema      string               `protobuf:"bytes,25,opt,name=tool_schema,json=toolSchema,proto3" json:"tool_schema,omitempty"`
+	ExportedTools   []string             `protobuf:"bytes,26,rep,name=exported_tools,json=exportedTools,proto3" json:"exported_tools,omitempty"`
+	ImportedTools   []string             `protobuf:"bytes,27,rep,name=imported_tools,json=importedTools,proto3" json:"imported_tools,omitempty"`
+	CardHistory     []*AgentCardRevision `protobuf:"bytes,32,rep,name=card_history,json=cardHistory,proto3" json:"card_history,omitempty"`
+	Skills          []*AgentCardSkill    `protobuf:"bytes,33,rep,name=skills,proto3" json:"skills,omitempty"`
+	AgentCardId     string               `protobuf:"bytes,34,opt,name=agent_card_id,json=agentCardID,proto3" json:"agent_card_id,omitempty"`
+	ParentAgentId   string               `protobuf:"bytes,28,opt,name=parent_agent_id,json=parentAgentID,proto3" json:"parent_agent_id,omitempty"`
+	A2AVersion      string               `protobuf:"bytes,29,opt,name=a2a_version,json=a2aVersion,proto3" json:"a2a_version,omitempty"`
+	OriginalCardRaw string               `protobuf:"bytes,30,opt,name=original_card_raw,json=originalCardRaw,proto3" json:"original_card_raw,omitempty"`
+	ActiveCardRaw   string               `protobuf:"bytes,31,opt,name=active_card_raw,json=activeCardRaw,proto3" json:"active_card_raw,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -644,6 +683,55 @@ func (x *Service) GetImportedTools() []string {
 		return x.ImportedTools
 	}
 	return nil
+}
+
+func (x *Service) GetCardHistory() []*AgentCardRevision {
+	if x != nil {
+		return x.CardHistory
+	}
+	return nil
+}
+
+func (x *Service) GetSkills() []*AgentCardSkill {
+	if x != nil {
+		return x.Skills
+	}
+	return nil
+}
+
+func (x *Service) GetAgentCardId() string {
+	if x != nil {
+		return x.AgentCardId
+	}
+	return ""
+}
+
+func (x *Service) GetParentAgentId() string {
+	if x != nil {
+		return x.ParentAgentId
+	}
+	return ""
+}
+
+func (x *Service) GetA2AVersion() string {
+	if x != nil {
+		return x.A2AVersion
+	}
+	return ""
+}
+
+func (x *Service) GetOriginalCardRaw() string {
+	if x != nil {
+		return x.OriginalCardRaw
+	}
+	return ""
+}
+
+func (x *Service) GetActiveCardRaw() string {
+	if x != nil {
+		return x.ActiveCardRaw
+	}
+	return ""
 }
 
 type Operation struct {
@@ -1894,6 +1982,235 @@ func (x *LoadWellKnownResponse) GetSkills() []*DiscoveredSkill {
 	return nil
 }
 
+type RefreshAgentCardRequest struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Id               string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	ExpectedRevision uint64                 `protobuf:"varint,2,opt,name=expected_revision,json=expectedRevision,proto3" json:"expected_revision,omitempty"`
+	RawCard          string                 `protobuf:"bytes,3,opt,name=raw_card,json=rawCard,proto3" json:"raw_card,omitempty"`
+	A2AVersion       string                 `protobuf:"bytes,4,opt,name=a2a_version,json=a2aVersion,proto3" json:"a2a_version,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *RefreshAgentCardRequest) Reset() {
+	*x = RefreshAgentCardRequest{}
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RefreshAgentCardRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RefreshAgentCardRequest) ProtoMessage() {}
+
+func (x *RefreshAgentCardRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RefreshAgentCardRequest.ProtoReflect.Descriptor instead.
+func (*RefreshAgentCardRequest) Descriptor() ([]byte, []int) {
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *RefreshAgentCardRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *RefreshAgentCardRequest) GetExpectedRevision() uint64 {
+	if x != nil {
+		return x.ExpectedRevision
+	}
+	return 0
+}
+
+func (x *RefreshAgentCardRequest) GetRawCard() string {
+	if x != nil {
+		return x.RawCard
+	}
+	return ""
+}
+
+func (x *RefreshAgentCardRequest) GetA2AVersion() string {
+	if x != nil {
+		return x.A2AVersion
+	}
+	return ""
+}
+
+// Derived from active_card_raw; not independently mutable.
+type AgentCardSkill struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	InputSchema   []byte                 `protobuf:"bytes,4,opt,name=input_schema,json=inputSchema,proto3" json:"input_schema,omitempty"`
+	OutputSchema  []byte                 `protobuf:"bytes,5,opt,name=output_schema,json=outputSchema,proto3" json:"output_schema,omitempty"`
+	Tags          []string               `protobuf:"bytes,6,rep,name=tags,proto3" json:"tags,omitempty"`
+	CustomFlag    bool                   `protobuf:"varint,7,opt,name=custom_flag,json=customFlag,proto3" json:"custom_flag,omitempty"`
+	DispatchRules []byte                 `protobuf:"bytes,8,opt,name=dispatch_rules,json=dispatchRules,proto3" json:"dispatch_rules,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AgentCardSkill) Reset() {
+	*x = AgentCardSkill{}
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AgentCardSkill) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AgentCardSkill) ProtoMessage() {}
+
+func (x *AgentCardSkill) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AgentCardSkill.ProtoReflect.Descriptor instead.
+func (*AgentCardSkill) Descriptor() ([]byte, []int) {
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *AgentCardSkill) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *AgentCardSkill) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *AgentCardSkill) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *AgentCardSkill) GetInputSchema() []byte {
+	if x != nil {
+		return x.InputSchema
+	}
+	return nil
+}
+
+func (x *AgentCardSkill) GetOutputSchema() []byte {
+	if x != nil {
+		return x.OutputSchema
+	}
+	return nil
+}
+
+func (x *AgentCardSkill) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
+func (x *AgentCardSkill) GetCustomFlag() bool {
+	if x != nil {
+		return x.CustomFlag
+	}
+	return false
+}
+
+func (x *AgentCardSkill) GetDispatchRules() []byte {
+	if x != nil {
+		return x.DispatchRules
+	}
+	return nil
+}
+
+type AgentCardRevision struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Revision      uint64                 `protobuf:"varint,1,opt,name=revision,proto3" json:"revision,omitempty"`
+	A2AVersion    string                 `protobuf:"bytes,2,opt,name=a2a_version,json=a2aVersion,proto3" json:"a2a_version,omitempty"`
+	ActiveCardRaw string                 `protobuf:"bytes,3,opt,name=active_card_raw,json=activeCardRaw,proto3" json:"active_card_raw,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AgentCardRevision) Reset() {
+	*x = AgentCardRevision{}
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AgentCardRevision) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AgentCardRevision) ProtoMessage() {}
+
+func (x *AgentCardRevision) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AgentCardRevision.ProtoReflect.Descriptor instead.
+func (*AgentCardRevision) Descriptor() ([]byte, []int) {
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *AgentCardRevision) GetRevision() uint64 {
+	if x != nil {
+		return x.Revision
+	}
+	return 0
+}
+
+func (x *AgentCardRevision) GetA2AVersion() string {
+	if x != nil {
+		return x.A2AVersion
+	}
+	return ""
+}
+
+func (x *AgentCardRevision) GetActiveCardRaw() string {
+	if x != nil {
+		return x.ActiveCardRaw
+	}
+	return ""
+}
+
 var File_api_lattice_catalog_v1_catalog_proto protoreflect.FileDescriptor
 
 const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
@@ -1912,7 +2229,7 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\x06prefix\x18\x02 \x01(\tR\x06prefix\x12\x1e\n" +
 	"\n" +
 	"secret_key\x18\x03 \x01(\tR\n" +
-	"secret_key\"\xbd\x06\n" +
+	"secret_key\"\xda\a\n" +
 	"\fServiceInput\x12\x12\n" +
 	"\x04kind\x18\x01 \x01(\tR\x04kind\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -1937,10 +2254,16 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\vtool_schema\x18\x12 \x01(\tR\n" +
 	"toolSchema\x12%\n" +
 	"\x0eexported_tools\x18\x13 \x03(\tR\rexportedTools\x12%\n" +
-	"\x0eimported_tools\x18\x14 \x03(\tR\rimportedTools\x1a9\n" +
+	"\x0eimported_tools\x18\x14 \x03(\tR\rimportedTools\x12&\n" +
+	"\x0fparent_agent_id\x18\x15 \x01(\tR\rparentAgentID\x12\x1f\n" +
+	"\va2a_version\x18\x16 \x01(\tR\n" +
+	"a2aVersion\x12*\n" +
+	"\x11original_card_raw\x18\x17 \x01(\tR\x0foriginalCardRaw\x12&\n" +
+	"\x0factive_card_raw\x18\x18 \x01(\tR\ractiveCardRaw\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xf2\a\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xb9\n" +
+	"\n" +
 	"\aService\x12\x12\n" +
 	"\x04kind\x18\x01 \x01(\tR\x04kind\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -1974,7 +2297,15 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\vtool_schema\x18\x19 \x01(\tR\n" +
 	"toolSchema\x12%\n" +
 	"\x0eexported_tools\x18\x1a \x03(\tR\rexportedTools\x12%\n" +
-	"\x0eimported_tools\x18\x1b \x03(\tR\rimportedTools\x1a9\n" +
+	"\x0eimported_tools\x18\x1b \x03(\tR\rimportedTools\x12H\n" +
+	"\fcard_history\x18  \x03(\v2%.lattice.catalog.v1.AgentCardRevisionR\vcardHistory\x12:\n" +
+	"\x06skills\x18! \x03(\v2\".lattice.catalog.v1.AgentCardSkillR\x06skills\x12\"\n" +
+	"\ragent_card_id\x18\" \x01(\tR\vagentCardID\x12&\n" +
+	"\x0fparent_agent_id\x18\x1c \x01(\tR\rparentAgentID\x12\x1f\n" +
+	"\va2a_version\x18\x1d \x01(\tR\n" +
+	"a2aVersion\x12*\n" +
+	"\x11original_card_raw\x18\x1e \x01(\tR\x0foriginalCardRaw\x12&\n" +
+	"\x0factive_card_raw\x18\x1f \x01(\tR\ractiveCardRaw\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd8\x01\n" +
@@ -2081,7 +2412,28 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\n" +
 	"service_id\x18\x01 \x01(\tR\tserviceID\x12\x16\n" +
 	"\x06source\x18\x02 \x01(\tR\x06source\x12;\n" +
-	"\x06skills\x18\x03 \x03(\v2#.lattice.catalog.v1.DiscoveredSkillR\x06skills2\xd8\a\n" +
+	"\x06skills\x18\x03 \x03(\v2#.lattice.catalog.v1.DiscoveredSkillR\x06skills\"\x92\x01\n" +
+	"\x17RefreshAgentCardRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12+\n" +
+	"\x11expected_revision\x18\x02 \x01(\x04R\x10expectedRevision\x12\x19\n" +
+	"\braw_card\x18\x03 \x01(\tR\arawCard\x12\x1f\n" +
+	"\va2a_version\x18\x04 \x01(\tR\n" +
+	"a2aVersion\"\xfa\x01\n" +
+	"\x0eAgentCardSkill\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12!\n" +
+	"\finput_schema\x18\x04 \x01(\fR\vinputSchema\x12#\n" +
+	"\routput_schema\x18\x05 \x01(\fR\foutputSchema\x12\x12\n" +
+	"\x04tags\x18\x06 \x03(\tR\x04tags\x12\x1f\n" +
+	"\vcustom_flag\x18\a \x01(\bR\n" +
+	"customFlag\x12%\n" +
+	"\x0edispatch_rules\x18\b \x01(\fR\rdispatchRules\"x\n" +
+	"\x11AgentCardRevision\x12\x1a\n" +
+	"\brevision\x18\x01 \x01(\x04R\brevision\x12\x1f\n" +
+	"\va2a_version\x18\x02 \x01(\tR\n" +
+	"a2aVersion\x12&\n" +
+	"\x0factive_card_raw\x18\x03 \x01(\tR\ractiveCardRaw2\xbd\b\n" +
 	"\x0eCatalogService\x12]\n" +
 	"\rCreateService\x12(.lattice.catalog.v1.CreateServiceRequest\x1a\".lattice.catalog.v1.MutationResult\x12[\n" +
 	"\n" +
@@ -2093,7 +2445,8 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\rDeleteService\x12(.lattice.catalog.v1.DeleteServiceRequest\x1a\".lattice.catalog.v1.MutationResult\x12c\n" +
 	"\x10ApplyTransaction\x12+.lattice.catalog.v1.ApplyTransactionRequest\x1a\".lattice.catalog.v1.MutationResult\x12a\n" +
 	"\fGetOperation\x12'.lattice.catalog.v1.GetOperationRequest\x1a(.lattice.catalog.v1.GetOperationResponse\x12^\n" +
-	"\vCheckHealth\x12&.lattice.catalog.v1.CheckHealthRequest\x1a'.lattice.catalog.v1.CheckHealthResponse\x12d\n" +
+	"\vCheckHealth\x12&.lattice.catalog.v1.CheckHealthRequest\x1a'.lattice.catalog.v1.CheckHealthResponse\x12c\n" +
+	"\x10RefreshAgentCard\x12+.lattice.catalog.v1.RefreshAgentCardRequest\x1a\".lattice.catalog.v1.MutationResult\x12d\n" +
 	"\rLoadWellKnown\x12(.lattice.catalog.v1.LoadWellKnownRequest\x1a).lattice.catalog.v1.LoadWellKnownResponseBMZKgithub.com/latticecorp/lattice4all/ai-libs/api/lattice/catalog/v1;catalogv1b\x06proto3"
 
 var (
@@ -2108,7 +2461,7 @@ func file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP() []byte {
 	return file_api_lattice_catalog_v1_catalog_proto_rawDescData
 }
 
-var file_api_lattice_catalog_v1_catalog_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
+var file_api_lattice_catalog_v1_catalog_proto_msgTypes = make([]protoimpl.MessageInfo, 33)
 var file_api_lattice_catalog_v1_catalog_proto_goTypes = []any{
 	(*Address)(nil),                 // 0: lattice.catalog.v1.Address
 	(*Capabilities)(nil),            // 1: lattice.catalog.v1.Capabilities
@@ -2136,60 +2489,67 @@ var file_api_lattice_catalog_v1_catalog_proto_goTypes = []any{
 	(*DiscoveredSkill)(nil),         // 23: lattice.catalog.v1.DiscoveredSkill
 	(*LoadWellKnownRequest)(nil),    // 24: lattice.catalog.v1.LoadWellKnownRequest
 	(*LoadWellKnownResponse)(nil),   // 25: lattice.catalog.v1.LoadWellKnownResponse
-	nil,                             // 26: lattice.catalog.v1.ServiceInput.LabelsEntry
-	nil,                             // 27: lattice.catalog.v1.Service.LabelsEntry
-	nil,                             // 28: lattice.catalog.v1.ServiceError.DetailsEntry
-	nil,                             // 29: lattice.catalog.v1.ListServicesRequest.LabelsEntry
+	(*RefreshAgentCardRequest)(nil), // 26: lattice.catalog.v1.RefreshAgentCardRequest
+	(*AgentCardSkill)(nil),          // 27: lattice.catalog.v1.AgentCardSkill
+	(*AgentCardRevision)(nil),       // 28: lattice.catalog.v1.AgentCardRevision
+	nil,                             // 29: lattice.catalog.v1.ServiceInput.LabelsEntry
+	nil,                             // 30: lattice.catalog.v1.Service.LabelsEntry
+	nil,                             // 31: lattice.catalog.v1.ServiceError.DetailsEntry
+	nil,                             // 32: lattice.catalog.v1.ListServicesRequest.LabelsEntry
 }
 var file_api_lattice_catalog_v1_catalog_proto_depIdxs = []int32{
-	26, // 0: lattice.catalog.v1.ServiceInput.labels:type_name -> lattice.catalog.v1.ServiceInput.LabelsEntry
+	29, // 0: lattice.catalog.v1.ServiceInput.labels:type_name -> lattice.catalog.v1.ServiceInput.LabelsEntry
 	1,  // 1: lattice.catalog.v1.ServiceInput.capabilities:type_name -> lattice.catalog.v1.Capabilities
 	0,  // 2: lattice.catalog.v1.ServiceInput.addresses:type_name -> lattice.catalog.v1.Address
 	2,  // 3: lattice.catalog.v1.ServiceInput.headers:type_name -> lattice.catalog.v1.CredentialHeader
-	27, // 4: lattice.catalog.v1.Service.labels:type_name -> lattice.catalog.v1.Service.LabelsEntry
+	30, // 4: lattice.catalog.v1.Service.labels:type_name -> lattice.catalog.v1.Service.LabelsEntry
 	1,  // 5: lattice.catalog.v1.Service.capabilities:type_name -> lattice.catalog.v1.Capabilities
 	0,  // 6: lattice.catalog.v1.Service.addresses:type_name -> lattice.catalog.v1.Address
 	2,  // 7: lattice.catalog.v1.Service.headers:type_name -> lattice.catalog.v1.CredentialHeader
-	3,  // 8: lattice.catalog.v1.Operation.service:type_name -> lattice.catalog.v1.ServiceInput
-	28, // 9: lattice.catalog.v1.ServiceError.details:type_name -> lattice.catalog.v1.ServiceError.DetailsEntry
-	4,  // 10: lattice.catalog.v1.MutationResult.services:type_name -> lattice.catalog.v1.Service
-	6,  // 11: lattice.catalog.v1.MutationResult.error:type_name -> lattice.catalog.v1.ServiceError
-	3,  // 12: lattice.catalog.v1.CreateServiceRequest.service:type_name -> lattice.catalog.v1.ServiceInput
-	4,  // 13: lattice.catalog.v1.GetServiceResponse.service:type_name -> lattice.catalog.v1.Service
-	8,  // 14: lattice.catalog.v1.GetServiceResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
-	29, // 15: lattice.catalog.v1.ListServicesRequest.labels:type_name -> lattice.catalog.v1.ListServicesRequest.LabelsEntry
-	4,  // 16: lattice.catalog.v1.ListServicesResponse.items:type_name -> lattice.catalog.v1.Service
-	8,  // 17: lattice.catalog.v1.ListServicesResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
-	8,  // 18: lattice.catalog.v1.ListScopesResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
-	5,  // 19: lattice.catalog.v1.ApplyTransactionRequest.operations:type_name -> lattice.catalog.v1.Operation
-	7,  // 20: lattice.catalog.v1.GetOperationResponse.result:type_name -> lattice.catalog.v1.MutationResult
-	8,  // 21: lattice.catalog.v1.GetOperationResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
-	23, // 22: lattice.catalog.v1.LoadWellKnownResponse.skills:type_name -> lattice.catalog.v1.DiscoveredSkill
-	9,  // 23: lattice.catalog.v1.CatalogService.CreateService:input_type -> lattice.catalog.v1.CreateServiceRequest
-	10, // 24: lattice.catalog.v1.CatalogService.GetService:input_type -> lattice.catalog.v1.GetServiceRequest
-	12, // 25: lattice.catalog.v1.CatalogService.ListServices:input_type -> lattice.catalog.v1.ListServicesRequest
-	14, // 26: lattice.catalog.v1.CatalogService.ListScopes:input_type -> lattice.catalog.v1.ListScopesRequest
-	16, // 27: lattice.catalog.v1.CatalogService.UpdateService:input_type -> lattice.catalog.v1.UpdateServiceRequest
-	17, // 28: lattice.catalog.v1.CatalogService.DeleteService:input_type -> lattice.catalog.v1.DeleteServiceRequest
-	18, // 29: lattice.catalog.v1.CatalogService.ApplyTransaction:input_type -> lattice.catalog.v1.ApplyTransactionRequest
-	19, // 30: lattice.catalog.v1.CatalogService.GetOperation:input_type -> lattice.catalog.v1.GetOperationRequest
-	21, // 31: lattice.catalog.v1.CatalogService.CheckHealth:input_type -> lattice.catalog.v1.CheckHealthRequest
-	24, // 32: lattice.catalog.v1.CatalogService.LoadWellKnown:input_type -> lattice.catalog.v1.LoadWellKnownRequest
-	7,  // 33: lattice.catalog.v1.CatalogService.CreateService:output_type -> lattice.catalog.v1.MutationResult
-	11, // 34: lattice.catalog.v1.CatalogService.GetService:output_type -> lattice.catalog.v1.GetServiceResponse
-	13, // 35: lattice.catalog.v1.CatalogService.ListServices:output_type -> lattice.catalog.v1.ListServicesResponse
-	15, // 36: lattice.catalog.v1.CatalogService.ListScopes:output_type -> lattice.catalog.v1.ListScopesResponse
-	7,  // 37: lattice.catalog.v1.CatalogService.UpdateService:output_type -> lattice.catalog.v1.MutationResult
-	7,  // 38: lattice.catalog.v1.CatalogService.DeleteService:output_type -> lattice.catalog.v1.MutationResult
-	7,  // 39: lattice.catalog.v1.CatalogService.ApplyTransaction:output_type -> lattice.catalog.v1.MutationResult
-	20, // 40: lattice.catalog.v1.CatalogService.GetOperation:output_type -> lattice.catalog.v1.GetOperationResponse
-	22, // 41: lattice.catalog.v1.CatalogService.CheckHealth:output_type -> lattice.catalog.v1.CheckHealthResponse
-	25, // 42: lattice.catalog.v1.CatalogService.LoadWellKnown:output_type -> lattice.catalog.v1.LoadWellKnownResponse
-	33, // [33:43] is the sub-list for method output_type
-	23, // [23:33] is the sub-list for method input_type
-	23, // [23:23] is the sub-list for extension type_name
-	23, // [23:23] is the sub-list for extension extendee
-	0,  // [0:23] is the sub-list for field type_name
+	28, // 8: lattice.catalog.v1.Service.card_history:type_name -> lattice.catalog.v1.AgentCardRevision
+	27, // 9: lattice.catalog.v1.Service.skills:type_name -> lattice.catalog.v1.AgentCardSkill
+	3,  // 10: lattice.catalog.v1.Operation.service:type_name -> lattice.catalog.v1.ServiceInput
+	31, // 11: lattice.catalog.v1.ServiceError.details:type_name -> lattice.catalog.v1.ServiceError.DetailsEntry
+	4,  // 12: lattice.catalog.v1.MutationResult.services:type_name -> lattice.catalog.v1.Service
+	6,  // 13: lattice.catalog.v1.MutationResult.error:type_name -> lattice.catalog.v1.ServiceError
+	3,  // 14: lattice.catalog.v1.CreateServiceRequest.service:type_name -> lattice.catalog.v1.ServiceInput
+	4,  // 15: lattice.catalog.v1.GetServiceResponse.service:type_name -> lattice.catalog.v1.Service
+	8,  // 16: lattice.catalog.v1.GetServiceResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
+	32, // 17: lattice.catalog.v1.ListServicesRequest.labels:type_name -> lattice.catalog.v1.ListServicesRequest.LabelsEntry
+	4,  // 18: lattice.catalog.v1.ListServicesResponse.items:type_name -> lattice.catalog.v1.Service
+	8,  // 19: lattice.catalog.v1.ListServicesResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
+	8,  // 20: lattice.catalog.v1.ListScopesResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
+	5,  // 21: lattice.catalog.v1.ApplyTransactionRequest.operations:type_name -> lattice.catalog.v1.Operation
+	7,  // 22: lattice.catalog.v1.GetOperationResponse.result:type_name -> lattice.catalog.v1.MutationResult
+	8,  // 23: lattice.catalog.v1.GetOperationResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
+	23, // 24: lattice.catalog.v1.LoadWellKnownResponse.skills:type_name -> lattice.catalog.v1.DiscoveredSkill
+	9,  // 25: lattice.catalog.v1.CatalogService.CreateService:input_type -> lattice.catalog.v1.CreateServiceRequest
+	10, // 26: lattice.catalog.v1.CatalogService.GetService:input_type -> lattice.catalog.v1.GetServiceRequest
+	12, // 27: lattice.catalog.v1.CatalogService.ListServices:input_type -> lattice.catalog.v1.ListServicesRequest
+	14, // 28: lattice.catalog.v1.CatalogService.ListScopes:input_type -> lattice.catalog.v1.ListScopesRequest
+	16, // 29: lattice.catalog.v1.CatalogService.UpdateService:input_type -> lattice.catalog.v1.UpdateServiceRequest
+	17, // 30: lattice.catalog.v1.CatalogService.DeleteService:input_type -> lattice.catalog.v1.DeleteServiceRequest
+	18, // 31: lattice.catalog.v1.CatalogService.ApplyTransaction:input_type -> lattice.catalog.v1.ApplyTransactionRequest
+	19, // 32: lattice.catalog.v1.CatalogService.GetOperation:input_type -> lattice.catalog.v1.GetOperationRequest
+	21, // 33: lattice.catalog.v1.CatalogService.CheckHealth:input_type -> lattice.catalog.v1.CheckHealthRequest
+	26, // 34: lattice.catalog.v1.CatalogService.RefreshAgentCard:input_type -> lattice.catalog.v1.RefreshAgentCardRequest
+	24, // 35: lattice.catalog.v1.CatalogService.LoadWellKnown:input_type -> lattice.catalog.v1.LoadWellKnownRequest
+	7,  // 36: lattice.catalog.v1.CatalogService.CreateService:output_type -> lattice.catalog.v1.MutationResult
+	11, // 37: lattice.catalog.v1.CatalogService.GetService:output_type -> lattice.catalog.v1.GetServiceResponse
+	13, // 38: lattice.catalog.v1.CatalogService.ListServices:output_type -> lattice.catalog.v1.ListServicesResponse
+	15, // 39: lattice.catalog.v1.CatalogService.ListScopes:output_type -> lattice.catalog.v1.ListScopesResponse
+	7,  // 40: lattice.catalog.v1.CatalogService.UpdateService:output_type -> lattice.catalog.v1.MutationResult
+	7,  // 41: lattice.catalog.v1.CatalogService.DeleteService:output_type -> lattice.catalog.v1.MutationResult
+	7,  // 42: lattice.catalog.v1.CatalogService.ApplyTransaction:output_type -> lattice.catalog.v1.MutationResult
+	20, // 43: lattice.catalog.v1.CatalogService.GetOperation:output_type -> lattice.catalog.v1.GetOperationResponse
+	22, // 44: lattice.catalog.v1.CatalogService.CheckHealth:output_type -> lattice.catalog.v1.CheckHealthResponse
+	7,  // 45: lattice.catalog.v1.CatalogService.RefreshAgentCard:output_type -> lattice.catalog.v1.MutationResult
+	25, // 46: lattice.catalog.v1.CatalogService.LoadWellKnown:output_type -> lattice.catalog.v1.LoadWellKnownResponse
+	36, // [36:47] is the sub-list for method output_type
+	25, // [25:36] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_api_lattice_catalog_v1_catalog_proto_init() }
@@ -2207,7 +2567,7 @@ func file_api_lattice_catalog_v1_catalog_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_lattice_catalog_v1_catalog_proto_rawDesc), len(file_api_lattice_catalog_v1_catalog_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   30,
+			NumMessages:   33,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

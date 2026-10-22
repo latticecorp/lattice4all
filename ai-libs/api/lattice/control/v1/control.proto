@@ -15,6 +15,7 @@ enum DataplaneKind {
   DATAPLANE_KIND_INFERENCE_ROUTER = 1;
   DATAPLANE_KIND_AI_AGENT = 2;
   DATAPLANE_KIND_MCP = 3;
+  DATAPLANE_KIND_AGENT = 4;
 }
 
 message WellKnownSkill {
@@ -84,6 +85,8 @@ message DataplaneConfiguration {
   // Must match trusted x-iir-route-generation gRPC initial metadata in RDS.
   string version = 1;
   repeated Model models = 2;
+  repeated RegistryAgentCard agent_cards = 3;
+  repeated RegistryTool tools = 4;
 }
 message Model {
   string alias = 1;
@@ -107,4 +110,22 @@ message EnvoyStatus {
   string nonce = 3;
   bool accepted = 4;
   string error = 5;
+}
+
+// Authoritative discovery payload; consumers must not substitute runtime metadata.
+message RegistryAgentCard {
+  string parent_agent_id = 1;
+  string active_card_raw = 2;
+  string protocol = 3;
+  string a2a_version = 4;
+  uint64 revision = 5;
+}
+
+message RegistryTool {
+  string id = 1;
+  string source_service_id = 2;
+  string protocol = 3;
+  string a2a_version = 4;
+  string tool_schema = 5;
+  string status = 6;
 }
