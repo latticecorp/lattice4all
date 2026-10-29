@@ -1,7 +1,7 @@
 # Lattice AI libraries
 
 This directory is the source of truth for the public protobuf contracts and
-generated Go clients/server interfaces used by `lattice-cp` and
+generated Go clients/server interfaces used by `lattice-cp`, `lama-proxy`, and
 `intelligent-inference-router`. Change schemas here and regenerate bindings here;
 consumers must not maintain copies of these schemas or generated files.
 
@@ -24,7 +24,7 @@ import (
 | Package | Contract | Implementation |
 | --- | --- | --- |
 | `api/lattice/catalog/v1` | `lattice.catalog.v1.CatalogService`: create, get, list, update, delete, transactions, operation lookup, health | `lattice-cp` |
-| `api/lattice/control/v1` | `lattice.control.v1.ControlPlaneService`: bidirectional router configuration delivery and feedback | Router development server; not yet implemented by `lattice-cp` |
+| `api/lattice/control/v1` | `lattice.control.v1.ControlPlaneService`: bidirectional router configuration delivery and feedback | `lattice-cp`; consumed by proxies and inference routers |
 
 Use `catalogv1.NewCatalogServiceClient(conn)` to call the control plane, and
 `catalogv1.RegisterCatalogServiceServer(server, implementation)` to serve it.
@@ -105,3 +105,14 @@ configurations. Stage dataplane configuration before publishing xDS. Delivery
 acceptance remains separate from Envoy ACK/NACK and readiness. A matching
 checkpoint must still receive content replays or another supported lease renewal
 before freshness expires; the development server replays both payloads every 20s.
+
+## Coordinated A2A metadata upgrade
+
+The A2A 1.0-native/0.3-compatibility changes add explicit runtime and advertised
+versions to catalog cards, well-known metadata, and registry delivery. See
+[the delivery contract](cp-dp-protocol.md#a2a-card-and-adapter-version-metadata).
+The `a2a` package provides shared version validation, not wire translation or
+full card JSON Schema validation. Regenerate schemas here and update `lattice-cp`
+and `lama-proxy` together. Local integration tests can use an uncommitted parent
+Go workspace. Publish this shared module and bump consumer dependencies before
+building independently; the new fields/helper are not available in dev.4.

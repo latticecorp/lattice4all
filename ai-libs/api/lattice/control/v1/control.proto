@@ -29,6 +29,9 @@ message WellKnownMetadata {
   string service_id = 1;
   string raw_json = 2;
   repeated WellKnownSkill skills = 3;
+  // A2A-only: versions of runtime raw_json and proxy frontend.
+  string runtime_a2a_version = 4;
+  string advertised_a2a_version = 5;
 }
 
 message WellKnownRequest {
@@ -117,8 +120,13 @@ message RegistryAgentCard {
   string parent_agent_id = 1;
   string active_card_raw = 2;
   string protocol = 3;
+  // Schema of active_card_raw; runtime and advertised versions are independent.
   string a2a_version = 4;
   uint64 revision = 5;
+  string runtime_a2a_version = 6;
+  string advertised_a2a_version = 7;
+  // Exact runtime bytes; discovery must use active_card_raw instead.
+  string original_card_raw = 8;
 }
 
 message RegistryTool {

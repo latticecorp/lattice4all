@@ -53,9 +53,15 @@ message ServiceInput {
   repeated string exported_tools = 19 [json_name = "exportedTools"];
   repeated string imported_tools = 20 [json_name = "importedTools"];
   string parent_agent_id = 21 [json_name = "parentAgentID"];
+  // Schema version of active_card_raw, not the runtime adapter.
   string a2a_version = 22 [json_name = "a2aVersion"];
   string original_card_raw = 23 [json_name = "originalCardRaw"];
   string active_card_raw = 24 [json_name = "activeCardRaw"];
+  // Runtime adapter version, validated against original_card_raw; independent
+  // of the curated card and caller protocol. Empty on legacy records.
+  string runtime_a2a_version = 25 [json_name = "runtimeA2AVersion"];
+  // Proxy frontend version. Empty legacy values default to native 1.0.
+  string advertised_a2a_version = 26 [json_name = "advertisedA2AVersion"];
 }
 message Service {
   string kind = 1;
@@ -91,9 +97,12 @@ message Service {
   repeated AgentCardSkill skills = 33;
   string agent_card_id = 34 [json_name = "agentCardID"];
   string parent_agent_id = 28 [json_name = "parentAgentID"];
+  // Schema version of active_card_raw, not the runtime adapter.
   string a2a_version = 29 [json_name = "a2aVersion"];
   string original_card_raw = 30 [json_name = "originalCardRaw"];
   string active_card_raw = 31 [json_name = "activeCardRaw"];
+  string runtime_a2a_version = 35 [json_name = "runtimeA2AVersion"];
+  string advertised_a2a_version = 36 [json_name = "advertisedA2AVersion"];
 }
 message Operation {
   string type = 1;
@@ -170,7 +179,16 @@ message LoadWellKnownResponse {
   repeated DiscoveredSkill skills = 3;
 }
 
-message RefreshAgentCardRequest { string id = 1; uint64 expected_revision = 2; string raw_card = 3; string a2a_version = 4; }
+message RefreshAgentCardRequest {
+  string id = 1;
+  uint64 expected_revision = 2;
+  // Fields below are reserved for the internal one-hop forwarding leg.
+  string raw_card = 3;
+  // Version of the captured original runtime card, NOT the curated card.
+  string a2a_version = 4;
+  string runtime_a2a_version = 5;
+  string advertised_a2a_version = 6;
+}
 
 // Derived from active_card_raw; not independently mutable.
 message AgentCardSkill {
