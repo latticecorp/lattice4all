@@ -103,6 +103,7 @@ message Service {
   string active_card_raw = 31 [json_name = "activeCardRaw"];
   string runtime_a2a_version = 35 [json_name = "runtimeA2AVersion"];
   string advertised_a2a_version = 36 [json_name = "advertisedA2AVersion"];
+  uint64 raft_index = 37 [json_name = "raftIndex"];
 }
 message Operation {
   string type = 1;

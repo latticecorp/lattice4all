@@ -3,6 +3,7 @@ package lattice.control.v1;
 option go_package = "github.com/latticecorp/lattice4all/ai-libs/api/lattice/control/v1;controlv1";
 
 import "google/protobuf/any.proto";
+import "api/lattice/catalog/v1/catalog.proto";
 
 // Dataplane configuration delivery protocol, distinct from Envoy ADS.
 // The development server implements this; lattice-cp currently serves CatalogService.
@@ -71,7 +72,30 @@ message ControlPlaneMessage {
     XdsConfiguration xds_configuration = 2;
     DataplaneConfiguration dataplane_configuration = 3;
     WellKnownRequest well_known_request = 4;
+    Snapshot snapshot = 5;
   }
+}
+message Snapshot {
+  string version = 1;
+  uint64 version_index = 2 [json_name = "versionIndex"];
+  oneof entity {
+    AgentProxySnapshot agent_proxy = 3 [json_name = "agentProxy"];
+    InferenceRouterSnapshot inference_router = 4 [json_name = "inferenceRouter"];
+  }
+}
+message AgentProxySnapshot {
+  string service_id = 1 [json_name = "serviceID"];
+  string scope = 2;
+  DataplaneConfiguration dataplane_configuration = 3 [json_name = "dataplaneConfiguration"];
+  XdsConfiguration xds_configuration = 4 [json_name = "xdsConfiguration"];
+  repeated lattice.catalog.v1.Service services = 5;
+}
+message InferenceRouterSnapshot {
+  string service_id = 1 [json_name = "serviceID"];
+  string scope = 2;
+  DataplaneConfiguration dataplane_configuration = 3 [json_name = "dataplaneConfiguration"];
+  XdsConfiguration xds_configuration = 4 [json_name = "xdsConfiguration"];
+  repeated lattice.catalog.v1.Service services = 5;
 }
 message ResourceSet {
   string type_url = 1;
