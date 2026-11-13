@@ -16,6 +16,8 @@ service CatalogService {
   rpc CheckHealth(CheckHealthRequest) returns (CheckHealthResponse);
   rpc RefreshAgentCard(RefreshAgentCardRequest) returns (MutationResult);
   rpc LoadWellKnown(LoadWellKnownRequest) returns (LoadWellKnownResponse);
+  rpc ExportConfig(ExportConfigRequest) returns (ExportConfigResponse);
+  rpc ImportConfig(ImportConfigRequest) returns (MutationResult);
 }
 message Address { string type = 1; string value = 2; }
 message Capabilities {
@@ -206,4 +208,17 @@ message AgentCardRevision {
   uint64 revision = 1;
   string a2a_version = 2;
   string active_card_raw = 3;
+}
+message ExportConfigRequest {
+  optional bool stale = 1;
+  string scope = 2;
+}
+message ExportConfigResponse {
+  uint32 version = 1;
+  repeated ServiceInput services = 2;
+  ReadMetadata read = 3;
+}
+message ImportConfigRequest {
+  uint32 version = 1;
+  repeated ServiceInput services = 2;
 }

@@ -30,6 +30,8 @@ const (
 	CatalogService_CheckHealth_FullMethodName      = "/lattice.catalog.v1.CatalogService/CheckHealth"
 	CatalogService_RefreshAgentCard_FullMethodName = "/lattice.catalog.v1.CatalogService/RefreshAgentCard"
 	CatalogService_LoadWellKnown_FullMethodName    = "/lattice.catalog.v1.CatalogService/LoadWellKnown"
+	CatalogService_ExportConfig_FullMethodName     = "/lattice.catalog.v1.CatalogService/ExportConfig"
+	CatalogService_ImportConfig_FullMethodName     = "/lattice.catalog.v1.CatalogService/ImportConfig"
 )
 
 // CatalogServiceClient is the client API for CatalogService service.
@@ -50,6 +52,8 @@ type CatalogServiceClient interface {
 	CheckHealth(ctx context.Context, in *CheckHealthRequest, opts ...grpc.CallOption) (*CheckHealthResponse, error)
 	RefreshAgentCard(ctx context.Context, in *RefreshAgentCardRequest, opts ...grpc.CallOption) (*MutationResult, error)
 	LoadWellKnown(ctx context.Context, in *LoadWellKnownRequest, opts ...grpc.CallOption) (*LoadWellKnownResponse, error)
+	ExportConfig(ctx context.Context, in *ExportConfigRequest, opts ...grpc.CallOption) (*ExportConfigResponse, error)
+	ImportConfig(ctx context.Context, in *ImportConfigRequest, opts ...grpc.CallOption) (*MutationResult, error)
 }
 
 type catalogServiceClient struct {
@@ -170,6 +174,26 @@ func (c *catalogServiceClient) LoadWellKnown(ctx context.Context, in *LoadWellKn
 	return out, nil
 }
 
+func (c *catalogServiceClient) ExportConfig(ctx context.Context, in *ExportConfigRequest, opts ...grpc.CallOption) (*ExportConfigResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ExportConfigResponse)
+	err := c.cc.Invoke(ctx, CatalogService_ExportConfig_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catalogServiceClient) ImportConfig(ctx context.Context, in *ImportConfigRequest, opts ...grpc.CallOption) (*MutationResult, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MutationResult)
+	err := c.cc.Invoke(ctx, CatalogService_ImportConfig_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CatalogServiceServer is the server API for CatalogService service.
 // All implementations must embed UnimplementedCatalogServiceServer
 // for forward compatibility.
@@ -188,6 +212,8 @@ type CatalogServiceServer interface {
 	CheckHealth(context.Context, *CheckHealthRequest) (*CheckHealthResponse, error)
 	RefreshAgentCard(context.Context, *RefreshAgentCardRequest) (*MutationResult, error)
 	LoadWellKnown(context.Context, *LoadWellKnownRequest) (*LoadWellKnownResponse, error)
+	ExportConfig(context.Context, *ExportConfigRequest) (*ExportConfigResponse, error)
+	ImportConfig(context.Context, *ImportConfigRequest) (*MutationResult, error)
 	mustEmbedUnimplementedCatalogServiceServer()
 }
 
@@ -230,6 +256,12 @@ func (UnimplementedCatalogServiceServer) RefreshAgentCard(context.Context, *Refr
 }
 func (UnimplementedCatalogServiceServer) LoadWellKnown(context.Context, *LoadWellKnownRequest) (*LoadWellKnownResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method LoadWellKnown not implemented")
+}
+func (UnimplementedCatalogServiceServer) ExportConfig(context.Context, *ExportConfigRequest) (*ExportConfigResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ExportConfig not implemented")
+}
+func (UnimplementedCatalogServiceServer) ImportConfig(context.Context, *ImportConfigRequest) (*MutationResult, error) {
+	return nil, status.Error(codes.Unimplemented, "method ImportConfig not implemented")
 }
 func (UnimplementedCatalogServiceServer) mustEmbedUnimplementedCatalogServiceServer() {}
 func (UnimplementedCatalogServiceServer) testEmbeddedByValue()                        {}
@@ -450,6 +482,42 @@ func _CatalogService_LoadWellKnown_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CatalogService_ExportConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExportConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatalogServiceServer).ExportConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatalogService_ExportConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatalogServiceServer).ExportConfig(ctx, req.(*ExportConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatalogService_ImportConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ImportConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatalogServiceServer).ImportConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatalogService_ImportConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatalogServiceServer).ImportConfig(ctx, req.(*ImportConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CatalogService_ServiceDesc is the grpc.ServiceDesc for CatalogService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -500,6 +568,14 @@ var CatalogService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoadWellKnown",
 			Handler:    _CatalogService_LoadWellKnown_Handler,
+		},
+		{
+			MethodName: "ExportConfig",
+			Handler:    _CatalogService_ExportConfig_Handler,
+		},
+		{
+			MethodName: "ImportConfig",
+			Handler:    _CatalogService_ImportConfig_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
