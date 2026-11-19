@@ -2438,6 +2438,349 @@ func (x *ImportConfigRequest) GetServices() []*ServiceInput {
 	return nil
 }
 
+type CreateOIDCAuthMethodRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Target backend category: "vault", "iam", or "lama-cp".
+	// If omitted, inferred from vendor (e.g. "hc-vault" -> "vault").
+	Target string `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	// Vendor identifier, e.g. "hc-vault", "aws-iam", "lama-cp".
+	Vendor string `protobuf:"bytes,2,opt,name=vendor,proto3" json:"vendor,omitempty"`
+	// Backend host URL, e.g. "http://vault.hc-vault.svc.cluster.local:8200".
+	// For Vault, defaults to the control plane's configured vault.address when omitted.
+	Host string `protobuf:"bytes,3,opt,name=host,proto3" json:"host,omitempty"`
+	// Ephemeral management token used only in-memory for auth-method creation.
+	// Never persisted to catalog/Raft state, disk, or logs.
+	ManagementToken string `protobuf:"bytes,4,opt,name=management_token,json=management-token,proto3" json:"management_token,omitempty"`
+	// Secret path for read-only credential access (defaults to VaultClient.secretPath for Vault).
+	SecretPath string `protobuf:"bytes,5,opt,name=secret_path,json=secret-path,proto3" json:"secret_path,omitempty"`
+	// Private key secret path (defaults to "/secrets/pvt-keys").
+	PrivateKey string `protobuf:"bytes,6,opt,name=private_key,json=private-key,proto3" json:"private_key,omitempty"`
+	// Optional auth method mount/path override (defaults to "oidc").
+	AuthPath string `protobuf:"bytes,7,opt,name=auth_path,json=auth-path,proto3" json:"auth_path,omitempty"`
+	// Optional role name override (defaults to "lattice-cp").
+	RoleName string `protobuf:"bytes,8,opt,name=role_name,json=role-name,proto3" json:"role_name,omitempty"`
+	// Optional vendor-specific extra options.
+	Extra         map[string]string `protobuf:"bytes,9,rep,name=extra,proto3" json:"extra,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateOIDCAuthMethodRequest) Reset() {
+	*x = CreateOIDCAuthMethodRequest{}
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateOIDCAuthMethodRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateOIDCAuthMethodRequest) ProtoMessage() {}
+
+func (x *CreateOIDCAuthMethodRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateOIDCAuthMethodRequest.ProtoReflect.Descriptor instead.
+func (*CreateOIDCAuthMethodRequest) Descriptor() ([]byte, []int) {
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *CreateOIDCAuthMethodRequest) GetTarget() string {
+	if x != nil {
+		return x.Target
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodRequest) GetVendor() string {
+	if x != nil {
+		return x.Vendor
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodRequest) GetHost() string {
+	if x != nil {
+		return x.Host
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodRequest) GetManagementToken() string {
+	if x != nil {
+		return x.ManagementToken
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodRequest) GetSecretPath() string {
+	if x != nil {
+		return x.SecretPath
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodRequest) GetPrivateKey() string {
+	if x != nil {
+		return x.PrivateKey
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodRequest) GetAuthPath() string {
+	if x != nil {
+		return x.AuthPath
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodRequest) GetRoleName() string {
+	if x != nil {
+		return x.RoleName
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodRequest) GetExtra() map[string]string {
+	if x != nil {
+		return x.Extra
+	}
+	return nil
+}
+
+type DetectedIDP struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Detected runtime environment, e.g. "kubernetes", "oidc-env".
+	Environment string `protobuf:"bytes,1,opt,name=environment,proto3" json:"environment,omitempty"`
+	// Resolved OIDC issuer URL (if available).
+	Issuer string `protobuf:"bytes,2,opt,name=issuer,proto3" json:"issuer,omitempty"`
+	// Resolved JWKS URL / path (e.g. Kubernetes OIDC JWKS endpoint).
+	JwksUrl string `protobuf:"bytes,3,opt,name=jwks_url,json=jwks-url,proto3" json:"jwks_url,omitempty"`
+	// Resolved OIDC discovery URL (if available).
+	DiscoveryUrl string `protobuf:"bytes,4,opt,name=discovery_url,json=discovery-url,proto3" json:"discovery_url,omitempty"`
+	// PEM-encoded CA certificate used to verify the JWKS/IDP endpoint (when applicable).
+	JwksCaPem string `protobuf:"bytes,5,opt,name=jwks_ca_pem,json=jwks-ca-pem,proto3" json:"jwks_ca_pem,omitempty"`
+	// Default bound audiences for tokens.
+	BoundAudiences []string `protobuf:"bytes,6,rep,name=bound_audiences,json=bound-audiences,proto3" json:"bound_audiences,omitempty"`
+	// Default bound subject / service account (when detected).
+	BoundSubject  string `protobuf:"bytes,7,opt,name=bound_subject,json=bound-subject,proto3" json:"bound_subject,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DetectedIDP) Reset() {
+	*x = DetectedIDP{}
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DetectedIDP) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DetectedIDP) ProtoMessage() {}
+
+func (x *DetectedIDP) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DetectedIDP.ProtoReflect.Descriptor instead.
+func (*DetectedIDP) Descriptor() ([]byte, []int) {
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *DetectedIDP) GetEnvironment() string {
+	if x != nil {
+		return x.Environment
+	}
+	return ""
+}
+
+func (x *DetectedIDP) GetIssuer() string {
+	if x != nil {
+		return x.Issuer
+	}
+	return ""
+}
+
+func (x *DetectedIDP) GetJwksUrl() string {
+	if x != nil {
+		return x.JwksUrl
+	}
+	return ""
+}
+
+func (x *DetectedIDP) GetDiscoveryUrl() string {
+	if x != nil {
+		return x.DiscoveryUrl
+	}
+	return ""
+}
+
+func (x *DetectedIDP) GetJwksCaPem() string {
+	if x != nil {
+		return x.JwksCaPem
+	}
+	return ""
+}
+
+func (x *DetectedIDP) GetBoundAudiences() []string {
+	if x != nil {
+		return x.BoundAudiences
+	}
+	return nil
+}
+
+func (x *DetectedIDP) GetBoundSubject() string {
+	if x != nil {
+		return x.BoundSubject
+	}
+	return ""
+}
+
+type CreateOIDCAuthMethodResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Target        string                 `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	Vendor        string                 `protobuf:"bytes,2,opt,name=vendor,proto3" json:"vendor,omitempty"`
+	Host          string                 `protobuf:"bytes,3,opt,name=host,proto3" json:"host,omitempty"`
+	AuthPath      string                 `protobuf:"bytes,4,opt,name=auth_path,json=auth-path,proto3" json:"auth_path,omitempty"`
+	RoleName      string                 `protobuf:"bytes,5,opt,name=role_name,json=role-name,proto3" json:"role_name,omitempty"`
+	SecretPath    string                 `protobuf:"bytes,6,opt,name=secret_path,json=secret-path,proto3" json:"secret_path,omitempty"`
+	PrivateKey    string                 `protobuf:"bytes,7,opt,name=private_key,json=private-key,proto3" json:"private_key,omitempty"`
+	PolicyName    string                 `protobuf:"bytes,8,opt,name=policy_name,json=policy-name,proto3" json:"policy_name,omitempty"`
+	Idp           *DetectedIDP           `protobuf:"bytes,9,opt,name=idp,proto3" json:"idp,omitempty"`
+	Status        string                 `protobuf:"bytes,10,opt,name=status,proto3" json:"status,omitempty"`
+	Message       string                 `protobuf:"bytes,11,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateOIDCAuthMethodResponse) Reset() {
+	*x = CreateOIDCAuthMethodResponse{}
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateOIDCAuthMethodResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateOIDCAuthMethodResponse) ProtoMessage() {}
+
+func (x *CreateOIDCAuthMethodResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_lattice_catalog_v1_catalog_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateOIDCAuthMethodResponse.ProtoReflect.Descriptor instead.
+func (*CreateOIDCAuthMethodResponse) Descriptor() ([]byte, []int) {
+	return file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *CreateOIDCAuthMethodResponse) GetTarget() string {
+	if x != nil {
+		return x.Target
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodResponse) GetVendor() string {
+	if x != nil {
+		return x.Vendor
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodResponse) GetHost() string {
+	if x != nil {
+		return x.Host
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodResponse) GetAuthPath() string {
+	if x != nil {
+		return x.AuthPath
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodResponse) GetRoleName() string {
+	if x != nil {
+		return x.RoleName
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodResponse) GetSecretPath() string {
+	if x != nil {
+		return x.SecretPath
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodResponse) GetPrivateKey() string {
+	if x != nil {
+		return x.PrivateKey
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodResponse) GetPolicyName() string {
+	if x != nil {
+		return x.PolicyName
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodResponse) GetIdp() *DetectedIDP {
+	if x != nil {
+		return x.Idp
+	}
+	return nil
+}
+
+func (x *CreateOIDCAuthMethodResponse) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *CreateOIDCAuthMethodResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 var File_api_lattice_catalog_v1_catalog_proto protoreflect.FileDescriptor
 
 const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
@@ -2678,7 +3021,43 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\x04read\x18\x03 \x01(\v2 .lattice.catalog.v1.ReadMetadataR\x04read\"m\n" +
 	"\x13ImportConfigRequest\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\rR\aversion\x12<\n" +
-	"\bservices\x18\x02 \x03(\v2 .lattice.catalog.v1.ServiceInputR\bservices2\xfd\t\n" +
+	"\bservices\x18\x02 \x03(\v2 .lattice.catalog.v1.ServiceInputR\bservices\"\x99\x03\n" +
+	"\x1bCreateOIDCAuthMethodRequest\x12\x16\n" +
+	"\x06target\x18\x01 \x01(\tR\x06target\x12\x16\n" +
+	"\x06vendor\x18\x02 \x01(\tR\x06vendor\x12\x12\n" +
+	"\x04host\x18\x03 \x01(\tR\x04host\x12*\n" +
+	"\x10management_token\x18\x04 \x01(\tR\x10management-token\x12 \n" +
+	"\vsecret_path\x18\x05 \x01(\tR\vsecret-path\x12 \n" +
+	"\vprivate_key\x18\x06 \x01(\tR\vprivate-key\x12\x1c\n" +
+	"\tauth_path\x18\a \x01(\tR\tauth-path\x12\x1c\n" +
+	"\trole_name\x18\b \x01(\tR\trole-name\x12P\n" +
+	"\x05extra\x18\t \x03(\v2:.lattice.catalog.v1.CreateOIDCAuthMethodRequest.ExtraEntryR\x05extra\x1a8\n" +
+	"\n" +
+	"ExtraEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xfb\x01\n" +
+	"\vDetectedIDP\x12 \n" +
+	"\venvironment\x18\x01 \x01(\tR\venvironment\x12\x16\n" +
+	"\x06issuer\x18\x02 \x01(\tR\x06issuer\x12\x1a\n" +
+	"\bjwks_url\x18\x03 \x01(\tR\bjwks-url\x12$\n" +
+	"\rdiscovery_url\x18\x04 \x01(\tR\rdiscovery-url\x12 \n" +
+	"\vjwks_ca_pem\x18\x05 \x01(\tR\vjwks-ca-pem\x12(\n" +
+	"\x0fbound_audiences\x18\x06 \x03(\tR\x0fbound-audiences\x12$\n" +
+	"\rbound_subject\x18\a \x01(\tR\rbound-subject\"\xe9\x02\n" +
+	"\x1cCreateOIDCAuthMethodResponse\x12\x16\n" +
+	"\x06target\x18\x01 \x01(\tR\x06target\x12\x16\n" +
+	"\x06vendor\x18\x02 \x01(\tR\x06vendor\x12\x12\n" +
+	"\x04host\x18\x03 \x01(\tR\x04host\x12\x1c\n" +
+	"\tauth_path\x18\x04 \x01(\tR\tauth-path\x12\x1c\n" +
+	"\trole_name\x18\x05 \x01(\tR\trole-name\x12 \n" +
+	"\vsecret_path\x18\x06 \x01(\tR\vsecret-path\x12 \n" +
+	"\vprivate_key\x18\a \x01(\tR\vprivate-key\x12 \n" +
+	"\vpolicy_name\x18\b \x01(\tR\vpolicy-name\x121\n" +
+	"\x03idp\x18\t \x01(\v2\x1f.lattice.catalog.v1.DetectedIDPR\x03idp\x12\x16\n" +
+	"\x06status\x18\n" +
+	" \x01(\tR\x06status\x12\x18\n" +
+	"\amessage\x18\v \x01(\tR\amessage2\xf8\n" +
+	"\n" +
 	"\x0eCatalogService\x12]\n" +
 	"\rCreateService\x12(.lattice.catalog.v1.CreateServiceRequest\x1a\".lattice.catalog.v1.MutationResult\x12[\n" +
 	"\n" +
@@ -2694,7 +3073,8 @@ const file_api_lattice_catalog_v1_catalog_proto_rawDesc = "" +
 	"\x10RefreshAgentCard\x12+.lattice.catalog.v1.RefreshAgentCardRequest\x1a\".lattice.catalog.v1.MutationResult\x12d\n" +
 	"\rLoadWellKnown\x12(.lattice.catalog.v1.LoadWellKnownRequest\x1a).lattice.catalog.v1.LoadWellKnownResponse\x12a\n" +
 	"\fExportConfig\x12'.lattice.catalog.v1.ExportConfigRequest\x1a(.lattice.catalog.v1.ExportConfigResponse\x12[\n" +
-	"\fImportConfig\x12'.lattice.catalog.v1.ImportConfigRequest\x1a\".lattice.catalog.v1.MutationResultBMZKgithub.com/latticecorp/lattice4all/ai-libs/api/lattice/catalog/v1;catalogv1b\x06proto3"
+	"\fImportConfig\x12'.lattice.catalog.v1.ImportConfigRequest\x1a\".lattice.catalog.v1.MutationResult\x12y\n" +
+	"\x14CreateOIDCAuthMethod\x12/.lattice.catalog.v1.CreateOIDCAuthMethodRequest\x1a0.lattice.catalog.v1.CreateOIDCAuthMethodResponseBMZKgithub.com/latticecorp/lattice4all/ai-libs/api/lattice/catalog/v1;catalogv1b\x06proto3"
 
 var (
 	file_api_lattice_catalog_v1_catalog_proto_rawDescOnce sync.Once
@@ -2708,64 +3088,68 @@ func file_api_lattice_catalog_v1_catalog_proto_rawDescGZIP() []byte {
 	return file_api_lattice_catalog_v1_catalog_proto_rawDescData
 }
 
-var file_api_lattice_catalog_v1_catalog_proto_msgTypes = make([]protoimpl.MessageInfo, 36)
+var file_api_lattice_catalog_v1_catalog_proto_msgTypes = make([]protoimpl.MessageInfo, 40)
 var file_api_lattice_catalog_v1_catalog_proto_goTypes = []any{
-	(*Address)(nil),                 // 0: lattice.catalog.v1.Address
-	(*Capabilities)(nil),            // 1: lattice.catalog.v1.Capabilities
-	(*CredentialHeader)(nil),        // 2: lattice.catalog.v1.CredentialHeader
-	(*ServiceInput)(nil),            // 3: lattice.catalog.v1.ServiceInput
-	(*Service)(nil),                 // 4: lattice.catalog.v1.Service
-	(*Operation)(nil),               // 5: lattice.catalog.v1.Operation
-	(*ServiceError)(nil),            // 6: lattice.catalog.v1.ServiceError
-	(*MutationResult)(nil),          // 7: lattice.catalog.v1.MutationResult
-	(*ReadMetadata)(nil),            // 8: lattice.catalog.v1.ReadMetadata
-	(*CreateServiceRequest)(nil),    // 9: lattice.catalog.v1.CreateServiceRequest
-	(*GetServiceRequest)(nil),       // 10: lattice.catalog.v1.GetServiceRequest
-	(*GetServiceResponse)(nil),      // 11: lattice.catalog.v1.GetServiceResponse
-	(*ListServicesRequest)(nil),     // 12: lattice.catalog.v1.ListServicesRequest
-	(*ListServicesResponse)(nil),    // 13: lattice.catalog.v1.ListServicesResponse
-	(*ListScopesRequest)(nil),       // 14: lattice.catalog.v1.ListScopesRequest
-	(*ListScopesResponse)(nil),      // 15: lattice.catalog.v1.ListScopesResponse
-	(*UpdateServiceRequest)(nil),    // 16: lattice.catalog.v1.UpdateServiceRequest
-	(*DeleteServiceRequest)(nil),    // 17: lattice.catalog.v1.DeleteServiceRequest
-	(*ApplyTransactionRequest)(nil), // 18: lattice.catalog.v1.ApplyTransactionRequest
-	(*GetOperationRequest)(nil),     // 19: lattice.catalog.v1.GetOperationRequest
-	(*GetOperationResponse)(nil),    // 20: lattice.catalog.v1.GetOperationResponse
-	(*CheckHealthRequest)(nil),      // 21: lattice.catalog.v1.CheckHealthRequest
-	(*CheckHealthResponse)(nil),     // 22: lattice.catalog.v1.CheckHealthResponse
-	(*DiscoveredSkill)(nil),         // 23: lattice.catalog.v1.DiscoveredSkill
-	(*LoadWellKnownRequest)(nil),    // 24: lattice.catalog.v1.LoadWellKnownRequest
-	(*LoadWellKnownResponse)(nil),   // 25: lattice.catalog.v1.LoadWellKnownResponse
-	(*RefreshAgentCardRequest)(nil), // 26: lattice.catalog.v1.RefreshAgentCardRequest
-	(*AgentCardSkill)(nil),          // 27: lattice.catalog.v1.AgentCardSkill
-	(*AgentCardRevision)(nil),       // 28: lattice.catalog.v1.AgentCardRevision
-	(*ExportConfigRequest)(nil),     // 29: lattice.catalog.v1.ExportConfigRequest
-	(*ExportConfigResponse)(nil),    // 30: lattice.catalog.v1.ExportConfigResponse
-	(*ImportConfigRequest)(nil),     // 31: lattice.catalog.v1.ImportConfigRequest
-	nil,                             // 32: lattice.catalog.v1.ServiceInput.LabelsEntry
-	nil,                             // 33: lattice.catalog.v1.Service.LabelsEntry
-	nil,                             // 34: lattice.catalog.v1.ServiceError.DetailsEntry
-	nil,                             // 35: lattice.catalog.v1.ListServicesRequest.LabelsEntry
+	(*Address)(nil),                      // 0: lattice.catalog.v1.Address
+	(*Capabilities)(nil),                 // 1: lattice.catalog.v1.Capabilities
+	(*CredentialHeader)(nil),             // 2: lattice.catalog.v1.CredentialHeader
+	(*ServiceInput)(nil),                 // 3: lattice.catalog.v1.ServiceInput
+	(*Service)(nil),                      // 4: lattice.catalog.v1.Service
+	(*Operation)(nil),                    // 5: lattice.catalog.v1.Operation
+	(*ServiceError)(nil),                 // 6: lattice.catalog.v1.ServiceError
+	(*MutationResult)(nil),               // 7: lattice.catalog.v1.MutationResult
+	(*ReadMetadata)(nil),                 // 8: lattice.catalog.v1.ReadMetadata
+	(*CreateServiceRequest)(nil),         // 9: lattice.catalog.v1.CreateServiceRequest
+	(*GetServiceRequest)(nil),            // 10: lattice.catalog.v1.GetServiceRequest
+	(*GetServiceResponse)(nil),           // 11: lattice.catalog.v1.GetServiceResponse
+	(*ListServicesRequest)(nil),          // 12: lattice.catalog.v1.ListServicesRequest
+	(*ListServicesResponse)(nil),         // 13: lattice.catalog.v1.ListServicesResponse
+	(*ListScopesRequest)(nil),            // 14: lattice.catalog.v1.ListScopesRequest
+	(*ListScopesResponse)(nil),           // 15: lattice.catalog.v1.ListScopesResponse
+	(*UpdateServiceRequest)(nil),         // 16: lattice.catalog.v1.UpdateServiceRequest
+	(*DeleteServiceRequest)(nil),         // 17: lattice.catalog.v1.DeleteServiceRequest
+	(*ApplyTransactionRequest)(nil),      // 18: lattice.catalog.v1.ApplyTransactionRequest
+	(*GetOperationRequest)(nil),          // 19: lattice.catalog.v1.GetOperationRequest
+	(*GetOperationResponse)(nil),         // 20: lattice.catalog.v1.GetOperationResponse
+	(*CheckHealthRequest)(nil),           // 21: lattice.catalog.v1.CheckHealthRequest
+	(*CheckHealthResponse)(nil),          // 22: lattice.catalog.v1.CheckHealthResponse
+	(*DiscoveredSkill)(nil),              // 23: lattice.catalog.v1.DiscoveredSkill
+	(*LoadWellKnownRequest)(nil),         // 24: lattice.catalog.v1.LoadWellKnownRequest
+	(*LoadWellKnownResponse)(nil),        // 25: lattice.catalog.v1.LoadWellKnownResponse
+	(*RefreshAgentCardRequest)(nil),      // 26: lattice.catalog.v1.RefreshAgentCardRequest
+	(*AgentCardSkill)(nil),               // 27: lattice.catalog.v1.AgentCardSkill
+	(*AgentCardRevision)(nil),            // 28: lattice.catalog.v1.AgentCardRevision
+	(*ExportConfigRequest)(nil),          // 29: lattice.catalog.v1.ExportConfigRequest
+	(*ExportConfigResponse)(nil),         // 30: lattice.catalog.v1.ExportConfigResponse
+	(*ImportConfigRequest)(nil),          // 31: lattice.catalog.v1.ImportConfigRequest
+	(*CreateOIDCAuthMethodRequest)(nil),  // 32: lattice.catalog.v1.CreateOIDCAuthMethodRequest
+	(*DetectedIDP)(nil),                  // 33: lattice.catalog.v1.DetectedIDP
+	(*CreateOIDCAuthMethodResponse)(nil), // 34: lattice.catalog.v1.CreateOIDCAuthMethodResponse
+	nil,                                  // 35: lattice.catalog.v1.ServiceInput.LabelsEntry
+	nil,                                  // 36: lattice.catalog.v1.Service.LabelsEntry
+	nil,                                  // 37: lattice.catalog.v1.ServiceError.DetailsEntry
+	nil,                                  // 38: lattice.catalog.v1.ListServicesRequest.LabelsEntry
+	nil,                                  // 39: lattice.catalog.v1.CreateOIDCAuthMethodRequest.ExtraEntry
 }
 var file_api_lattice_catalog_v1_catalog_proto_depIdxs = []int32{
-	32, // 0: lattice.catalog.v1.ServiceInput.labels:type_name -> lattice.catalog.v1.ServiceInput.LabelsEntry
+	35, // 0: lattice.catalog.v1.ServiceInput.labels:type_name -> lattice.catalog.v1.ServiceInput.LabelsEntry
 	1,  // 1: lattice.catalog.v1.ServiceInput.capabilities:type_name -> lattice.catalog.v1.Capabilities
 	0,  // 2: lattice.catalog.v1.ServiceInput.addresses:type_name -> lattice.catalog.v1.Address
 	2,  // 3: lattice.catalog.v1.ServiceInput.headers:type_name -> lattice.catalog.v1.CredentialHeader
-	33, // 4: lattice.catalog.v1.Service.labels:type_name -> lattice.catalog.v1.Service.LabelsEntry
+	36, // 4: lattice.catalog.v1.Service.labels:type_name -> lattice.catalog.v1.Service.LabelsEntry
 	1,  // 5: lattice.catalog.v1.Service.capabilities:type_name -> lattice.catalog.v1.Capabilities
 	0,  // 6: lattice.catalog.v1.Service.addresses:type_name -> lattice.catalog.v1.Address
 	2,  // 7: lattice.catalog.v1.Service.headers:type_name -> lattice.catalog.v1.CredentialHeader
 	28, // 8: lattice.catalog.v1.Service.card_history:type_name -> lattice.catalog.v1.AgentCardRevision
 	27, // 9: lattice.catalog.v1.Service.skills:type_name -> lattice.catalog.v1.AgentCardSkill
 	3,  // 10: lattice.catalog.v1.Operation.service:type_name -> lattice.catalog.v1.ServiceInput
-	34, // 11: lattice.catalog.v1.ServiceError.details:type_name -> lattice.catalog.v1.ServiceError.DetailsEntry
+	37, // 11: lattice.catalog.v1.ServiceError.details:type_name -> lattice.catalog.v1.ServiceError.DetailsEntry
 	4,  // 12: lattice.catalog.v1.MutationResult.services:type_name -> lattice.catalog.v1.Service
 	6,  // 13: lattice.catalog.v1.MutationResult.error:type_name -> lattice.catalog.v1.ServiceError
 	3,  // 14: lattice.catalog.v1.CreateServiceRequest.service:type_name -> lattice.catalog.v1.ServiceInput
 	4,  // 15: lattice.catalog.v1.GetServiceResponse.service:type_name -> lattice.catalog.v1.Service
 	8,  // 16: lattice.catalog.v1.GetServiceResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
-	35, // 17: lattice.catalog.v1.ListServicesRequest.labels:type_name -> lattice.catalog.v1.ListServicesRequest.LabelsEntry
+	38, // 17: lattice.catalog.v1.ListServicesRequest.labels:type_name -> lattice.catalog.v1.ListServicesRequest.LabelsEntry
 	4,  // 18: lattice.catalog.v1.ListServicesResponse.items:type_name -> lattice.catalog.v1.Service
 	8,  // 19: lattice.catalog.v1.ListServicesResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
 	8,  // 20: lattice.catalog.v1.ListScopesResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
@@ -2776,37 +3160,41 @@ var file_api_lattice_catalog_v1_catalog_proto_depIdxs = []int32{
 	3,  // 25: lattice.catalog.v1.ExportConfigResponse.services:type_name -> lattice.catalog.v1.ServiceInput
 	8,  // 26: lattice.catalog.v1.ExportConfigResponse.read:type_name -> lattice.catalog.v1.ReadMetadata
 	3,  // 27: lattice.catalog.v1.ImportConfigRequest.services:type_name -> lattice.catalog.v1.ServiceInput
-	9,  // 28: lattice.catalog.v1.CatalogService.CreateService:input_type -> lattice.catalog.v1.CreateServiceRequest
-	10, // 29: lattice.catalog.v1.CatalogService.GetService:input_type -> lattice.catalog.v1.GetServiceRequest
-	12, // 30: lattice.catalog.v1.CatalogService.ListServices:input_type -> lattice.catalog.v1.ListServicesRequest
-	14, // 31: lattice.catalog.v1.CatalogService.ListScopes:input_type -> lattice.catalog.v1.ListScopesRequest
-	16, // 32: lattice.catalog.v1.CatalogService.UpdateService:input_type -> lattice.catalog.v1.UpdateServiceRequest
-	17, // 33: lattice.catalog.v1.CatalogService.DeleteService:input_type -> lattice.catalog.v1.DeleteServiceRequest
-	18, // 34: lattice.catalog.v1.CatalogService.ApplyTransaction:input_type -> lattice.catalog.v1.ApplyTransactionRequest
-	19, // 35: lattice.catalog.v1.CatalogService.GetOperation:input_type -> lattice.catalog.v1.GetOperationRequest
-	21, // 36: lattice.catalog.v1.CatalogService.CheckHealth:input_type -> lattice.catalog.v1.CheckHealthRequest
-	26, // 37: lattice.catalog.v1.CatalogService.RefreshAgentCard:input_type -> lattice.catalog.v1.RefreshAgentCardRequest
-	24, // 38: lattice.catalog.v1.CatalogService.LoadWellKnown:input_type -> lattice.catalog.v1.LoadWellKnownRequest
-	29, // 39: lattice.catalog.v1.CatalogService.ExportConfig:input_type -> lattice.catalog.v1.ExportConfigRequest
-	31, // 40: lattice.catalog.v1.CatalogService.ImportConfig:input_type -> lattice.catalog.v1.ImportConfigRequest
-	7,  // 41: lattice.catalog.v1.CatalogService.CreateService:output_type -> lattice.catalog.v1.MutationResult
-	11, // 42: lattice.catalog.v1.CatalogService.GetService:output_type -> lattice.catalog.v1.GetServiceResponse
-	13, // 43: lattice.catalog.v1.CatalogService.ListServices:output_type -> lattice.catalog.v1.ListServicesResponse
-	15, // 44: lattice.catalog.v1.CatalogService.ListScopes:output_type -> lattice.catalog.v1.ListScopesResponse
-	7,  // 45: lattice.catalog.v1.CatalogService.UpdateService:output_type -> lattice.catalog.v1.MutationResult
-	7,  // 46: lattice.catalog.v1.CatalogService.DeleteService:output_type -> lattice.catalog.v1.MutationResult
-	7,  // 47: lattice.catalog.v1.CatalogService.ApplyTransaction:output_type -> lattice.catalog.v1.MutationResult
-	20, // 48: lattice.catalog.v1.CatalogService.GetOperation:output_type -> lattice.catalog.v1.GetOperationResponse
-	22, // 49: lattice.catalog.v1.CatalogService.CheckHealth:output_type -> lattice.catalog.v1.CheckHealthResponse
-	7,  // 50: lattice.catalog.v1.CatalogService.RefreshAgentCard:output_type -> lattice.catalog.v1.MutationResult
-	25, // 51: lattice.catalog.v1.CatalogService.LoadWellKnown:output_type -> lattice.catalog.v1.LoadWellKnownResponse
-	30, // 52: lattice.catalog.v1.CatalogService.ExportConfig:output_type -> lattice.catalog.v1.ExportConfigResponse
-	7,  // 53: lattice.catalog.v1.CatalogService.ImportConfig:output_type -> lattice.catalog.v1.MutationResult
-	41, // [41:54] is the sub-list for method output_type
-	28, // [28:41] is the sub-list for method input_type
-	28, // [28:28] is the sub-list for extension type_name
-	28, // [28:28] is the sub-list for extension extendee
-	0,  // [0:28] is the sub-list for field type_name
+	39, // 28: lattice.catalog.v1.CreateOIDCAuthMethodRequest.extra:type_name -> lattice.catalog.v1.CreateOIDCAuthMethodRequest.ExtraEntry
+	33, // 29: lattice.catalog.v1.CreateOIDCAuthMethodResponse.idp:type_name -> lattice.catalog.v1.DetectedIDP
+	9,  // 30: lattice.catalog.v1.CatalogService.CreateService:input_type -> lattice.catalog.v1.CreateServiceRequest
+	10, // 31: lattice.catalog.v1.CatalogService.GetService:input_type -> lattice.catalog.v1.GetServiceRequest
+	12, // 32: lattice.catalog.v1.CatalogService.ListServices:input_type -> lattice.catalog.v1.ListServicesRequest
+	14, // 33: lattice.catalog.v1.CatalogService.ListScopes:input_type -> lattice.catalog.v1.ListScopesRequest
+	16, // 34: lattice.catalog.v1.CatalogService.UpdateService:input_type -> lattice.catalog.v1.UpdateServiceRequest
+	17, // 35: lattice.catalog.v1.CatalogService.DeleteService:input_type -> lattice.catalog.v1.DeleteServiceRequest
+	18, // 36: lattice.catalog.v1.CatalogService.ApplyTransaction:input_type -> lattice.catalog.v1.ApplyTransactionRequest
+	19, // 37: lattice.catalog.v1.CatalogService.GetOperation:input_type -> lattice.catalog.v1.GetOperationRequest
+	21, // 38: lattice.catalog.v1.CatalogService.CheckHealth:input_type -> lattice.catalog.v1.CheckHealthRequest
+	26, // 39: lattice.catalog.v1.CatalogService.RefreshAgentCard:input_type -> lattice.catalog.v1.RefreshAgentCardRequest
+	24, // 40: lattice.catalog.v1.CatalogService.LoadWellKnown:input_type -> lattice.catalog.v1.LoadWellKnownRequest
+	29, // 41: lattice.catalog.v1.CatalogService.ExportConfig:input_type -> lattice.catalog.v1.ExportConfigRequest
+	31, // 42: lattice.catalog.v1.CatalogService.ImportConfig:input_type -> lattice.catalog.v1.ImportConfigRequest
+	32, // 43: lattice.catalog.v1.CatalogService.CreateOIDCAuthMethod:input_type -> lattice.catalog.v1.CreateOIDCAuthMethodRequest
+	7,  // 44: lattice.catalog.v1.CatalogService.CreateService:output_type -> lattice.catalog.v1.MutationResult
+	11, // 45: lattice.catalog.v1.CatalogService.GetService:output_type -> lattice.catalog.v1.GetServiceResponse
+	13, // 46: lattice.catalog.v1.CatalogService.ListServices:output_type -> lattice.catalog.v1.ListServicesResponse
+	15, // 47: lattice.catalog.v1.CatalogService.ListScopes:output_type -> lattice.catalog.v1.ListScopesResponse
+	7,  // 48: lattice.catalog.v1.CatalogService.UpdateService:output_type -> lattice.catalog.v1.MutationResult
+	7,  // 49: lattice.catalog.v1.CatalogService.DeleteService:output_type -> lattice.catalog.v1.MutationResult
+	7,  // 50: lattice.catalog.v1.CatalogService.ApplyTransaction:output_type -> lattice.catalog.v1.MutationResult
+	20, // 51: lattice.catalog.v1.CatalogService.GetOperation:output_type -> lattice.catalog.v1.GetOperationResponse
+	22, // 52: lattice.catalog.v1.CatalogService.CheckHealth:output_type -> lattice.catalog.v1.CheckHealthResponse
+	7,  // 53: lattice.catalog.v1.CatalogService.RefreshAgentCard:output_type -> lattice.catalog.v1.MutationResult
+	25, // 54: lattice.catalog.v1.CatalogService.LoadWellKnown:output_type -> lattice.catalog.v1.LoadWellKnownResponse
+	30, // 55: lattice.catalog.v1.CatalogService.ExportConfig:output_type -> lattice.catalog.v1.ExportConfigResponse
+	7,  // 56: lattice.catalog.v1.CatalogService.ImportConfig:output_type -> lattice.catalog.v1.MutationResult
+	34, // 57: lattice.catalog.v1.CatalogService.CreateOIDCAuthMethod:output_type -> lattice.catalog.v1.CreateOIDCAuthMethodResponse
+	44, // [44:58] is the sub-list for method output_type
+	30, // [30:44] is the sub-list for method input_type
+	30, // [30:30] is the sub-list for extension type_name
+	30, // [30:30] is the sub-list for extension extendee
+	0,  // [0:30] is the sub-list for field type_name
 }
 
 func init() { file_api_lattice_catalog_v1_catalog_proto_init() }
@@ -2825,7 +3213,7 @@ func file_api_lattice_catalog_v1_catalog_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_lattice_catalog_v1_catalog_proto_rawDesc), len(file_api_lattice_catalog_v1_catalog_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   36,
+			NumMessages:   40,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

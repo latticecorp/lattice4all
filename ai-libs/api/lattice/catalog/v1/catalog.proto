@@ -18,6 +18,7 @@ service CatalogService {
   rpc LoadWellKnown(LoadWellKnownRequest) returns (LoadWellKnownResponse);
   rpc ExportConfig(ExportConfigRequest) returns (ExportConfigResponse);
   rpc ImportConfig(ImportConfigRequest) returns (MutationResult);
+  rpc CreateOIDCAuthMethod(CreateOIDCAuthMethodRequest) returns (CreateOIDCAuthMethodResponse);
 }
 message Address { string type = 1; string value = 2; }
 message Capabilities {
@@ -221,4 +222,59 @@ message ExportConfigResponse {
 message ImportConfigRequest {
   uint32 version = 1;
   repeated ServiceInput services = 2;
+}
+
+message CreateOIDCAuthMethodRequest {
+  // Target backend category: "vault", "iam", or "lama-cp".
+  // If omitted, inferred from vendor (e.g. "hc-vault" -> "vault").
+  string target = 1;
+  // Vendor identifier, e.g. "hc-vault", "aws-iam", "lama-cp".
+  string vendor = 2;
+  // Backend host URL, e.g. "http://vault.hc-vault.svc.cluster.local:8200".
+  // For Vault, defaults to the control plane's configured vault.address when omitted.
+  string host = 3;
+  // Ephemeral management token used only in-memory for auth-method creation.
+  // Never persisted to catalog/Raft state, disk, or logs.
+  string management_token = 4 [json_name = "management-token"];
+  // Secret path for read-only credential access (defaults to VaultClient.secretPath for Vault).
+  string secret_path = 5 [json_name = "secret-path"];
+  // Private key secret path (defaults to "/secrets/pvt-keys").
+  string private_key = 6 [json_name = "private-key"];
+  // Optional auth method mount/path override (defaults to "oidc").
+  string auth_path = 7 [json_name = "auth-path"];
+  // Optional role name override (defaults to "lattice-cp").
+  string role_name = 8 [json_name = "role-name"];
+  // Optional vendor-specific extra options.
+  map<string, string> extra = 9;
+}
+
+message DetectedIDP {
+  // Detected runtime environment, e.g. "kubernetes", "oidc-env".
+  string environment = 1;
+  // Resolved OIDC issuer URL (if available).
+  string issuer = 2;
+  // Resolved JWKS URL / path (e.g. Kubernetes OIDC JWKS endpoint).
+  string jwks_url = 3 [json_name = "jwks-url"];
+  // Resolved OIDC discovery URL (if available).
+  string discovery_url = 4 [json_name = "discovery-url"];
+  // PEM-encoded CA certificate used to verify the JWKS/IDP endpoint (when applicable).
+  string jwks_ca_pem = 5 [json_name = "jwks-ca-pem"];
+  // Default bound audiences for tokens.
+  repeated string bound_audiences = 6 [json_name = "bound-audiences"];
+  // Default bound subject / service account (when detected).
+  string bound_subject = 7 [json_name = "bound-subject"];
+}
+
+message CreateOIDCAuthMethodResponse {
+  string target = 1;
+  string vendor = 2;
+  string host = 3;
+  string auth_path = 4 [json_name = "auth-path"];
+  string role_name = 5 [json_name = "role-name"];
+  string secret_path = 6 [json_name = "secret-path"];
+  string private_key = 7 [json_name = "private-key"];
+  string policy_name = 8 [json_name = "policy-name"];
+  DetectedIDP idp = 9;
+  string status = 10;
+  string message = 11;
 }

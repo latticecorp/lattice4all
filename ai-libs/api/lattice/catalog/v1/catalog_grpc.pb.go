@@ -19,19 +19,20 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	CatalogService_CreateService_FullMethodName    = "/lattice.catalog.v1.CatalogService/CreateService"
-	CatalogService_GetService_FullMethodName       = "/lattice.catalog.v1.CatalogService/GetService"
-	CatalogService_ListServices_FullMethodName     = "/lattice.catalog.v1.CatalogService/ListServices"
-	CatalogService_ListScopes_FullMethodName       = "/lattice.catalog.v1.CatalogService/ListScopes"
-	CatalogService_UpdateService_FullMethodName    = "/lattice.catalog.v1.CatalogService/UpdateService"
-	CatalogService_DeleteService_FullMethodName    = "/lattice.catalog.v1.CatalogService/DeleteService"
-	CatalogService_ApplyTransaction_FullMethodName = "/lattice.catalog.v1.CatalogService/ApplyTransaction"
-	CatalogService_GetOperation_FullMethodName     = "/lattice.catalog.v1.CatalogService/GetOperation"
-	CatalogService_CheckHealth_FullMethodName      = "/lattice.catalog.v1.CatalogService/CheckHealth"
-	CatalogService_RefreshAgentCard_FullMethodName = "/lattice.catalog.v1.CatalogService/RefreshAgentCard"
-	CatalogService_LoadWellKnown_FullMethodName    = "/lattice.catalog.v1.CatalogService/LoadWellKnown"
-	CatalogService_ExportConfig_FullMethodName     = "/lattice.catalog.v1.CatalogService/ExportConfig"
-	CatalogService_ImportConfig_FullMethodName     = "/lattice.catalog.v1.CatalogService/ImportConfig"
+	CatalogService_CreateService_FullMethodName        = "/lattice.catalog.v1.CatalogService/CreateService"
+	CatalogService_GetService_FullMethodName           = "/lattice.catalog.v1.CatalogService/GetService"
+	CatalogService_ListServices_FullMethodName         = "/lattice.catalog.v1.CatalogService/ListServices"
+	CatalogService_ListScopes_FullMethodName           = "/lattice.catalog.v1.CatalogService/ListScopes"
+	CatalogService_UpdateService_FullMethodName        = "/lattice.catalog.v1.CatalogService/UpdateService"
+	CatalogService_DeleteService_FullMethodName        = "/lattice.catalog.v1.CatalogService/DeleteService"
+	CatalogService_ApplyTransaction_FullMethodName     = "/lattice.catalog.v1.CatalogService/ApplyTransaction"
+	CatalogService_GetOperation_FullMethodName         = "/lattice.catalog.v1.CatalogService/GetOperation"
+	CatalogService_CheckHealth_FullMethodName          = "/lattice.catalog.v1.CatalogService/CheckHealth"
+	CatalogService_RefreshAgentCard_FullMethodName     = "/lattice.catalog.v1.CatalogService/RefreshAgentCard"
+	CatalogService_LoadWellKnown_FullMethodName        = "/lattice.catalog.v1.CatalogService/LoadWellKnown"
+	CatalogService_ExportConfig_FullMethodName         = "/lattice.catalog.v1.CatalogService/ExportConfig"
+	CatalogService_ImportConfig_FullMethodName         = "/lattice.catalog.v1.CatalogService/ImportConfig"
+	CatalogService_CreateOIDCAuthMethod_FullMethodName = "/lattice.catalog.v1.CatalogService/CreateOIDCAuthMethod"
 )
 
 // CatalogServiceClient is the client API for CatalogService service.
@@ -54,6 +55,7 @@ type CatalogServiceClient interface {
 	LoadWellKnown(ctx context.Context, in *LoadWellKnownRequest, opts ...grpc.CallOption) (*LoadWellKnownResponse, error)
 	ExportConfig(ctx context.Context, in *ExportConfigRequest, opts ...grpc.CallOption) (*ExportConfigResponse, error)
 	ImportConfig(ctx context.Context, in *ImportConfigRequest, opts ...grpc.CallOption) (*MutationResult, error)
+	CreateOIDCAuthMethod(ctx context.Context, in *CreateOIDCAuthMethodRequest, opts ...grpc.CallOption) (*CreateOIDCAuthMethodResponse, error)
 }
 
 type catalogServiceClient struct {
@@ -194,6 +196,16 @@ func (c *catalogServiceClient) ImportConfig(ctx context.Context, in *ImportConfi
 	return out, nil
 }
 
+func (c *catalogServiceClient) CreateOIDCAuthMethod(ctx context.Context, in *CreateOIDCAuthMethodRequest, opts ...grpc.CallOption) (*CreateOIDCAuthMethodResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateOIDCAuthMethodResponse)
+	err := c.cc.Invoke(ctx, CatalogService_CreateOIDCAuthMethod_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CatalogServiceServer is the server API for CatalogService service.
 // All implementations must embed UnimplementedCatalogServiceServer
 // for forward compatibility.
@@ -214,6 +226,7 @@ type CatalogServiceServer interface {
 	LoadWellKnown(context.Context, *LoadWellKnownRequest) (*LoadWellKnownResponse, error)
 	ExportConfig(context.Context, *ExportConfigRequest) (*ExportConfigResponse, error)
 	ImportConfig(context.Context, *ImportConfigRequest) (*MutationResult, error)
+	CreateOIDCAuthMethod(context.Context, *CreateOIDCAuthMethodRequest) (*CreateOIDCAuthMethodResponse, error)
 	mustEmbedUnimplementedCatalogServiceServer()
 }
 
@@ -262,6 +275,9 @@ func (UnimplementedCatalogServiceServer) ExportConfig(context.Context, *ExportCo
 }
 func (UnimplementedCatalogServiceServer) ImportConfig(context.Context, *ImportConfigRequest) (*MutationResult, error) {
 	return nil, status.Error(codes.Unimplemented, "method ImportConfig not implemented")
+}
+func (UnimplementedCatalogServiceServer) CreateOIDCAuthMethod(context.Context, *CreateOIDCAuthMethodRequest) (*CreateOIDCAuthMethodResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateOIDCAuthMethod not implemented")
 }
 func (UnimplementedCatalogServiceServer) mustEmbedUnimplementedCatalogServiceServer() {}
 func (UnimplementedCatalogServiceServer) testEmbeddedByValue()                        {}
@@ -518,6 +534,24 @@ func _CatalogService_ImportConfig_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CatalogService_CreateOIDCAuthMethod_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateOIDCAuthMethodRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatalogServiceServer).CreateOIDCAuthMethod(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatalogService_CreateOIDCAuthMethod_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatalogServiceServer).CreateOIDCAuthMethod(ctx, req.(*CreateOIDCAuthMethodRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CatalogService_ServiceDesc is the grpc.ServiceDesc for CatalogService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -576,6 +610,10 @@ var CatalogService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ImportConfig",
 			Handler:    _CatalogService_ImportConfig_Handler,
+		},
+		{
+			MethodName: "CreateOIDCAuthMethod",
+			Handler:    _CatalogService_CreateOIDCAuthMethod_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
